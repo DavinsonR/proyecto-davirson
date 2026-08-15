@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  /* ==== TOKENS — PROYECTO DAVIRSON v1 ==== */
+  --color-ink: #0D0D10;
+  --color-surface: #14151A;
+  --color-surface2: #191B21;
+  --color-line: #22252C;
+  --color-linesoft: #1B1D23;
+  --color-fg: #F0F2F5;
+  --color-body: #99A2AD;
+  --color-dim: #616B77;
+  --color-cold: #8AB8D0;
+  --color-warm: #D9A05B;
+  --color-live: #5FBF8A;
+  --color-building: #E3C368;
+  --color-research: #7FA8D9;
+  --color-idea: #8A93A0;
+}
+
+@theme {
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--color-ink); color: var(--color-body); }
+
+::selection { background: rgba(138, 184, 208, 0.25); color: var(--color-fg); }
