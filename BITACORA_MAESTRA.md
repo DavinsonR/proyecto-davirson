@@ -436,3 +436,9 @@ El usuario quiere llevar esta arquitectura a un bot (scalping/day/swing, estrate
 | Repo `market-data-medallion` | ✅ commit `b852398` local — push pendiente de crear repo en GitHub |
 | Supabase (esquema espejado) | ✅ migración 001 aplicada |
 | Fase 4b (cron diario en Actions) | ⏳ siguiente — solo faltan secrets + push |
+
+### Addendum sesión 5 (misma noche)
+- ✅ **Tiingo activo:** el usuario creó su key (guardada en `.env`, gitignored — jamás commitearla). SPY y QQQ ingestados: 1,158 velas c/u desde 2022 (los 47 "missing days" son festivos bursátiles de EE.UU.; gap máx 4 = fines de semana largos). **16 backtests** en 4 activos. Hallazgo honesto ampliado: en los ETFs NINGUNA estrategia le ganó al buy & hold (SPY +62.8% B&H vs +36.8% la mejor; QQQ +82.9% vs +45.3%) — timing activo pierde en mercado alcista; commit local `data: enable Tiingo ETFs`.
+- ✅ **RLS habilitado en Supabase** (migración 002, decisión del usuario): las 4 tablas protegidas; el pipeline no se afecta (conecta como rol dueño).
+- ✅ Usuario creó el repo GitHub y amplió el token al repo nuevo. ⚠️ **FALLO-13 — push rechazado por permiso `workflow`:** el PAT no puede crear/modificar `.github/workflows/*` sin ese permiso. Fix (mañana, 30 seg): en el token → si es fine-grained: Permissions → **Workflows: Read and write**; si es classic: marcar scope **workflow** → Update → `git push -u origin main`. El push escribió los 70 objetos y solo rechazó la ref — con el permiso, entra a la primera.
+- Nota operativa: `psql` muestra los `timestamptz` en hora Bogotá (medianoche UTC aparece como 19:00 del día anterior) — NO es el FALLO-11, que ya está corregido en el export con `SET TIME ZONE 'UTC'`. No "arreglar" lo que solo es visualización.
