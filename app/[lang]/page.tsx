@@ -78,9 +78,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 <h3 className="font-display text-[21px] font-medium text-fg mb-1.5">{dict.featured.projectTitle}</h3>
                 <p className="font-mono text-[11.5px] text-cold mb-4">{dict.featured.stack}</p>
                 <p className="text-[14px] leading-[1.75]">{dict.featured.body}</p>
-                <span className="inline-block mt-5 font-mono text-[12px] text-dim border-b border-[#3A3F47] pb-0.5">
+                <Link
+                  href={`/${lang}/projects/trading-sim`}
+                  className="inline-block mt-5 font-mono text-[12px] text-fg border-b border-[#3A3F47] pb-0.5 hover:text-cold hover:border-cold transition-colors"
+                >
                   {dict.featured.link}
-                </span>
+                </Link>
               </div>
               <div className="bg-ink border border-linesoft rounded p-4.5">
                 <p className="font-mono text-[10px] text-dim mb-3 flex justify-between">
