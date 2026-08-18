@@ -554,3 +554,29 @@ Primera pieza visual del proyecto con datos reales: el sitio sigue 100% estátic
 | TRADING_SIM | ✅ 45% |
 | Falta de 4C | ⏳ informe Power BI (PBIP) — próxima sesión |
 | Pendiente usuario | ⏳ rotar contraseña de Supabase cuando quiera |
+
+---
+
+## ANEXO — SESIÓN 9 (18 ago 2026): FASE 4C CERRADA — informe Power BI (PBIP/PBIR/TMDL)
+
+### Resultado
+**`powerbi/MedallionInsights.pbip`** en el repo del pipeline (commit `53a975d`): informe interactivo de 4 páginas + modelo semántico de 7 tablas y 17 medidas DAX, conectado al warehouse de Supabase vía el session pooler IPv4. **Todo en formato texto versionable (TMDL + PBIR), cero binarios, cero credenciales en el repo** — la contraseña se ingresa una sola vez en Desktop y `PgHost`/`PgDatabase` son parámetros del modelo (el informe se re-apunta al Postgres local sin tocar M).
+
+**Páginas:** The Verdict (embudo de supervivencia con medidas vivas — al filtrar por región se recalcula) · Strategy Explorer (slicers sobre las 1.347 variantes, scatter exposición-vs-exceso-OOS, leaderboard) · FX Decomposition (empresa vs moneda por ADR con slicer de ventana) · Equity Curves (estrategia vs buy & hold por activo).
+
+### Cómo se verificó SIN tener Power BI (no hay Windows en WSL) — D-27
+1. Los 31 JSON del reporte validados contra **los esquemas oficiales publicados por Microsoft** (resolución completa de $ref); el validador atrapó 1 error real antes de entregar.
+2. El modelo TMDL deserializado con **el parser del propio Microsoft** (`Tabular.TmdlSerializer`, AMO 19.x — el revisor adversarial instaló el SDK de .NET para correrlo): OK.
+3. Cada `sourceColumn`, query nativa y referencia de medida verificada contra el warehouse vivo (psql).
+4. Riesgo RLS cerrado empíricamente: las tablas gold en Supabase son propiedad de `postgres` (el mismo rol del login de Power BI → bypass de dueño), y la query nativa de curvas devuelve filas por el pooler.
+Hallazgos de la revisión: 0 altos, 0 medios, 1 cosmético (título del scatter, corregido).
+
+### Estado al cierre de sesión 9 — FASE 4 COMPLETA (4a+4b+4c)
+| Ítem | Estado |
+|---|---|
+| Pipeline + 1.347 variantes + validación OOS | ✅ corriendo solo cada día (cron confirmado) |
+| Página del laboratorio en el sitio | ✅ en vivo, bilingüe |
+| Descomposición cambiaria | ✅ mart + página + Power BI |
+| Informe Power BI (PBIP) | ✅ en el repo, validado con parser oficial — el usuario lo abre en Desktop y refresca |
+| Pendiente usuario | ⏳ abrir el .pbip en Desktop (instrucciones en powerbi/README.md) · rotar contraseña de Supabase |
+| Siguiente fase | Fase 5: /historia (redacción con lente de propósito) — o lo que el usuario decida |
