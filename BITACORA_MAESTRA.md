@@ -571,6 +571,8 @@ Primera pieza visual del proyecto con datos reales: el sitio sigue 100% estátic
 4. Riesgo RLS cerrado empíricamente: las tablas gold en Supabase son propiedad de `postgres` (el mismo rol del login de Power BI → bypass de dueño), y la query nativa de curvas devuelve filas por el pooler.
 Hallazgos de la revisión: 0 altos, 0 medios, 1 cosmético (título del scatter, corregido).
 
+**FALLO-22 (encontrado por el usuario al abrirlo en Desktop):** `The 'Equity' measure cannot be created because a column with the same name already exists`. Causa: los nombres de objetos en Tabular son **insensibles a mayúsculas dentro de una tabla** — la medida `Equity` colisionaba con la columna `equity` de `equity_curves`. La trampa: el deserializador TMDL de Microsoft (que usamos para validar) acepta el archivo; la unicidad solo la exige **el motor** al crear la base de datos — la única capa que no podíamos ejecutar sin Windows. Fix: medida renombrada a `Strategy Equity` + proyección del gráfico actualizada + scan programático de colisiones medida↔columna en todo el modelo (era la única). Dato positivo del reporte de error: Desktop saltó el login sin cuenta de trabajo, abrió por `\\wsl.localhost` y parseó todo el proyecto — murió en el último paso, ya corregido (`b2feb77`).
+
 ### Estado al cierre de sesión 9 — FASE 4 COMPLETA (4a+4b+4c)
 | Ítem | Estado |
 |---|---|
