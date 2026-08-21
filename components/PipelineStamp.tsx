@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { INDEX_URL } from "@/lib/trading-sim";
+import { INDEX_URL, fetchJson } from "@/lib/trading-sim";
 
 /** Proof, not prose.
  *
@@ -33,9 +33,8 @@ export default function PipelineStamp({
 
   useEffect(() => {
     let alive = true;
-    fetch(INDEX_URL)
-      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: { assets?: { summary?: { last_candle_ts?: string | null; is_stale?: boolean | null } | null }[] }) => {
+    fetchJson<{ assets?: { summary?: { last_candle_ts?: string | null; is_stale?: boolean | null } | null }[] }>(INDEX_URL)
+      .then((d) => {
         if (!alive || !Array.isArray(d.assets)) return;
 
         const summaries = d.assets.map((a) => a.summary).filter((s): s is NonNullable<typeof s> => !!s);

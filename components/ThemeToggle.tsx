@@ -28,13 +28,19 @@ function Glyph({ mode }: { mode: Mode }) {
 export default function ThemeToggle({ labels }: { labels: { light: string; dark: string } }) {
   const [mode, setMode] = useState<Mode | null>(null);
 
+  // localStorage y matchMedia no existen durante el prerender estático, así que
+  // el modo real solo se puede conocer después de montar. No hay versión de esto
+  // derivable en el render: es estado del navegador, no del componente.
   useEffect(() => {
     const stored = localStorage.getItem("theme");
-    if (stored === "light" || stored === "dark") {
-      setMode(stored);
-      return;
-    }
-    setMode(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    const resolved: Mode =
+      stored === "light" || stored === "dark"
+        ? stored
+        : window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMode(resolved);
   }, []);
 
   const toggle = () => {

@@ -11,6 +11,24 @@ const RAW = "https://raw.githubusercontent.com/DavinsonR/market-data-medallion/m
 export const INDEX_URL = `${RAW}/index.json`;
 export const symbolUrl = (symbol: string) => `${RAW}/backtests/${encodeURIComponent(symbol)}.json`;
 
+/** Lectura con tiempo límite.
+ *
+ *  Sin él, una red corporativa que bloquea raw.githubusercontent.com sin cerrar
+ *  la conexión deja el panel en "cargando…" para siempre — el peor estado
+ *  posible, porque parece que el sitio está roto sin decirlo. Con límite, la
+ *  página muestra el error y ofrece reintentar. */
+export async function fetchJson<T>(url: string, timeoutMs = 12000): Promise<T> {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { signal: ctrl.signal });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return (await res.json()) as T;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 // ---- formas del export (deben calzar con pipeline/export.py) ----
 
 export type OverfittingRow = {

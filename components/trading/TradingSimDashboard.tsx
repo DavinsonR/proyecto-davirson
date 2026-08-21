@@ -13,6 +13,7 @@ import {
   INDEX_URL,
   TRADING_SIM_REPO,
   symbolUrl,
+  fetchJson,
   pct,
   num,
   type IndexData,
@@ -31,35 +32,43 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
   const [indexError, setIndexError] = useState(false);
   const [symbol, setSymbol] = useState("BTC-USD");
   const [strategy, setStrategy] = useState("macd");
-  const [symbolData, setSymbolData] = useState<SymbolData | null>(null);
+  const [fetchedSymbol, setFetchedSymbol] = useState<SymbolData | null>(null);
   const [symbolCache] = useState(() => new Map<string, SymbolData>());
   const [symbolLoading, setSymbolLoading] = useState(false);
 
+  // Un acierto de caché es un valor derivable en el render: copiarlo a estado con
+  // un efecto provocaba un segundo render por cada cambio de activo.
+  const symbolData: SymbolData | null =
+    symbolCache.get(symbol) ?? (fetchedSymbol?.symbol === symbol ? fetchedSymbol : null);
+
   const loadIndex = useCallback(() => {
-    setIndexError(false);
-    fetch(INDEX_URL)
-      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: IndexData) => setIndex(d))
+    fetchJson<IndexData>(INDEX_URL)
+      .then((d) => setIndex(d))
       .catch(() => setIndexError(true));
   }, []);
+
+  // El botón de reintentar sí puede limpiar el error: viene de un clic, no del montaje.
+  const retryIndex = useCallback(() => {
+    setIndexError(false);
+    loadIndex();
+  }, [loadIndex]);
 
   useEffect(loadIndex, [loadIndex]);
 
   useEffect(() => {
-    const cached = symbolCache.get(symbol);
-    if (cached) {
-      setSymbolData(cached);
-      return;
-    }
+    if (symbolCache.has(symbol)) return;
     let alive = true;
+    // Marcar "cargando" antes de disparar la petición es el arranque de un trabajo
+    // externo, no un valor derivable: sin esto el panel se queda con el activo
+    // anterior en pantalla mientras llega el nuevo, sin decir que está cargando.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSymbolLoading(true);
-    fetch(symbolUrl(symbol))
-      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: SymbolData) => {
+    fetchJson<SymbolData>(symbolUrl(symbol))
+      .then((d) => {
         symbolCache.set(symbol, d);
-        if (alive) setSymbolData(d);
+        if (alive) setFetchedSymbol(d);
       })
-      .catch(() => alive && setSymbolData(null))
+      .catch(() => alive && setFetchedSymbol(null))
       .finally(() => alive && setSymbolLoading(false));
     return () => {
       alive = false;
@@ -119,7 +128,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
       <div className="border border-rule rounded bg-band p-8 text-center">
         <p className="text-[14px] text-body">{dict.error}</p>
         <button
-          onClick={loadIndex}
+          onClick={retryIndex}
           className="mt-4 text-[14px] px-4 py-2 border border-rule rounded hover:border-cold hover:text-cold transition-colors"
         >
           {dict.retry}
