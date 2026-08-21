@@ -225,7 +225,7 @@ export const dictionaries = {
         {
           period: "2024 — 2026",
           title: "SLB · de practicante a especialista en 26 meses",
-          desc: "Tesorería y facturación LATAM: análisis cambiario en Python, automatización que liberó más de 10 horas al mes, revenue recognition bajo SOX.",
+          desc: "Tesorería y facturación LATAM: análisis cambiario en Python, automatización que liberó ~10 horas al mes por analista — unas 60 en el equipo —, revenue recognition bajo SOX.",
           tag: "Finanzas + datos",
         },
         {
@@ -299,7 +299,7 @@ export const dictionaries = {
       contactBtn: "Contacto",
       facts: [
         { value: "15+", label: "países en las operaciones que reporto" },
-        { value: "10+ h/mes", label: "de reporting automatizadas" },
+        { value: "60 h/mes", label: "de reporting devueltas al equipo (10 por analista)" },
         { value: "26 meses", label: "de practicante a especialista" },
         { value: "48", label: "activos en un pipeline diario propio" },
       ],
@@ -308,7 +308,7 @@ export const dictionaries = {
         "Economista con tres años dentro de finanzas corporativas — tesorería, facturación y FP&A — construyendo yo mismo los datos que el negocio necesita: Python, SQL y Power BI aplicados a operaciones en más de 15 países de América. Hoy opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI, actualizado a diario sin intervención manual. Busco un rol remoto donde el criterio financiero y la ingeniería de datos se paguen como una sola capacidad, no como dos mitades.",
       pivot: {
         label: "El rol cruzado",
-        body: "No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol financiero terminé construyendo lo mismo — código y datos — porque el reporte que hacía falta no existía. Un análisis de descalces cambiarios en Python siendo practicante. Automatizaciones que liberaron más de 10 horas al mes en tesorería. Modelos de Power BI que convirtieron un cierre contable en una decisión. La ventaja no es saber Python: es saber qué pregunta vale la pena responder antes de escribirlo. Un Finance Data Analyst no es un analista de datos que aprendió finanzas, ni un financiero que aprendió a programar — es quien no necesita traductor entre los dos.",
+        body: "No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol financiero terminé construyendo lo mismo — código y datos — porque el reporte que hacía falta no existía. Un análisis de descalces cambiarios en Python siendo practicante. Automatizaciones que devolvieron unas 10 horas al mes a cada analista de tesorería — cerca de 60 al mes en el equipo. Modelos de Power BI que convirtieron un cierre contable en una decisión. La ventaja no es saber Python: es saber qué pregunta vale la pena responder antes de escribirlo. Un Finance Data Analyst no es un analista de datos que aprendió finanzas, ni un financiero que aprendió a programar — es quien no necesita traductor entre los dos.",
       },
       expLabel: "Experiencia",
       expTitle: "Experiencia",
@@ -352,7 +352,7 @@ export const dictionaries = {
               period: "Oct 2024 — Dic 2024",
               bullets: [
                 "Automaticé la conciliación bancaria en SAP, mejorando precisión y eficiencia.",
-                "Reduje más de 10 horas mensuales de reporting financiero optimizando procesos.",
+                "Eliminé cerca de 10 horas mensuales de reporting manual por analista — unas 60 horas al mes devueltas al equipo — optimizando y automatizando el proceso.",
                 "Implementé flujos de trabajo automatizados con Power Automate.",
               ],
             },
@@ -682,7 +682,7 @@ export const dictionaries = {
         {
           period: "2024 — 2026",
           title: "SLB · intern to specialist in 26 months",
-          desc: "LATAM treasury and billing: FX analysis in Python, automation that freed more than 10 hours a month, revenue recognition under SOX.",
+          desc: "LATAM treasury and billing: FX analysis in Python, automation that freed ~10 hours a month per analyst — about 60 across the team —, revenue recognition under SOX.",
           tag: "Finance + data",
         },
         {
@@ -756,7 +756,7 @@ export const dictionaries = {
       contactBtn: "Contact",
       facts: [
         { value: "15+", label: "countries in the operations I report on" },
-        { value: "10+ hrs/mo", label: "of reporting automated" },
+        { value: "60 hrs/mo", label: "of reporting given back to the team (10 per analyst)" },
         { value: "26 months", label: "from intern to specialist" },
         { value: "48", label: "assets in a daily pipeline I run" },
       ],
@@ -765,7 +765,7 @@ export const dictionaries = {
         "Economist with three years inside corporate finance — treasury, billing and FP&A — building the data the business runs on: Python, SQL and Power BI applied to operations across 15+ countries in the Americas. I now run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model, refreshed daily with no manual step. I am looking for a remote role where financial judgment and data engineering are paid as one capability, not two halves.",
       pivot: {
         label: "The crossover role",
-        body: "This is not a career change; it is pricing what I already do. In every finance role I ended up building the same thing — code and data — because the report the business needed did not exist. An FX mismatch analysis in Python as an intern. Automation that freed more than 10 hours a month in treasury. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; it is knowing which question is worth answering before writing any. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code — it is the one who needs no translator between them.",
+        body: "This is not a career change; it is pricing what I already do. In every finance role I ended up building the same thing — code and data — because the report the business needed did not exist. An FX mismatch analysis in Python as an intern. Automation that gave every treasury analyst about 10 hours a month back — close to 60 a month across the team. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; it is knowing which question is worth answering before writing any. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code — it is the one who needs no translator between them.",
       },
       expLabel: "Experience",
       expTitle: "Experience",
@@ -809,7 +809,7 @@ export const dictionaries = {
               period: "Oct 2024 — Dec 2024",
               bullets: [
                 "Automated bank reconciliation in SAP, improving accuracy and efficiency.",
-                "Cut 10+ hours per month of financial reporting through process optimization.",
+                "Cut roughly 10 hours of manual reporting per analyst per month — about 60 hours a month back to the team — by optimizing and automating the process.",
                 "Implemented automated workflows with Power Automate.",
               ],
             },
