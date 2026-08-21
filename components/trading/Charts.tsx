@@ -10,7 +10,7 @@
 // Text always wears text tokens, never the series color.
 // ============================================================
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { compactMoney, money } from "@/lib/trading-sim";
 
 export const CHART = {
@@ -41,6 +41,8 @@ const PAD = { top: 14, right: 88, bottom: 26, left: 52 };
 
 export function EquityChart({ points, lang, splitDate, labels }: EquityChartProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
+  const benchRef = useRef<SVGPathElement>(null);
+  const seriesRef = useRef<SVGPathElement>(null);
   const [hover, setHover] = useState<number | null>(null);
 
   const geom = useMemo(() => {
@@ -62,6 +64,24 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
     const splitIdx = splitDate ? points.findIndex((p) => p[0] >= splitDate.slice(0, 10)) : -1;
     return { x, y, path, ticks, splitIdx };
   }, [points, splitDate]);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // the plot is drawn, not revealed: benchmark first, strategy landing last
+    const draw = (el: SVGPathElement | null, delay: number) => {
+      if (!el) return;
+      el.getAnimations().forEach((a) => a.cancel());
+      const len = el.getTotalLength();
+      if (!len) return;
+      el.style.strokeDasharray = String(len);
+      el.animate(
+        [{ strokeDashoffset: len }, { strokeDashoffset: 0 }],
+        { duration: 1300, delay, easing: "cubic-bezier(0.33, 1, 0.68, 1)", fill: "both" }
+      );
+    };
+    draw(benchRef.current, 0);
+    draw(seriesRef.current, 180);
+  }, [points]);
 
   if (points.length < 2) return null;
 
@@ -119,9 +139,9 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
         )}
 
         {/* benchmark: referencia punteada (identidad por forma, no por matiz) */}
-        <path d={geom.path(2)} fill="none" stroke={CHART.benchmark} strokeWidth="2" strokeDasharray="5 6" strokeLinejoin="round" strokeLinecap="round" />
+        <path ref={benchRef} d={geom.path(2)} fill="none" stroke={CHART.benchmark} strokeWidth="2" strokeDasharray="5 6" strokeLinejoin="round" strokeLinecap="round" />
         {/* estrategia: serie única */}
-        <path d={geom.path(1)} fill="none" stroke={CHART.series} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+        <path ref={seriesRef} d={geom.path(1)} fill="none" stroke={CHART.series} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
 
         {/* puntos finales con anillo de superficie + etiquetas directas */}
         <circle cx={geom.x(points.length - 1)} cy={endBenchY} r="4" fill={CHART.benchmark} stroke={CHART.surface} strokeWidth="2" />
@@ -211,7 +231,7 @@ export function HBars({ rows, max }: { rows: BarRow[]; max?: number }) {
       {rows.map((r) => {
         const w = Math.max((r.value / top) * 100, 0);
         return (
-          <div key={r.label} className="group">
+          <div key={r.label} data-reveal className="reveal group">
             <div className="mb-1 flex items-baseline justify-between text-[14px]">
               <span className="text-body">{r.label}</span>
               <span className="text-ink">
@@ -221,7 +241,7 @@ export function HBars({ rows, max }: { rows: BarRow[]; max?: number }) {
             </div>
             <div className="h-[14px] rounded-[3px] bg-rule">
               <div
-                className="h-full rounded-r-[4px] rounded-l-[2px] transition-all duration-500"
+                className="bar-in h-full rounded-r-[4px] rounded-l-[2px] transition-all duration-500"
                 style={{ width: `${Math.max(w, r.value > 0 ? 1.5 : 0.4)}%`, background: CHART.series, opacity: r.value === 0 ? 0.25 : 1 }}
               />
             </div>
@@ -241,15 +261,15 @@ export function Funnel({ stages }: { stages: { label: string; value: number; dis
       {stages.map((s, i) => {
         const w = Math.max((s.value / top) * 100, 2.4);
         return (
-          <div key={s.label}>
+          <div key={s.label} data-reveal className="reveal" style={{ "--d": `${i * 110}ms` } as React.CSSProperties}>
             <div className="mb-1 flex items-baseline gap-3 text-[14px]">
               <span className="text-ink text-[14px] font-semibold">{s.display}</span>
               <span className="text-body">{s.label}</span>
             </div>
             <div className="h-[22px] rounded-[3px] bg-rule">
               <div
-                className="h-full rounded-r-[4px] rounded-l-[2px] transition-all duration-700"
-                style={{ width: `${w}%`, background: CHART.series, opacity: 1 - i * 0.18 }}
+                className="bar-in h-full rounded-r-[4px] rounded-l-[2px] transition-all duration-700"
+                style={{ width: `${w}%`, background: CHART.series, opacity: 1 - i * 0.18, "--d": `${i * 110 + 90}ms` } as React.CSSProperties}
               />
             </div>
           </div>

@@ -165,7 +165,7 @@ The build refuses, explicitly and by name, the dark developer-portfolio arrangem
 - Two faces: Archivo everywhere, Source Serif 4 for large figures and the verdict
 - Tabular figures at the body level; every number aligns
 - Zero shadows, zero cards, 3px radius on controls and nothing else
-- One authored motion moment, disabled entirely under reduced-motion
+- Motion in the register of print — rules drawn, rows settled, figures counted — disabled entirely under reduced-motion
 
 ## Colors
 
@@ -296,7 +296,20 @@ Ten flat 6px segments at 3px gaps, filled in blue up to the level and `rule` bey
 Line only, on paper ground: series in blue at 2px solid, benchmark in muted at 2px dashed (`5 6`), gridlines in `rule` at 1px. Series are distinguished by dash pattern and end-point label as well as hue, so the chart survives grayscale printing and color-vision deficiency. All chart text wears text tokens (`ink`, `body`, `muted`), never the series color.
 
 ### Motion
-One authored moment: `.settle`, a 620ms `cubic-bezier(0.16, 1, 0.3, 1)` exponential ease-out from opacity 0 / 10px down / 3px blur, staggered in reading order across the document header only (60ms → 340ms + 70ms per figure). It runs from an already-visible default so nothing depends on JS to be readable, and it is disabled outright under `prefers-reduced-motion` along with all transitions and smooth scroll. Everything else that moves is a color or opacity transition on hover.
+**Register: print, not web-app.** Every animated thing is something a sheet does — a pen crosses the page, a row settles into place, a figure is counted to its reading. Nothing bounces, parallaxes, or scales on hover.
+
+Four primitives, all keyed off one document-level `IntersectionObserver` in `components/Motion.tsx`:
+
+| Class | Motion | Timing |
+|---|---|---|
+| `.settle` / `.reveal` | opacity 0 → 1, 10–14px up, 3px blur → none | 620–700ms `cubic-bezier(0.16, 1, 0.3, 1)` |
+| `.rule-in` | `scaleX(0) → 1` from the left edge — a rule is drawn, not faded in | 760ms `cubic-bezier(0.22, 1, 0.36, 1)` |
+| `.bar-in` | `scaleX(0) → 1` — an indicator segment fills to its reading | 820ms, staggered 55ms per segment |
+| `CountUp` | integer counts to the printed value on `easeOutExpo`; prefix and suffix (`15+`, `10+ hrs/mo`) are preserved verbatim | 1100ms |
+
+Stagger is always reading order, carried by a `--d` custom property so a server component can set it without becoming a client component. Chart series are drawn left to right with the Web Animations API inside `components/trading/Charts.tsx` (benchmark first at 0ms, strategy at 180ms) because a path's length is only known at run time.
+
+**Three guarantees the system must keep.** The hidden states are scoped to `.js`, set pre-paint by the boot script, so a reader without JS never meets an invisible page. A 3-second boot timer reveals everything if the bundle never runs. And `@media print` forces every reveal state visible, because paper has no scroll and nothing would ever intersect — a printed sheet must not come out blank. Under `prefers-reduced-motion: reduce` the observer marks everything visible immediately and every animation and transition is cut to 0.01ms.
 
 ### Theming
 Theme follows system preference by default, with a manual toggle persisted in `localStorage` and applied pre-paint by an inline script so a reload never flashes the wrong ground. Browser surfaces wear the palette too: selection is blue-on-paper, scrollbars are thin `rule`-on-transparent with a paper-bordered thumb, and `color-scheme: light dark` is declared.
@@ -311,7 +324,7 @@ Theme follows system preference by default, with a manual toggle persisted in `l
 - **Do** author the dark theme against its own ground (#0e1216) with re-chosen steps, and keep light as the default reading state.
 - **Do** link every figure to the artifact that proves it.
 - **Do** state a claim once, large, and let the band below verify it.
-- **Do** keep motion to the single `.settle` stagger on a document header and disable it fully under reduced-motion.
+- **Do** keep motion in the print register — draw a rule, settle a row, count a figure — and make every animated element readable at rest, in print, and under reduced-motion.
 
 ### Don't:
 - **Don't** add a shadow, glow, or gradient. The system is flat; a `box-shadow` here is a defect.
@@ -322,5 +335,7 @@ Theme follows system preference by default, with a manual toggle persisted in `l
 - **Don't** set a paragraph, heading, or button in the serif; the serif means "this is a figure."
 - **Don't** derive the dark theme by inverting or filtering light values.
 - **Don't** hide a control behind a bare dim glyph where a short label would work — the language switch is labelled for exactly this reason.
+- **Don't** let a reveal state be the only thing standing between a reader and the content: if it can't be seen without JS, without motion, or on paper, it is a defect, not an effect.
+- **Don't** publish a self-assessment on one surface and a lower one on another. The skill scale is declared once and both the front page and the CV read it from the same rows.
 - **Don't** round a band, row, or block; radius belongs to controls (3px) and to the two elements whose meaning is round.
 - **Don't** use an icon font, emoji, or a third-party icon package; icons are inline SVG at a 1.3px stroke on a 16px box.

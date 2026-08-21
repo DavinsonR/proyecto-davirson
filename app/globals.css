@@ -153,31 +153,97 @@ a {
   text-decoration-thickness: 1px;
 }
 
-/* --- the one authored moment: the sheet prints itself in ---
-   Rows settle in reading order from an already-visible default, so
-   nothing depends on JS to be readable. */
+/* ============================================================
+   MOTION — the sheet prints itself in
+   The register is print, not web-app: rules draw across, rows
+   settle in reading order, figures count up to their value. No
+   bounce, no parallax, no scale-on-hover. Every animated element
+   is readable at rest, so nothing depends on JS or on motion
+   being allowed. The `.js` class is set by the boot script before
+   paint; without it the hidden states never apply.
+   ============================================================ */
+
 @keyframes sheet-settle {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-    filter: blur(3px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
+  from { opacity: 0; transform: translateY(10px); filter: blur(3px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+
+/* a rule is drawn, not faded: the pen crosses the page */
+@keyframes rule-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* a figure's bar fills to its reading */
+@keyframes bar-fill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* the live dot: a slow instrument pulse, not a notification blink */
+@keyframes live-ping {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  70%  { transform: scale(2.6); opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
 }
 
 .settle {
   animation: sheet-settle 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  /* scroll reveal — only ever hides content once JS is confirmed */
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    will-change: opacity, transform;
+  }
+  .js .reveal.is-in {
+    animation: sheet-settle 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  /* section rules draw across as the section arrives */
+  .js .rule-in {
+    transform-origin: left center;
+    transform: scaleX(0);
+  }
+  /* triggered on itself, or by any revealed ancestor — so a row of
+     segments can fill in sequence off one observer */
+  .js .rule-in.is-in,
+  .js .is-in .rule-in {
+    animation: rule-draw 760ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .js .bar-in {
+    transform-origin: left center;
+    transform: scaleX(0);
+  }
+  /* triggered on itself, or by any revealed ancestor — so a row of
+     segments can fill in sequence off one observer */
+  .js .bar-in.is-in,
+  .js .is-in .bar-in {
+    animation: bar-fill 820ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .live-ping { animation: live-ping 2600ms cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+  /* hover life, kept to the weight of ink: a hairline thickens,
+     a row lifts by one pixel. Nothing scales. */
+  .lift { transition: transform 180ms ease, color 180ms ease, border-color 180ms ease; }
+  .lift:hover { transform: translateY(-1px); }
+  .lift:active { transform: translateY(0); }
+}
+
+/* the pen never crosses the page for a reader who asked for stillness */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .settle { animation: none; }
+  .settle, .js .reveal, .js .rule-in, .js .bar-in { animation: none; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
@@ -185,4 +251,15 @@ a {
 @media print {
   body { background: #fff; color: #000; }
   .no-print { display: none !important; }
+  /* Paper has no scroll, so nothing ever intersects: without this the
+     reveal states would print as blank space on a sheet PRODUCT says
+     gets printed. Ink first, motion second. */
+  .reveal, .rule-in, .bar-in {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  /* the plotted line is drawn by the Web Animations API in Charts.tsx,
+     because a path's length is only known at run time */
+  svg path { stroke-dashoffset: 0 !important; }
 }

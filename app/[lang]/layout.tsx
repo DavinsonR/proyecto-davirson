@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getDictionary, locales, type Locale } from "@/lib/dictionaries";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import MotionRoot from "@/components/Motion";
 import "../globals.css";
 
 export function generateStaticParams() {
@@ -18,8 +19,10 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   };
 }
 
-/* Applied before paint so a reload never flashes the wrong ground. */
-const THEME_BOOT = `(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
+/* Applied before paint so a reload never flashes the wrong ground, and so the
+   reveal states exist from the first frame instead of snapping in at hydration.
+   The timer is the failsafe: if the bundle never runs, nothing stays hidden. */
+const BOOT = `(function(){var r=document.documentElement;try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')r.setAttribute('data-theme',t);}catch(e){}r.classList.add('js');setTimeout(function(){if(!r.hasAttribute('data-motion'))document.querySelectorAll('[data-reveal]').forEach(function(e){e.classList.add('is-in')})},3000);})();`;
 
 export default async function RootLayout({
   children,
@@ -39,7 +42,7 @@ export default async function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
           rel="stylesheet"
         />
-        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT }} />
+        <script dangerouslySetInnerHTML={{ __html: BOOT }} />
       </head>
       <body className="font-sans antialiased">
         <div
@@ -68,6 +71,7 @@ export default async function RootLayout({
 -->`,
           }}
         />
+        <MotionRoot />
         <Navbar dict={dict} lang={lang as Locale} />
         {children}
         <Footer dict={dict} lang={lang as Locale} />

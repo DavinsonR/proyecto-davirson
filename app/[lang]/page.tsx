@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import { TRADING_SIM_REPO } from "@/lib/trading-sim";
 import PipelineStamp from "@/components/PipelineStamp";
+import CountUp from "@/components/CountUp";
 
 const WRAP = "mx-auto max-w-[1080px] px-6";
 
@@ -57,13 +58,13 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 <a
                   href={cvHref}
                   download
-                  className="inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
+                  className="lift inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
                 >
                   {sheet.ctaPrimary}
                 </a>
                 <a
                   href="#work"
-                  className="inline-flex items-center rounded-[3px] border border-rule px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
+                  className="lift inline-flex items-center rounded-[3px] border border-rule px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
                 >
                   {sheet.ctaSecondary}
                 </a>
@@ -141,10 +142,10 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                     <a
                       href={proof}
                       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                      className="group block"
+                      className="lift group block"
                     >
                       <dd className="font-figure text-[clamp(34px,4.4vw,46px)] leading-none text-ink group-hover:text-cold">
-                        {m.value}
+                        <CountUp value={m.value} lang={lang} />
                       </dd>
                       <dt className="mt-2 text-[14px] leading-[1.35] font-medium text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 group-hover:decoration-[2.5px]">
                         {m.label}
@@ -162,12 +163,19 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       {/* ===================== WORK ===================== */}
       <section id="work" className="scroll-mt-16 border-b border-rule py-16">
         <div className={WRAP}>
-          <h2 className="font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink">
+          <h2
+            data-reveal
+            className="reveal font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink"
+          >
             {work.title}
           </h2>
-          <p className="mt-2.5 max-w-[62ch] text-[15px] leading-[1.7]">{work.intro}</p>
+          <p data-reveal className="reveal mt-2.5 max-w-[62ch] text-[15px] leading-[1.7]" style={{ "--d": "70ms" } as React.CSSProperties}>
+            {work.intro}
+          </p>
 
-          <article className="mt-10 border-t-2 border-ink pt-6">
+          <article data-reveal className="reveal relative mt-10 pt-6">
+            {/* the head rule is drawn, not painted: the pen crosses the sheet */}
+            <span aria-hidden="true" className="rule-in absolute inset-x-0 top-0 h-[2px] bg-ink" />
             <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
               <h3 className="font-display text-[21px] font-bold tracking-[-0.015em] text-ink">
                 {work.project.name}
@@ -204,10 +212,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </div>
 
             <div className="mt-6 flex flex-wrap gap-2">
-              {work.project.stack.map((s) => (
+              {work.project.stack.map((s, i) => (
                 <span
                   key={s}
-                  className="rounded-[3px] border border-rule px-2.5 py-1 text-[14px] text-body"
+                  data-reveal
+                  className="reveal rounded-[3px] border border-rule px-2.5 py-1 text-[14px] text-body"
+                  style={{ "--d": `${i * 40}ms` } as React.CSSProperties}
                 >
                   {s}
                 </span>
@@ -217,7 +227,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href={`/${lang}/projects/trading-sim`}
-                className="inline-flex items-center rounded-[3px] bg-ink px-4 py-2.5 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90"
+                className="lift inline-flex items-center rounded-[3px] bg-ink px-4 py-2.5 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90"
               >
                 {work.project.liveCta}
               </Link>
@@ -225,7 +235,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 href={TRADING_SIM_REPO}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center rounded-[3px] border border-rule px-4 py-2.5 text-[14px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
+                className="lift inline-flex items-center rounded-[3px] border border-rule px-4 py-2.5 text-[14px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
               >
                 {work.project.repoCta}
               </a>
@@ -247,8 +257,13 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               {work.capabilitiesTitle}
             </h3>
             <dl className="mt-4 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
-              {work.capabilities.map((c) => (
-                <div key={c.name} className="border-t border-rule py-3">
+              {work.capabilities.map((c, i) => (
+                <div
+                  key={c.name}
+                  data-reveal
+                  className="reveal border-t border-rule py-3"
+                  style={{ "--d": `${i * 60}ms` } as React.CSSProperties}
+                >
                   <dt className="text-[14.5px] font-semibold text-ink">{c.name}</dt>
                   <dd className="mt-0.5 text-[14px] leading-[1.55] text-body">{c.detail}</dd>
                 </div>
@@ -277,10 +292,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </div>
 
             <ol className="mt-7">
-              {track.rows.map((r) => (
+              {track.rows.map((r, i) => (
                 <li
                   key={r.title}
-                  className="border-t border-rule py-5 first:border-t-2 first:border-ink"
+                  data-reveal
+                  className="reveal border-t border-rule py-5 first:border-t-2 first:border-ink"
+                  style={{ "--d": `${i * 90}ms` } as React.CSSProperties}
                 >
                   <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
                     <h3 className="font-display text-[16.5px] font-semibold text-ink">{r.title}</h3>
@@ -301,8 +318,13 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <p className="mt-2 max-w-[46ch] text-[14px] leading-[1.6] text-body">{toolkit.note}</p>
 
             <dl className="mt-6">
-              {toolkit.rows.map((r) => (
-                <div key={r.name} className="border-t border-rule py-3">
+              {toolkit.rows.map((r, ri) => (
+                <div
+                  key={r.name}
+                  data-reveal
+                  className="reveal border-t border-rule py-3"
+                  style={{ "--d": `${ri * 70}ms` } as React.CSSProperties}
+                >
                   <div className="flex items-baseline justify-between gap-4">
                     <dt className="text-[14.5px] font-medium text-ink">{r.name}</dt>
                     <dd className="font-figure text-[19px] leading-none text-cold">
@@ -314,7 +336,10 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                     {Array.from({ length: 10 }, (_, i) => (
                       <span
                         key={i}
-                        className={`h-[6px] flex-1 rounded-[1px] ${i < r.level ? "bg-cold" : "bg-rule"}`}
+                        className={`h-[6px] flex-1 rounded-[1px] ${
+                          i < r.level ? "bar-in bg-cold" : "bg-rule"
+                        }`}
+                        style={{ "--d": `${ri * 70 + i * 55}ms` } as React.CSSProperties}
                       />
                     ))}
                   </div>
@@ -332,8 +357,13 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             {disclosures.title}
           </h2>
           <dl className="mt-5 grid gap-x-12 gap-y-5 sm:grid-cols-2">
-            {disclosures.items.map((d) => (
-              <div key={d.term}>
+            {disclosures.items.map((d, i) => (
+              <div
+                key={d.term}
+                data-reveal
+                className="reveal"
+                style={{ "--d": `${i * 70}ms` } as React.CSSProperties}
+              >
                 <dt className="text-[14px] font-semibold text-ink">{d.term}</dt>
                 <dd className="mt-1 max-w-[58ch] text-[14px] leading-[1.65] text-body">{d.text}</dd>
               </div>
@@ -345,7 +375,10 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       {/* ===================== CONTACT ===================== */}
       <section id="contact" className="scroll-mt-16 border-t-2 border-warm py-16">
         <div className={WRAP}>
-          <h2 className="max-w-[24ch] text-balance font-display text-[clamp(24px,3.2vw,34px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink">
+          <h2
+            data-reveal
+            className="reveal max-w-[24ch] text-balance font-display text-[clamp(24px,3.2vw,34px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink"
+          >
             {contact.title}
           </h2>
           <p className="mt-3.5 max-w-[62ch] text-[15.5px] leading-[1.7]">{contact.body}</p>
@@ -353,7 +386,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a
               href={`mailto:${dict.profile.email}`}
-              className="inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
+              className="lift inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
             >
               {contact.email}
             </a>

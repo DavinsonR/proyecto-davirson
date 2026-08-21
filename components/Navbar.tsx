@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Dictionary, Locale } from "@/lib/dictionaries";
 import ThemeToggle from "@/components/ThemeToggle";
+import { ReadingProgress } from "@/components/Motion";
 
 export default function Navbar({ dict, lang }: { dict: Dictionary; lang: Locale }) {
   const pathname = usePathname();
@@ -23,7 +24,13 @@ export default function Navbar({ dict, lang }: { dict: Dictionary; lang: Locale 
 
         <div className="hidden items-center gap-7 text-[14px] font-medium text-body md:flex">
           {dict.nav.links.map((l) => (
-            <Link key={l.label} href={resolve(l.href)} className="transition-colors hover:text-cold">
+            <Link
+              key={l.label}
+              href={resolve(l.href)}
+              /* the rule under a link is drawn on approach, the way a reader
+                 underlines a line in a printed sheet — no colour wash, no glow */
+              className="relative py-1 transition-colors hover:text-cold after:absolute after:inset-x-0 after:-bottom-px after:h-[1.5px] after:origin-left after:scale-x-0 after:bg-cold after:transition-transform after:duration-300 hover:after:scale-x-100"
+            >
               {l.label}
             </Link>
           ))}
@@ -36,7 +43,7 @@ export default function Navbar({ dict, lang }: { dict: Dictionary; lang: Locale 
             href={switchHref}
             title={dict.nav.switchTitle}
             aria-label={dict.nav.switchTitle}
-            className="inline-flex h-9 items-center rounded-[3px] border border-coldline bg-coldsoft px-3 font-display text-[14px] font-semibold tracking-[0.06em] text-cold transition-colors hover:border-cold"
+            className="lift inline-flex h-9 items-center rounded-[3px] border border-coldline bg-coldsoft px-3 font-display text-[14px] font-semibold tracking-[0.06em] text-cold transition-colors hover:border-cold"
           >
             {dict.nav.switchLabel}
           </Link>
@@ -45,12 +52,14 @@ export default function Navbar({ dict, lang }: { dict: Dictionary; lang: Locale 
 
           <a
             href={`mailto:${dict.profile.email}`}
-            className="hidden h-9 items-center rounded-[3px] bg-cold px-4 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90 sm:inline-flex"
+            className="lift hidden h-9 items-center rounded-[3px] bg-cold px-4 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90 sm:inline-flex"
           >
             {dict.nav.contact}
           </a>
         </div>
       </div>
+
+      <ReadingProgress />
     </nav>
   );
 }

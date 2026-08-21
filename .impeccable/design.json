@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-20T00:00:00Z",
+  "generatedAt": "2026-08-21T00:00:00Z",
   "title": "Design System: Davirson Novoa — Research Tear Sheet",
   "extensions": {
     "colorMeta": {
@@ -9,35 +9,80 @@
         "displayName": "Sheet Paper",
         "canonical": "#ffffff",
         "darkValue": "#0e1216",
-        "tonalRamp": ["#0e1216", "#161c22", "#1d242b", "#39424b", "#626c76", "#a8b1ba", "#d8dde3", "#ffffff"]
+        "tonalRamp": [
+          "#0e1216",
+          "#161c22",
+          "#1d242b",
+          "#39424b",
+          "#626c76",
+          "#a8b1ba",
+          "#d8dde3",
+          "#ffffff"
+        ]
       },
       "band": {
         "role": "neutral",
         "displayName": "Neutral Band",
         "canonical": "#f4f6f8",
         "darkValue": "#161c22",
-        "tonalRamp": ["#12171c", "#1d242b", "#2b333c", "#454e57", "#626c76", "#a8b1ba", "#e9edf1", "#f4f6f8"]
+        "tonalRamp": [
+          "#12171c",
+          "#1d242b",
+          "#2b333c",
+          "#454e57",
+          "#626c76",
+          "#a8b1ba",
+          "#e9edf1",
+          "#f4f6f8"
+        ]
       },
       "band2": {
         "role": "neutral",
         "displayName": "Deep Band",
         "canonical": "#e9edf1",
         "darkValue": "#1d242b",
-        "tonalRamp": ["#12171c", "#1d242b", "#2b333c", "#454e57", "#626c76", "#a8b1ba", "#d8dde3", "#e9edf1"]
+        "tonalRamp": [
+          "#12171c",
+          "#1d242b",
+          "#2b333c",
+          "#454e57",
+          "#626c76",
+          "#a8b1ba",
+          "#d8dde3",
+          "#e9edf1"
+        ]
       },
       "rule": {
         "role": "neutral",
         "displayName": "Hairline",
         "canonical": "#d8dde3",
         "darkValue": "#29323b",
-        "tonalRamp": ["#12171c", "#1e252c", "#29323b", "#454e57", "#626c76", "#9aa4ad", "#d8dde3", "#eef1f4"]
+        "tonalRamp": [
+          "#12171c",
+          "#1e252c",
+          "#29323b",
+          "#454e57",
+          "#626c76",
+          "#9aa4ad",
+          "#d8dde3",
+          "#eef1f4"
+        ]
       },
       "rulesoft": {
         "role": "neutral",
         "displayName": "Soft Hairline",
         "canonical": "#e8ecf0",
         "darkValue": "#1e252c",
-        "tonalRamp": ["#12171c", "#1e252c", "#29323b", "#454e57", "#7b858f", "#b6bfc7", "#e8ecf0", "#f7f9fb"]
+        "tonalRamp": [
+          "#12171c",
+          "#1e252c",
+          "#29323b",
+          "#454e57",
+          "#7b858f",
+          "#b6bfc7",
+          "#e8ecf0",
+          "#f7f9fb"
+        ]
       },
       "ink": {
         "role": "neutral",
@@ -45,7 +90,16 @@
         "canonical": "#14181d",
         "darkValue": "#eef2f6",
         "contrastOnPaper": "15.8:1",
-        "tonalRamp": ["#14181d", "#232a31", "#333c45", "#454e57", "#626c76", "#9aa4ad", "#cfd6dd", "#eef2f6"]
+        "tonalRamp": [
+          "#14181d",
+          "#232a31",
+          "#333c45",
+          "#454e57",
+          "#626c76",
+          "#9aa4ad",
+          "#cfd6dd",
+          "#eef2f6"
+        ]
       },
       "body": {
         "role": "neutral",
@@ -53,7 +107,16 @@
         "canonical": "#454e57",
         "darkValue": "#b3bcc5",
         "contrastOnPaper": "8.4:1",
-        "tonalRamp": ["#14181d", "#242b32", "#343d45", "#454e57", "#626c76", "#8b959f", "#b3bcc5", "#e2e7eb"]
+        "tonalRamp": [
+          "#14181d",
+          "#242b32",
+          "#343d45",
+          "#454e57",
+          "#626c76",
+          "#8b959f",
+          "#b3bcc5",
+          "#e2e7eb"
+        ]
       },
       "muted": {
         "role": "neutral",
@@ -61,7 +124,16 @@
         "canonical": "#626c76",
         "darkValue": "#8b959f",
         "contrastOnPaper": "5.4:1",
-        "tonalRamp": ["#181c21", "#282f36", "#3a434b", "#4e5861", "#626c76", "#8b959f", "#b5bec6", "#e3e7ea"]
+        "tonalRamp": [
+          "#181c21",
+          "#282f36",
+          "#3a434b",
+          "#4e5861",
+          "#626c76",
+          "#8b959f",
+          "#b5bec6",
+          "#e3e7ea"
+        ]
       },
       "cold": {
         "role": "primary",
@@ -69,21 +141,48 @@
         "canonical": "#0f4c81",
         "darkValue": "#74b0e4",
         "contrastOnPaper": "8.1:1",
-        "tonalRamp": ["#06192b", "#0a2f4f", "#0f4c81", "#166ab3", "#2f8ada", "#5da5e5", "#9cc7ef", "#e6eef7"]
+        "tonalRamp": [
+          "#06192b",
+          "#0a2f4f",
+          "#0f4c81",
+          "#166ab3",
+          "#2f8ada",
+          "#5da5e5",
+          "#9cc7ef",
+          "#e6eef7"
+        ]
       },
       "coldsoft": {
         "role": "primary",
         "displayName": "Blue Wash",
         "canonical": "#e6eef7",
         "darkValue": "#14212e",
-        "tonalRamp": ["#0a1520", "#14212e", "#1e3345", "#2b455f", "#4a7ba8", "#89b6dd", "#b9cfe4", "#e6eef7"]
+        "tonalRamp": [
+          "#0a1520",
+          "#14212e",
+          "#1e3345",
+          "#2b455f",
+          "#4a7ba8",
+          "#89b6dd",
+          "#b9cfe4",
+          "#e6eef7"
+        ]
       },
       "coldline": {
         "role": "primary",
         "displayName": "Blue Hairline",
         "canonical": "#b9cfe4",
         "darkValue": "#2b455f",
-        "tonalRamp": ["#0a1520", "#14212e", "#1e3345", "#2b455f", "#4a7ba8", "#89b6dd", "#b9cfe4", "#e6eef7"]
+        "tonalRamp": [
+          "#0a1520",
+          "#14212e",
+          "#1e3345",
+          "#2b455f",
+          "#4a7ba8",
+          "#89b6dd",
+          "#b9cfe4",
+          "#e6eef7"
+        ]
       },
       "warm": {
         "role": "secondary",
@@ -91,14 +190,32 @@
         "canonical": "#96551a",
         "darkValue": "#d9a05b",
         "contrastOnPaper": "6.0:1",
-        "tonalRamp": ["#2b1809", "#4a2a0d", "#6b3c13", "#96551a", "#c07128", "#d9a05b", "#ecc79a", "#f7efe5"]
+        "tonalRamp": [
+          "#2b1809",
+          "#4a2a0d",
+          "#6b3c13",
+          "#96551a",
+          "#c07128",
+          "#d9a05b",
+          "#ecc79a",
+          "#f7efe5"
+        ]
       },
       "warmsoft": {
         "role": "secondary",
         "displayName": "Amber Wash",
         "canonical": "#f7efe5",
         "darkValue": "#241c12",
-        "tonalRamp": ["#181208", "#241c12", "#3a2c18", "#6b3c13", "#96551a", "#d9a05b", "#ecc79a", "#f7efe5"]
+        "tonalRamp": [
+          "#181208",
+          "#241c12",
+          "#3a2c18",
+          "#6b3c13",
+          "#96551a",
+          "#d9a05b",
+          "#ecc79a",
+          "#f7efe5"
+        ]
       },
       "pos": {
         "role": "tertiary",
@@ -106,33 +223,87 @@
         "canonical": "#1a6b48",
         "darkValue": "#4bbd8a",
         "aliasOf": "live",
-        "tonalRamp": ["#07200f", "#0d3a24", "#134f34", "#1a6b48", "#25925f", "#4bbd8a", "#8ad9b6", "#dcf3e8"]
+        "tonalRamp": [
+          "#07200f",
+          "#0d3a24",
+          "#134f34",
+          "#1a6b48",
+          "#25925f",
+          "#4bbd8a",
+          "#8ad9b6",
+          "#dcf3e8"
+        ]
       },
       "neg": {
         "role": "tertiary",
         "displayName": "Verdict Red",
         "canonical": "#9c2b2b",
         "darkValue": "#e07070",
-        "tonalRamp": ["#2a0b0b", "#4a1414", "#6d1f1f", "#9c2b2b", "#c44343", "#e07070", "#efa8a8", "#fae4e4"]
+        "tonalRamp": [
+          "#2a0b0b",
+          "#4a1414",
+          "#6d1f1f",
+          "#9c2b2b",
+          "#c44343",
+          "#e07070",
+          "#efa8a8",
+          "#fae4e4"
+        ]
       },
       "building": {
         "role": "tertiary",
         "displayName": "Caution Ochre",
         "canonical": "#8a6a10",
         "darkValue": "#d9b45b",
-        "tonalRamp": ["#241b04", "#3d2e07", "#5e480b", "#8a6a10", "#b28c1c", "#d9b45b", "#ebd497", "#f8f0da"]
+        "tonalRamp": [
+          "#241b04",
+          "#3d2e07",
+          "#5e480b",
+          "#8a6a10",
+          "#b28c1c",
+          "#d9b45b",
+          "#ebd497",
+          "#f8f0da"
+        ]
       }
     },
     "typographyMeta": {
-      "display": { "displayName": "Sheet Name", "purpose": "The candidate name at the top of the document. Once per surface." },
-      "verdict": { "displayName": "Verdict", "purpose": "What this asset is, stated once, large, in Source Serif 4 and institutional blue." },
-      "figure": { "displayName": "Figure", "purpose": "Large tabular numbers in the figures band and anywhere a number is set large." },
-      "headline": { "displayName": "Section Headline", "purpose": "Section titles across all surfaces." },
-      "lede": { "displayName": "Thesis Lede", "purpose": "The single balanced thesis line under the name; capped at 40ch." },
-      "title": { "displayName": "Row Title", "purpose": "Article and row headings inside a section." },
-      "body": { "displayName": "Body", "purpose": "Running prose at 15-15.5px, capped 62-70ch." },
-      "bodySmall": { "displayName": "Dense Body", "purpose": "Dense rows, capability details, availability block, footer. The 14px floor." },
-      "label": { "displayName": "Field Label", "purpose": "Tracked-caps metadata: classification line, field labels, band labels. Never a sentence." }
+      "display": {
+        "displayName": "Sheet Name",
+        "purpose": "The candidate name at the top of the document. Once per surface."
+      },
+      "verdict": {
+        "displayName": "Verdict",
+        "purpose": "What this asset is, stated once, large, in Source Serif 4 and institutional blue."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Large tabular numbers in the figures band and anywhere a number is set large."
+      },
+      "headline": {
+        "displayName": "Section Headline",
+        "purpose": "Section titles across all surfaces."
+      },
+      "lede": {
+        "displayName": "Thesis Lede",
+        "purpose": "The single balanced thesis line under the name; capped at 40ch."
+      },
+      "title": {
+        "displayName": "Row Title",
+        "purpose": "Article and row headings inside a section."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running prose at 15-15.5px, capped 62-70ch."
+      },
+      "bodySmall": {
+        "displayName": "Dense Body",
+        "purpose": "Dense rows, capability details, availability block, footer. The 14px floor."
+      },
+      "label": {
+        "displayName": "Field Label",
+        "purpose": "Tracked-caps metadata: classification line, field labels, band labels. Never a sentence."
+      }
     },
     "shadows": [],
     "motion": [
@@ -158,11 +329,26 @@
       }
     ],
     "breakpoints": [
-      { "name": "sm", "value": "640px" },
-      { "name": "md", "value": "768px" },
-      { "name": "lg", "value": "1024px" },
-      { "name": "container", "value": "1080px" },
-      { "name": "container-cv", "value": "980px" }
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "container",
+        "value": "1080px"
+      },
+      {
+        "name": "container-cv",
+        "value": "980px"
+      }
     ]
   },
   "components": [
@@ -257,19 +443,74 @@
       "Two faces: Archivo everywhere, Source Serif 4 for large figures and the verdict",
       "Tabular figures at the body level; every number aligns",
       "Zero shadows, zero cards, 3px radius on controls and nothing else",
-      "One authored motion moment, disabled entirely under reduced-motion"
+      "Motion in the register of print — rules drawn, rows settled, figures counted — readable at rest, on paper, and under reduced-motion"
     ],
     "rules": [
-      { "name": "The Amber Reservation Rule", "body": "Amber marks human and purpose content only: availability, hiring, the career-transition passage. Every data point, metric, and technical claim wears institutional blue or ink. This rule is binding, it predates the redesign, and getting it backwards was a live review finding — an amber number is a bug.", "section": "colors" },
-      { "name": "The Two-Voice Rule", "body": "A surface has exactly two accents. If a new state needs a color, it takes one of the four verdict/status hues (pos, neg, live, building) — it does not invent a third accent.", "section": "colors" },
-      { "name": "The Re-Stepped Dark Rule", "body": "The dark theme is authored against #0e1216 with its own ink ramp and its own accent steps (blue lightens to #74b0e4, amber to #d9a05b). Never derive dark by inverting or filtering the light values; each step is chosen for contrast on its own ground.", "section": "colors" },
-      { "name": "The Band, Not the Box Rule", "body": "A region is set apart by a full-bleed tint (coldsoft, warmsoft, band) capped with a 1–2px rule. It is never set apart by a bordered, rounded, floating container.", "section": "colors" },
-      { "name": "The 14px Floor Rule", "body": "No prose is set below 14px. This answered a real accessibility complaint. The 12–12.5px step exists only for tracked-caps metadata labels — never for a sentence a reader has to read.", "section": "typography" },
-      { "name": "The Serif-Is-A-Figure Rule", "body": "Source Serif 4 appears only on numbers set large and on the single verdict line. A serif paragraph, a serif heading, or a serif button does not exist in this system.", "section": "typography" },
-      { "name": "The Tabular Everywhere Rule", "body": "font-variant-numeric: tabular-nums with \"tnum\" 1, \"cv05\" 1 is wired at the body. Numbers align in columns across the whole document by default; nothing opts out.", "section": "typography" },
-      { "name": "The Label-Is-A-Field Rule", "body": "Tracked caps label a field, a band, or the document itself (the classification line, which is native to the form). They do not sit above a headline as a decorative kicker.", "section": "typography" },
-      { "name": "The Flat Sheet Rule", "body": "No shadow, no glow, no gradient, no elevation of any kind. If a region needs to separate, it takes a rule or a band. A drop shadow anywhere in this system is a defect.", "section": "elevation" },
-      { "name": "The Rule-Weight Rule", "body": "1px rulesoft divides metadata; 1px rule divides content rows; 2px in ink, cold, or warm opens a major band and declares its voice.", "section": "elevation" }
+      {
+        "name": "The Amber Reservation Rule",
+        "body": "Amber marks human and purpose content only: availability, hiring, the career-transition passage. Every data point, metric, and technical claim wears institutional blue or ink. This rule is binding, it predates the redesign, and getting it backwards was a live review finding — an amber number is a bug.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two-Voice Rule",
+        "body": "A surface has exactly two accents. If a new state needs a color, it takes one of the four verdict/status hues (pos, neg, live, building) — it does not invent a third accent.",
+        "section": "colors"
+      },
+      {
+        "name": "The Re-Stepped Dark Rule",
+        "body": "The dark theme is authored against #0e1216 with its own ink ramp and its own accent steps (blue lightens to #74b0e4, amber to #d9a05b). Never derive dark by inverting or filtering the light values; each step is chosen for contrast on its own ground.",
+        "section": "colors"
+      },
+      {
+        "name": "The Band, Not the Box Rule",
+        "body": "A region is set apart by a full-bleed tint (coldsoft, warmsoft, band) capped with a 1–2px rule. It is never set apart by a bordered, rounded, floating container.",
+        "section": "colors"
+      },
+      {
+        "name": "The 14px Floor Rule",
+        "body": "No prose is set below 14px. This answered a real accessibility complaint. The 12–12.5px step exists only for tracked-caps metadata labels — never for a sentence a reader has to read.",
+        "section": "typography"
+      },
+      {
+        "name": "The Serif-Is-A-Figure Rule",
+        "body": "Source Serif 4 appears only on numbers set large and on the single verdict line. A serif paragraph, a serif heading, or a serif button does not exist in this system.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Everywhere Rule",
+        "body": "font-variant-numeric: tabular-nums with \"tnum\" 1, \"cv05\" 1 is wired at the body. Numbers align in columns across the whole document by default; nothing opts out.",
+        "section": "typography"
+      },
+      {
+        "name": "The Label-Is-A-Field Rule",
+        "body": "Tracked caps label a field, a band, or the document itself (the classification line, which is native to the form). They do not sit above a headline as a decorative kicker.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Sheet Rule",
+        "body": "No shadow, no glow, no gradient, no elevation of any kind. If a region needs to separate, it takes a rule or a band. A drop shadow anywhere in this system is a defect.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Rule-Weight Rule",
+        "body": "1px rulesoft divides metadata; 1px rule divides content rows; 2px in ink, cold, or warm opens a major band and declares its voice.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Print-Register Motion Rule",
+        "body": "Everything that moves does something a printed sheet does: a rule is drawn across the page (scaleX from the left), a row settles into place, an indicator segment fills, a figure is counted to its reading. Nothing bounces, parallaxes, or scales under the pointer; hover is worth one pixel of lift and a hairline of colour. Stagger follows reading order and is carried by a --d custom property so server components can set it without becoming client components.",
+        "section": "motion"
+      },
+      {
+        "name": "The Nothing-Hides-Behind-Motion Rule",
+        "body": "A reveal state may never be the only thing between a reader and the content. Hidden states are scoped to .js and set pre-paint, so a reader without JavaScript never meets an invisible page; a 3-second boot timer reveals everything if the bundle never runs; and @media print forces every reveal visible, because paper has no scroll and nothing would ever intersect. A sheet that prints blank is a defect, not an effect.",
+        "section": "motion"
+      },
+      {
+        "name": "The One-Scale Rule",
+        "body": "The self-assessment is declared once and read everywhere. The front page and the CV render the same rows at the same levels; a second, lower version of the same scale further down the site reads to a screener as a self-declared downgrade on the page whose job is to prevent one.",
+        "section": "components"
+      }
     ],
     "dos": [
       "Do carry structure with hairline rules (1px rule/rulesoft) and full-bleed bands, and open a major band with a 2px rule in ink, cold, or warm.",
@@ -279,7 +520,8 @@
       "Do author the dark theme against its own ground (#0e1216) with re-chosen steps, and keep light as the default reading state.",
       "Do link every figure to the artifact that proves it.",
       "Do state a claim once, large, and let the band below verify it.",
-      "Do keep motion to the single .settle stagger on a document header and disable it fully under reduced-motion."
+      "Do keep motion to the single .settle stagger on a document header and disable it fully under reduced-motion.",
+      "Do keep motion in the print register — draw a rule, settle a row, count a figure — and make every animated element readable at rest, in print, and under reduced-motion."
     ],
     "donts": [
       "Don't add a shadow, glow, or gradient. The system is flat; a box-shadow here is a defect.",
@@ -291,7 +533,9 @@
       "Don't derive the dark theme by inverting or filtering light values.",
       "Don't hide a control behind a bare dim glyph where a short label would work — the language switch is labelled for exactly this reason.",
       "Don't round a band, row, or block; radius belongs to controls (3px) and to the two elements whose meaning is round.",
-      "Don't use an icon font, emoji, or a third-party icon package; icons are inline SVG at a 1.3px stroke on a 16px box."
+      "Don't use an icon font, emoji, or a third-party icon package; icons are inline SVG at a 1.3px stroke on a 16px box.",
+      "Don't let a reveal state be the only thing standing between a reader and the content: if it can't be seen without JS, without motion, or on paper, it is a defect.",
+      "Don't publish a self-assessment on one surface and a lower one on another; the skill scale is declared once and both surfaces read the same rows."
     ]
   }
 }

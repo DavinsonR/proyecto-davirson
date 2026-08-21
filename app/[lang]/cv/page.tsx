@@ -1,123 +1,196 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import { getDictionary } from "@/lib/dictionaries";
 import StatusPill from "@/components/StatusPill";
-import ProgressBar from "@/components/ProgressBar";
+import CountUp from "@/components/CountUp";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   const dict = getDictionary(lang);
-  return { title: `${dict.cv.title} — CV`, description: dict.cv.profileText.slice(0, 150) };
+  return {
+    title: `${dict.cv.title} — ${dict.cv.targets[0]}`,
+    description: dict.cv.profileText.slice(0, 155),
+  };
 }
+
+const d = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 
 export default async function CvPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   const dict = getDictionary(lang);
   const cv = dict.cv;
-  const wrap = "max-w-[980px] mx-auto px-6";
-  const label = "mb-6 text-[12.5px] font-semibold tracking-[0.09em] uppercase text-muted";
+  const wrap = "mx-auto max-w-[980px] px-6";
+  const label = "text-[12.5px] font-semibold tracking-[0.09em] uppercase text-muted";
+  const chip = "rounded-[3px] border border-rule bg-band px-2.5 py-1 text-[14px] text-body";
 
   return (
     <main>
-      {/* ===== HEADER — los 30 segundos ===== */}
-      <header className="pt-20 pb-12">
+      {/* ===== HEADER — the title mapping is the headline, not a subtitle ===== */}
+      <header className="border-b border-rule">
         <div className={wrap}>
-          <h1 className="font-display text-[clamp(30px,4.6vw,46px)] font-medium tracking-[-0.02em] text-ink">{cv.title}</h1>
-          <p className="font-display text-[17px] text-cold mt-2">{cv.subtitle}</p>
-          <p className="text-[14px] text-body mt-3">{cv.metaLine}</p>
-          <div className="mt-8 flex flex-wrap gap-3.5">
-            <a href={cv.downloadHref} className="text-[14px] px-5 py-3 rounded-[3px] bg-cold text-paper font-semibold hover:opacity-90 transition-opacity">
-              {cv.download}
-            </a>
-            <a href={`mailto:${dict.profile.email}`} className="text-[14px] px-5 py-3 rounded-[3px] border border-rule text-ink hover:border-cold transition-colors">
-              {cv.contactBtn}
-            </a>
+          <div className="settle flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-rulesoft py-3 text-[12.5px] tracking-[0.08em] text-muted uppercase">
+            <span className="font-semibold text-cold">{cv.targetsLabel}</span>
+            <span>{dict.sheet.asOf}</span>
           </div>
-          {/* quick facts */}
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-            {cv.facts.map((f) => (
-              <div key={f.label} className="border-t border-rule pt-5">
-                <p className="font-display text-[24px] font-semibold text-ink">{f.value}</p>
-                <p className="text-[14px] mt-1 leading-[1.5]">{f.label}</p>
-              </div>
-            ))}
+
+          <div className="pt-10 pb-11">
+            <h1 className="settle font-display text-[clamp(27px,3.6vw,38px)] leading-[1.1] font-extrabold tracking-[-0.03em] text-ink">
+              {cv.title}
+            </h1>
+
+            {/* the three names a posting gives the same role, set as the verdict */}
+            <p
+              className="settle mt-3 font-figure text-[clamp(22px,3.1vw,32px)] leading-[1.15] text-cold"
+              style={d(60)}
+            >
+              {cv.targets.map((t, i) => (
+                <span key={t}>
+                  {i > 0 && <span className="text-muted"> · </span>}
+                  {t}
+                </span>
+              ))}
+            </p>
+
+            <p
+              className="settle mt-4 max-w-[62ch] text-[15.5px] leading-[1.7] text-ink"
+              style={d(120)}
+            >
+              {cv.subtitle}
+            </p>
+            <p className="settle mt-2 text-[14px] text-muted" style={d(160)}>
+              {cv.metaLine}
+            </p>
+
+            <div className="settle mt-8 flex flex-wrap items-center gap-3" style={d(220)}>
+              <a
+                href={cv.downloadHref}
+                download
+                className="lift inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
+              >
+                {cv.download}
+              </a>
+              <a
+                href={cv.latexHref}
+                download
+                title={cv.latexNote}
+                className="lift inline-flex items-center rounded-[3px] border border-rule px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
+              >
+                {cv.latex}
+              </a>
+              <a
+                href={`mailto:${dict.profile.email}`}
+                className="px-1 py-3 text-[14.5px] font-medium text-cold hover:underline"
+              >
+                {cv.contactBtn}
+              </a>
+            </div>
+            <p className="settle mt-2.5 text-[14px] text-muted" style={d(260)}>
+              {cv.latexNote}
+            </p>
+          </div>
+        </div>
+
+        {/* figures band — the same instrument as the front page */}
+        <div className="border-t-2 border-cold bg-coldsoft">
+          <div className={wrap}>
+            <dl className="grid grid-cols-2 py-6 lg:grid-cols-4">
+              {cv.facts.map((f, i) => (
+                <div
+                  key={f.label}
+                  data-reveal
+                  className="reveal border-coldline py-2 lg:border-l lg:pl-5 lg:first:border-l-0 lg:first:pl-0"
+                  style={d(i * 70)}
+                >
+                  <dd className="font-figure text-[clamp(28px,3.8vw,40px)] leading-none text-ink">
+                    <CountUp value={f.value} lang={lang} />
+                  </dd>
+                  <dt className="mt-2 max-w-[26ch] text-[14px] leading-[1.4] font-medium text-ink">
+                    {f.label}
+                  </dt>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
       </header>
 
-      {/* ===== PERFIL ===== */}
-      <section className="py-14 border-t border-rulesoft">
+      {/* ===== PROFILE ===== */}
+      <section className="border-b border-rule py-14">
         <div className={wrap}>
-          <h2 className={label}>{cv.profileLabel}</h2>
-          <p className="text-[16px] leading-[1.85] max-w-[720px] text-body">{cv.profileText}</p>
+          <h2 data-reveal className={`reveal ${label}`}>
+            {cv.profileLabel}
+          </h2>
+          <p
+            data-reveal
+            className="reveal mt-5 max-w-[74ch] text-[16px] leading-[1.8] text-body"
+            style={d(70)}
+          >
+            {cv.profileText}
+          </p>
         </div>
       </section>
 
-      {/* ===== HABILIDADES ===== */}
-      <section className="py-14 border-t border-rulesoft">
+      {/* ===== THE CROSSOVER — amber, because this is the human argument ===== */}
+      <section className="border-b border-rule py-14">
         <div className={wrap}>
-          <h2 className={label}>{cv.skillsLabel}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="border-t border-rule pt-5">
-              <h3 className="font-display text-[18px] font-medium text-ink mb-1.5">{cv.skillsFinTitle}</h3>
-              <p className="text-[14px] mb-5">{cv.skillsFinDesc}</p>
-              <div className="flex flex-wrap gap-2">
-                {cv.skillsFin.map((s) => (
-                  <span key={s} className="rounded-[3px] border border-rule bg-band px-3 py-1.5 text-[14px] text-body">{s}</span>
-                ))}
-              </div>
-            </div>
-            <div className="border-t border-rule pt-5">
-              <h3 className="font-display text-[18px] font-medium text-ink mb-1.5">{cv.skillsTechTitle}</h3>
-              <p className="text-[14px] mb-5">{cv.skillsTechDesc}</p>
-              <div className="flex flex-col gap-4">
-                {cv.skillsTech.map((s) => (
-                  <div key={s.name}>
-                    <div className="flex justify-between items-baseline gap-3">
-                      <span className="text-[14px] text-ink">{s.name}</span>
-                      <span className="text-[14px] text-muted whitespace-nowrap">{s.note}</span>
-                    </div>
-                    <div className="mt-1.5 h-[3px] rounded-sm bg-rule overflow-hidden">
-                      <i className="block h-full rounded-sm bg-cold" style={{ width: `${s.level}%` }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div data-reveal className="reveal relative bg-warmsoft px-6 py-7">
+            <span aria-hidden="true" className="rule-in absolute inset-x-0 top-0 h-[2px] bg-warm" />
+            <p className={`${label} text-warm`}>{cv.pivot.label}</p>
+            <p className="mt-4 max-w-[76ch] text-[15.5px] leading-[1.85] text-ink">
+              {cv.pivot.body}
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ===== EXPERIENCIA ===== */}
-      <section className="py-14 border-t border-rulesoft">
+      {/* ===== EXPERIENCE ===== */}
+      <section className="border-b border-rule py-14">
         <div className={wrap}>
-          <h2 className={label}>{cv.expLabel}</h2>
-          <div className="flex flex-col gap-5">
-            {cv.experience.map((company) => (
-              <div key={company.company} className="border-t border-rule pt-5">
-                <div className="flex flex-wrap items-baseline justify-between gap-2 mb-1">
-                  <h3 className="font-display text-[19px] font-medium text-ink">{company.company}</h3>
+          <h2 data-reveal className={`reveal ${label}`}>
+            {cv.expLabel}
+          </h2>
+          <div className="mt-6">
+            {cv.experience.map((company, ci) => (
+              <div
+                key={company.company}
+                data-reveal
+                className="reveal border-t border-rule py-6 first:border-t-2 first:border-ink"
+                style={d(ci * 80)}
+              >
+                <div className="mb-1 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                  <h3 className="font-display text-[18px] font-semibold text-ink">
+                    {company.company}
+                  </h3>
+                  {/* "Remote · remote" is noise: when the seat already is the
+                      mode, it is stated once. */}
                   <span className="text-[14px] text-muted">
-                    {company.location} ·{" "}
+                    {company.location.toLowerCase() !==
+                      (company.mode === "remote" ? cv.remoteTag : cv.hybridTag).toLowerCase() && (
+                      <>{company.location} · </>
+                    )}
                     <span className={company.mode === "remote" ? "text-live" : "text-building"}>
                       {company.mode === "remote" ? cv.remoteTag : cv.hybridTag}
                     </span>
                   </span>
                 </div>
                 {"note" in company && company.note ? (
-                  <p className="text-[14px] text-cold mb-4">{company.note}</p>
+                  <p className="mb-4 text-[14px] text-cold">{company.note}</p>
                 ) : (
-                  <div className="mb-4" />
+                  <div className="mb-3" />
                 )}
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-5">
                   {company.roles.map((role) => (
                     <div key={role.title} className="border-l border-rule pl-5">
-                      <div className="flex flex-wrap items-baseline justify-between gap-2">
-                        <h4 className="text-[15.5px] font-medium text-ink">{role.title}</h4>
+                      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                        <h4 className="text-[15.5px] font-semibold text-ink">{role.title}</h4>
                         <span className="text-[14px] text-muted">{role.period}</span>
                       </div>
                       <ul className="mt-2.5 flex flex-col gap-1.5">
                         {role.bullets.map((b, i) => (
-                          <li key={i} className="text-[14px] leading-[1.7] pl-4 relative before:content-['—'] before:absolute before:left-0 before:text-muted">
+                          <li
+                            key={i}
+                            className="relative pl-4 text-[14.5px] leading-[1.7] before:absolute before:left-0 before:text-muted before:content-['—']"
+                          >
                             {b}
                           </li>
                         ))}
@@ -131,80 +204,242 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
         </div>
       </section>
 
-      {/* ===== EL PIVOTE — bloque cálido ===== */}
-      <section className="py-14 border-t border-rulesoft">
+      {/* ===== PRODUCTION PROJECTS — the platforms, stated as work ===== */}
+      <section className="border-b border-rule py-14">
         <div className={wrap}>
-          <div className="border-t-2 border-warm pt-6">
-            <p className="text-[12.5px] tracking-[0.14em] uppercase text-warm mb-4">{cv.pivot.label}</p>
-            <p className="text-[15px] leading-[1.9] max-w-[760px]">{cv.pivot.body}</p>
+          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+            <h2 data-reveal className={`reveal ${label}`}>
+              {cv.projectsLabel}
+            </h2>
+            <p data-reveal className="reveal text-[14px] text-muted" style={d(60)}>
+              {cv.projectsNote}
+            </p>
           </div>
-        </div>
-      </section>
 
-      {/* ===== RECONOCIMIENTOS ===== */}
-      <section className="py-14 border-t border-rulesoft">
-        <div className={wrap}>
-          <h2 className={label}>{cv.awardsLabel}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {cv.awards.map((a) => (
-              <div key={a.title} className="border-t border-rule pt-5">
-                <div className="flex items-baseline justify-between gap-3">
-                  <h3 className="font-display text-[15.5px] font-medium text-ink">{a.title}</h3>
-                  <span className="text-[14px] text-muted">{a.year}</span>
-                </div>
-                <p className="text-[14px] leading-[1.6] mt-2">{a.desc}</p>
+          {cv.projects.map((pr, pi) => (
+            <article
+              key={pr.name}
+              data-reveal
+              className="reveal relative mt-6 pt-6"
+              style={d(pi * 80)}
+            >
+              <span aria-hidden="true" className="rule-in absolute inset-x-0 top-0 h-[2px] bg-ink" />
+              <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                <h3 className="font-display text-[19px] font-bold tracking-[-0.015em] text-ink">
+                  {pr.name}
+                </h3>
+                <span className="text-[14px] text-muted">{pr.period}</span>
               </div>
-            ))}
+              <p className="mt-1 text-[15px] text-body">{pr.role}</p>
+              <a
+                href={pr.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-1 inline-block text-[14px] font-medium text-cold hover:underline"
+              >
+                {pr.hrefLabel}
+              </a>
+
+              <ul className="mt-4 flex flex-col gap-1.5">
+                {pr.bullets.map((b, i) => (
+                  <li
+                    key={i}
+                    className="relative pl-4 text-[14.5px] leading-[1.7] before:absolute before:left-0 before:text-muted before:content-['—']"
+                  >
+                    {b}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                {pr.stack.map((t, i) => (
+                  <span key={t} data-reveal className={`reveal ${chip}`} style={d(i * 40)}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== SKILLS ===== */}
+      <section className="border-b border-rule py-14">
+        <div className={wrap}>
+          <h2 data-reveal className={`reveal ${label}`}>
+            {cv.skillsLabel}
+          </h2>
+
+          <div className="mt-6 grid gap-x-12 gap-y-8 lg:grid-cols-2">
+            <div data-reveal className="reveal">
+              <div className="border-t border-rule pt-5">
+                <h3 className="font-display text-[17px] font-semibold text-ink">
+                  {cv.skillsFinTitle}
+                </h3>
+                <p className="mt-1 mb-4 text-[14px] text-body">{cv.skillsFinDesc}</p>
+                <div className="flex flex-wrap gap-2">
+                  {cv.skillsFin.map((s, i) => (
+                    <span key={s} className={chip} style={d(i * 30)}>
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-8 border-t border-rule pt-5">
+                <h3 className="font-display text-[17px] font-semibold text-ink">
+                  {cv.skillsDataTitle}
+                </h3>
+                <p className="mt-1 mb-4 text-[14px] text-body">{cv.skillsDataDesc}</p>
+                <div className="flex flex-wrap gap-2">
+                  {cv.skillsData.map((s, i) => (
+                    <span
+                      key={s}
+                      className="rounded-[3px] border border-coldline bg-coldsoft px-2.5 py-1 text-[14px] text-cold"
+                      style={d(i * 30)}
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* declared level — one scale, the same one the front page shows */}
+            <div>
+              <div className="border-t border-rule pt-5">
+                <h3 className="font-display text-[17px] font-semibold text-ink">
+                  {cv.skillsTechTitle}
+                </h3>
+                <p className="mt-1 mb-5 max-w-[46ch] text-[14px] text-body">
+                  {cv.skillsTechDesc}
+                </p>
+              </div>
+              <dl>
+                {cv.skillsTech.map((s, ri) => (
+                  <div
+                    key={s.name}
+                    data-reveal
+                    className="reveal border-t border-rulesoft py-3"
+                    style={d(ri * 70)}
+                  >
+                    <div className="flex items-baseline justify-between gap-4">
+                      <dt className="text-[14.5px] font-medium text-ink">{s.name}</dt>
+                      <dd className="text-[14px] whitespace-nowrap text-muted">{s.note}</dd>
+                    </div>
+                    <div className="mt-2 flex gap-[3px]" aria-hidden="true">
+                      {Array.from({ length: 10 }, (_, i) => (
+                        <span
+                          key={i}
+                          className={`h-[6px] flex-1 rounded-[1px] ${
+                            i < Math.round(s.level / 10) ? "bar-in bg-cold" : "bg-rule"
+                          }`}
+                          style={d(ri * 70 + i * 55)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ===== EDUCACIÓN + CERTIFICACIONES ===== */}
-      <section className="py-14 border-t border-rulesoft">
+      {/* ===== EDUCATION · CERTIFICATIONS · RECOGNITION — one compact band ===== */}
+      <section className="border-b border-rule py-14">
         <div className={wrap}>
-          <h2 className={label}>{cv.eduLabel}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="flex flex-col gap-4">
-              {cv.education.map((e) => (
-                <div key={e.title} className="border-t border-rule pt-5">
-                  <div className="flex items-center justify-between gap-3 mb-1">
-                    <h3 className="font-display text-[15.5px] font-medium text-ink">{e.title}</h3>
+          <h2 data-reveal className={`reveal ${label}`}>
+            {cv.eduLabel}
+          </h2>
+          <div className="mt-6 grid gap-x-12 gap-y-8 lg:grid-cols-2">
+            <div>
+              {cv.education.map((e, i) => (
+                <div
+                  key={e.title}
+                  data-reveal
+                  className="reveal border-t border-rule py-4"
+                  style={d(i * 70)}
+                >
+                  <div className="mb-1 flex items-center justify-between gap-3">
+                    <h3 className="font-display text-[15.5px] font-semibold text-ink">{e.title}</h3>
                     <StatusPill status={e.status} text={e.statusText} />
                   </div>
-                  <p className="text-[14px]">{e.inst}</p>
-                  <p className="text-[14px] text-muted mt-1">{e.period}</p>
+                  <p className="text-[14px] text-body">{e.inst}</p>
+                  <p className="mt-0.5 text-[14px] text-muted">{e.period}</p>
                 </div>
               ))}
+              <div data-reveal className="reveal mt-8" style={d(60)}>
+                <p className={label}>{cv.awardsLabel}</p>
+                {cv.awards.map((a) => (
+                  <div key={a.title} className="mt-4 border-t border-rulesoft pt-3.5">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <h3 className="text-[14.5px] font-semibold text-ink">{a.title}</h3>
+                      <span className="text-[14px] text-muted">{a.year}</span>
+                    </div>
+                    <p className="mt-1 text-[14px] leading-[1.6] text-body">{a.desc}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="border-t border-rule pt-5 h-fit">
+
+            <div>
               {cv.certs.map((c, i) => (
-                <div key={c.title} className={`py-3.5 ${i !== 0 ? "border-t border-rulesoft" : ""}`}>
+                <div
+                  key={c.title}
+                  data-reveal
+                  className="reveal border-t border-rule py-4"
+                  style={d(i * 70)}
+                >
                   <div className="flex items-baseline justify-between gap-3">
-                    <p className="text-[14px] text-ink font-medium">{c.title}</p>
+                    <p className="text-[14.5px] font-semibold text-ink">{c.title}</p>
                     <span className="text-[14px] text-muted">{c.year}</span>
                   </div>
-                  <p className="text-[14px] mt-0.5">{c.inst}</p>
+                  <p className="mt-0.5 text-[14px] text-body">{c.inst}</p>
                 </div>
               ))}
+
+              <div data-reveal className="reveal mt-8" style={d(60)}>
+                <p className={label}>{cv.remote.label}</p>
+                <div className="mt-4 flex flex-col gap-2">
+                  {cv.remote.points.map((p, i) => (
+                    <p
+                      key={i}
+                      className="relative pl-5 text-[14.5px] leading-[1.65] before:absolute before:top-[7px] before:left-0 before:text-[9px] before:text-live before:content-['●']"
+                    >
+                      {p}
+                    </p>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ===== REMOTE-READY ===== */}
-      <section className="py-14 border-t border-rulesoft">
+      {/* ===== CLOSE ===== */}
+      <section className="border-t-2 border-warm py-14">
         <div className={wrap}>
-          <p className={label}>{cv.remote.label}</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-3 max-w-[800px]">
-            {cv.remote.points.map((p, i) => (
-              <p key={i} className="text-[14px] leading-[1.7] pl-5 relative before:content-['●'] before:absolute before:left-0 before:text-[9px] before:top-[6px] before:text-live">
-                {p}
-              </p>
-            ))}
-          </div>
-          <div className="mt-10">
-            <a href={`mailto:${dict.profile.email}`} className="text-[14px] px-5 py-3 rounded-[3px] bg-cold text-paper font-semibold hover:opacity-90 transition-opacity inline-block">
-              {cv.contactBtn} →
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href={`mailto:${dict.profile.email}`}
+              className="lift inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
+            >
+              {cv.contactBtn}
+            </a>
+            <a
+              href={cv.downloadHref}
+              download
+              className="lift inline-flex items-center rounded-[3px] border border-rule px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
+            >
+              {cv.download}
+            </a>
+            <a
+              href={cv.latexHref}
+              download
+              className="px-1 py-3 text-[14.5px] font-medium text-cold hover:underline"
+            >
+              {cv.latex}
             </a>
           </div>
         </div>
