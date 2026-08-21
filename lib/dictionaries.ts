@@ -220,7 +220,7 @@ export const dictionaries = {
     quality: {
       label: "Las 89 pruebas, una por una",
       title: "Qué se revisa antes de publicar una sola cifra",
-      desc: "Alguien preguntó qué hacen esas pruebas exactamente. Esta es la lista real, contada contra el manifiesto compilado de dbt. Si una falla, el pipeline se detiene y la página conserva los datos del día anterior en vez de publicar algo roto.",
+      desc: "Esta es la lista completa, contada contra el manifiesto compilado de dbt. Si una falla, el pipeline se detiene y la página conserva los datos del día anterior en vez de publicar algo roto.",
       rows: [
         { n: 47, name: "not_null", what: "Ninguna columna que entra en un cálculo puede llegar vacía. Fue la prueba que destapó el fallo de Kraken, cuando el 100% de una fuente llegaba en NULL." },
         { n: 21, name: "accepted_values", what: "Un campo de categoría solo admite los valores del catálogo. Una clase de activo mal escrita deja de ser un dato nuevo y pasa a ser un error." },
@@ -258,7 +258,7 @@ export const dictionaries = {
     },
     toolkit: {
       title: "Herramientas, con la prueba al lado",
-      note: "Antes esto era una escala del 1 al 10. Un lector la leyó como inflada y otro como una autodegradación, y los dos tenían razón: una nota que me pongo yo no informa nada. Ahora cada herramienta va con lo que la respalda.",
+      note: "Cada herramienta con el trabajo que la respalda. Todo lo que aparece aquí está corriendo hoy, no en un certificado.",
       rows: [
         { name: "Excel y modelado financiero", proof: "Cierre y forecast de SG&A para 12 países en Neoris EPAM" },
         { name: "Power BI", proof: "Modelo semántico de 7 tablas en TMDL, cargado contra Supabase" },
@@ -468,8 +468,8 @@ export const dictionaries = {
         "ETL incremental", "Prefect", "GitHub Actions", "Supabase", "Power BI · DAX",
         "Power Query", "Tableau", "Git", "Next.js · Vercel",
       ],
-      skillsTechTitle: "Nivel declarado, con su prueba",
-      skillsTechDesc: "La misma lista que aparece en la portada del sitio. Cada herramienta va con el trabajo que la respalda, no con una nota que me pongo yo.",
+      skillsTechTitle: "Stack técnico",
+      skillsTechDesc: "Cada herramienta con el trabajo que la respalda.",
       skillsTech: [
         { name: "Excel y modelado financiero", proof: "Cierre y forecast de SG&A para 12 países en Neoris EPAM" },
         { name: "Power BI", proof: "Modelo semántico de 7 tablas en TMDL, cargado contra Supabase" },
@@ -716,7 +716,7 @@ export const dictionaries = {
     quality: {
       label: "The 89 tests, one by one",
       title: "What gets checked before a single figure is published",
-      desc: "Someone asked what those tests actually do. This is the real list, counted against dbt's compiled manifest. When one fails the pipeline stops, and the page keeps yesterday's data instead of publishing something broken.",
+      desc: "This is the complete list, counted against dbt's compiled manifest. When one fails the pipeline stops, and the page keeps yesterday's data instead of publishing something broken.",
       rows: [
         { n: 47, name: "not_null", what: "No column that feeds a calculation may arrive empty. This is the test that caught the Kraken defect, when 100% of one source was landing as NULL." },
         { n: 21, name: "accepted_values", what: "A category field only accepts values from the catalogue. A misspelled asset class stops being new data and becomes an error." },
@@ -754,7 +754,7 @@ export const dictionaries = {
     },
     toolkit: {
       title: "Tools, with the proof next to them",
-      note: "This used to be a 1-to-10 scale. One reader called it inflated, another called it a self-downgrade, and both were right: a score I award myself carries no information. Each tool now travels with the thing that backs it.",
+      note: "Each tool with the work that backs it. Everything here is running today, not sitting on a certificate.",
       rows: [
         { name: "Excel and financial modelling", proof: "SG&A close and forecast across 12 countries at Neoris EPAM" },
         { name: "Power BI", proof: "Seven-table semantic model in TMDL, loaded against Supabase" },
@@ -964,8 +964,8 @@ export const dictionaries = {
         "Incremental ETL", "Prefect", "GitHub Actions", "Supabase", "Power BI · DAX",
         "Power Query", "Git", "Next.js · Vercel",
       ],
-      skillsTechTitle: "Declared level, with its proof",
-      skillsTechDesc: "The same list the site's front page shows. Each tool travels with the work that backs it, not with a score I award myself.",
+      skillsTechTitle: "Technical stack",
+      skillsTechDesc: "Each tool with the work that backs it.",
       skillsTech: [
         { name: "Excel and financial modelling", proof: "SG&A close and forecast across 12 countries at Neoris EPAM" },
         { name: "Power BI", proof: "Seven-table semantic model in TMDL, loaded against Supabase" },
