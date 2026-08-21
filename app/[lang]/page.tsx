@@ -124,6 +124,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </p>
               <PipelineStamp
                 label={sheet.pipelineLive}
+                stalledLabel={sheet.pipelineStalled}
                 fallback={sheet.pipelineLiveFallback}
                 lang={lang}
               />

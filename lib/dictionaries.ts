@@ -49,7 +49,8 @@ export const dictionaries = {
       availability: "Bogotá · GMT-5 · Traslape completo con horario de EE.UU. · Abierto a roles remotos",
       metricsLabel: "Cifras verificables",
       metricsNote: "Cada cifra enlaza a lo que la prueba.",
-      pipelineLive: "Pipeline en vivo · última actualización",
+      pipelineLive: "Pipeline en vivo · datos hasta",
+      pipelineStalled: "Pipeline detenido · datos hasta",
       pipelineLiveFallback: "Pipeline en vivo · se actualiza a diario",
       metrics: [
         { value: "15+", label: "países en alcance", note: "en tres roles de finanzas" },
@@ -506,7 +507,8 @@ export const dictionaries = {
       availability: "Bogotá · GMT-5 · Full overlap with US hours · Open to remote roles",
       metricsLabel: "Verifiable figures",
       metricsNote: "Every figure links to what proves it.",
-      pipelineLive: "Live pipeline · last refresh",
+      pipelineLive: "Live pipeline · data through",
+      pipelineStalled: "Pipeline stalled · data through",
       pipelineLiveFallback: "Live pipeline · refreshes daily",
       metrics: [
         { value: "15+", label: "countries in scope", note: "across three finance roles" },
