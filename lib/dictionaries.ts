@@ -55,7 +55,7 @@ export const dictionaries = {
       metrics: [
         { value: "15+", label: "países en alcance", note: "en tres roles de finanzas" },
         { value: "26", label: "meses de practicante a especialista", note: "SLB" },
-        { value: "45", label: "activos en producción", note: "de 48 configurados" },
+        { value: "48", label: "activos en producción", note: "pipeline diario" },
         { value: "89", label: "pruebas de datos automáticas", note: "en cada corrida" },
       ],
       ctaPrimary: "Descargar CV (PDF)",
@@ -93,11 +93,11 @@ export const dictionaries = {
     tradingSim: {
       metaTitle: "Trading Sim — más de 1.300 estrategias contra la realidad",
       metaDesc:
-        "1.392 variantes de estrategia evaluadas sobre 45 activos con comisiones, slippage y validación fuera de muestra. La gran mayoría de las ganadoras eran ilusiones del backtest.",
+        "1.392 variantes de estrategia evaluadas sobre 48 activos con comisiones, slippage y validación fuera de muestra. La gran mayoría de las ganadoras eran ilusiones del backtest.",
       kicker: "Laboratorio · trading_sim",
       title: "Más de 1.300 estrategias entraron al laboratorio. Sobrevivieron menos de 50.",
       intro:
-        "Cinco estrategias técnicas clásicas y todas sus combinaciones posibles, evaluadas sobre 45 activos — cripto, ETFs, acciones de EE.UU., ADRs latinoamericanos y divisas — con comisiones, slippage y sin mirar el futuro. Cada variante se entrena en el 70% de la historia y se juzga en el 30% que nunca vio. Esto no es un curso de trading: es la medición honesta de cuánto sobrevive el análisis técnico al contacto con la realidad.",
+        "Cinco estrategias técnicas clásicas y todas sus combinaciones posibles, evaluadas sobre 48 activos — cripto, ETFs, acciones de EE.UU., ADRs latinoamericanos y divisas — con comisiones, slippage y sin mirar el futuro. Cada variante se entrena en el 70% de la historia y se juzga en el 30% que nunca vio. Esto no es un curso de trading: es la medición honesta de cuánto sobrevive el análisis técnico al contacto con la realidad.",
       pipelineLine:
         "datos: pipeline propio (API → PostgreSQL → dbt → backtester) · actualización diaria automática · código abierto",
       loading: "cargando datos del pipeline…",
@@ -153,7 +153,7 @@ export const dictionaries = {
       },
       leaderboard: {
         title: "Las 5 estrategias, cara a cara",
-        desc: "Promedios sobre los 45 activos, periodo completo 2022–2026. Ninguna estrategia tiene exceso de retorno promedio positivo: en promedio, todas pierden contra no hacer nada.",
+        desc: "Promedios sobre los 48 activos, periodo completo 2022–2026. Ninguna estrategia tiene exceso de retorno promedio positivo: en promedio, todas pierden contra no hacer nada.",
         strategy: "estrategia",
         beat: "le ganó a B&H",
         avgReturn: "retorno prom.",
@@ -206,7 +206,7 @@ export const dictionaries = {
           },
           {
             title: "datos auditables",
-            body: "Más de 55.000 velas de Tiingo, Tiingo FX, Coinbase y Kraken en un warehouse PostgreSQL con arquitectura medallion, 89 tests de calidad de datos en dbt, 139 pruebas unitarias en Python y reconciliación entre fuentes. Todo reproducible desde el repo.",
+            body: "60.000 velas de Tiingo, Tiingo FX, Coinbase y Kraken en un warehouse PostgreSQL con arquitectura medallion, 89 tests de calidad de datos en dbt, 139 pruebas unitarias en Python y reconciliación entre fuentes. Todo reproducible desde el repo.",
           },
         ],
         repoCta: "ver el pipeline completo en GitHub →",
@@ -302,7 +302,7 @@ export const dictionaries = {
         { value: "15+", label: "países en las operaciones que reporto" },
         { value: "60 h/mes", label: "de reporting devueltas al equipo (10 por analista)" },
         { value: "26 meses", label: "de practicante a especialista" },
-        { value: "45", label: "activos con historia en un pipeline diario propio" },
+        { value: "48", label: "activos en un pipeline diario propio" },
       ],
       profileLabel: "Perfil",
       profileText:
@@ -414,7 +414,7 @@ export const dictionaries = {
             "GitHub Actions", "Supabase", "Power BI (TMDL / PBIP)", "Next.js",
           ],
           bullets: [
-            "Ingesta incremental por watermark desde 4 fuentes (Tiingo, Coinbase, Kraken, FX) hacia un warehouse PostgreSQL de tres capas: 45 activos y más de 55.000 velas, idempotente y reanudable.",
+            "Ingesta incremental por watermark desde 4 fuentes (Tiingo, Coinbase, Kraken, FX) hacia un warehouse PostgreSQL de tres capas: 48 activos y 60.000 velas, idempotente y reanudable.",
             "89 pruebas automáticas de calidad en dbt más 139 pruebas unitarias en Python; el pipeline falla antes de publicar un dato malo, no después.",
             "Motor de backtesting sin look-ahead con validación out-of-sample 70/30 sobre 1.392 variantes de estrategia: solo el 13% de las ganadoras in-sample sobrevivió a la ventana ciega.",
             "Descomposición cambiaria de ADRs latinoamericanos, separando el retorno de la empresa del movimiento de la divisa mediante la identidad (1+r_USD) × (1+r_FX) = (1+r_local).",
@@ -513,7 +513,7 @@ export const dictionaries = {
       metrics: [
         { value: "15+", label: "countries in scope", note: "across three finance roles" },
         { value: "26", label: "months intern to specialist", note: "SLB" },
-        { value: "45", label: "assets in production", note: "of 48 configured" },
+        { value: "48", label: "assets in production", note: "daily pipeline" },
         { value: "89", label: "automated data tests", note: "every run" },
       ],
       ctaPrimary: "Download CV (PDF)",
@@ -551,11 +551,11 @@ export const dictionaries = {
     tradingSim: {
       metaTitle: "Trading Sim — 1,300+ strategies vs. reality",
       metaDesc:
-        "1,392 strategy variants evaluated across 45 assets with fees, slippage and out-of-sample validation. The vast majority of the winners were backtest illusions.",
+        "1,392 strategy variants evaluated across 48 assets with fees, slippage and out-of-sample validation. The vast majority of the winners were backtest illusions.",
       kicker: "Lab · trading_sim",
       title: "1,300+ strategies entered the lab. Fewer than 50 survived.",
       intro:
-        "Five classic technical strategies and every possible combination of them, evaluated across 45 assets — crypto, ETFs, US stocks, Latin American ADRs and currencies — with fees, slippage and no look-ahead. Every variant trains on 70% of history and is judged on the 30% it never saw. This is not a trading course: it is an honest measurement of how much technical analysis survives contact with reality.",
+        "Five classic technical strategies and every possible combination of them, evaluated across 48 assets — crypto, ETFs, US stocks, Latin American ADRs and currencies — with fees, slippage and no look-ahead. Every variant trains on 70% of history and is judged on the 30% it never saw. This is not a trading course: it is an honest measurement of how much technical analysis survives contact with reality.",
       pipelineLine:
         "data: own pipeline (API → PostgreSQL → dbt → backtester) · automatic daily refresh · open source",
       loading: "loading pipeline data…",
@@ -611,7 +611,7 @@ export const dictionaries = {
       },
       leaderboard: {
         title: "The 5 strategies, head to head",
-        desc: "Averages across all 45 assets, full period 2022–2026. No strategy has positive average excess return: on average, they all lose to doing nothing.",
+        desc: "Averages across all 48 assets, full period 2022–2026. No strategy has positive average excess return: on average, they all lose to doing nothing.",
         strategy: "strategy",
         beat: "beat B&H",
         avgReturn: "avg return",
@@ -664,7 +664,7 @@ export const dictionaries = {
           },
           {
             title: "auditable data",
-            body: "More than 55,000 candles from Tiingo, Tiingo FX, Coinbase and Kraken in a PostgreSQL medallion warehouse, 89 dbt data-quality tests, 139 Python unit tests and cross-source reconciliation. Everything reproducible from the repo.",
+            body: "60,000 candles from Tiingo, Tiingo FX, Coinbase and Kraken in a PostgreSQL medallion warehouse, 89 dbt data-quality tests, 139 Python unit tests and cross-source reconciliation. Everything reproducible from the repo.",
           },
         ],
         repoCta: "see the full pipeline on GitHub →",
@@ -760,7 +760,7 @@ export const dictionaries = {
         { value: "15+", label: "countries in the operations I report on" },
         { value: "60 hrs/mo", label: "of reporting given back to the team (10 per analyst)" },
         { value: "26 months", label: "from intern to specialist" },
-        { value: "45", label: "assets with history in a daily pipeline I run" },
+        { value: "48", label: "assets in a daily pipeline I run" },
       ],
       profileLabel: "Profile",
       profileText:
@@ -872,7 +872,7 @@ export const dictionaries = {
             "GitHub Actions", "Supabase", "Power BI (TMDL / PBIP)", "Next.js",
           ],
           bullets: [
-            "Watermark-based incremental ingestion from 4 sources (Tiingo, Coinbase, Kraken, FX) into a three-layer PostgreSQL warehouse: 45 assets and more than 55,000 candles, idempotent and resumable.",
+            "Watermark-based incremental ingestion from 4 sources (Tiingo, Coinbase, Kraken, FX) into a three-layer PostgreSQL warehouse: 48 assets and 60,000 candles, idempotent and resumable.",
             "89 automated dbt data-quality tests plus 139 Python unit tests; the pipeline fails before publishing bad data, not after.",
             "No-look-ahead backtesting engine with 70/30 out-of-sample validation over 1,392 strategy variants: only 13% of the in-sample winners survived the blind window.",
             "FX decomposition for Latin American ADRs, separating company performance from the currency move through the identity (1+r_USD) × (1+r_FX) = (1+r_local).",
