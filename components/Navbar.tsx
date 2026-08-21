@@ -3,39 +3,49 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Dictionary, Locale } from "@/lib/dictionaries";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Navbar({ dict, lang }: { dict: Dictionary; lang: Locale }) {
   const pathname = usePathname();
   const otherLang = lang === "es" ? "en" : "es";
   const switchHref = pathname.replace(`/${lang}`, `/${otherLang}`) || `/${otherLang}`;
-
-  const resolve = (href: string) =>
-    href.startsWith("#") ? `/${lang}${href}` : `/${lang}${href}`;
+  const resolve = (href: string) => `/${lang}${href}`;
 
   return (
-    <nav className="sticky top-0 z-50 bg-ink/90 backdrop-blur-md border-b border-linesoft">
-      <div className="max-w-[980px] mx-auto px-6 flex items-center justify-between py-5">
-        <Link href={`/${lang}`} className="font-display text-[17px] font-semibold tracking-tight text-fg">
-          Davirson<i className="not-italic text-warm">.</i>
+    <nav className="no-print sticky top-0 z-50 border-b border-rule bg-paper/95 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-[1080px] items-center justify-between gap-4 px-6 py-3.5">
+        <Link
+          href={`/${lang}`}
+          className="font-display text-[15px] font-semibold tracking-tight text-ink"
+        >
+          Davirson Novoa
         </Link>
-        <div className="hidden md:flex items-center gap-8 text-[13.5px] font-medium text-body">
+
+        <div className="hidden items-center gap-7 text-[14px] font-medium text-body md:flex">
           {dict.nav.links.map((l) => (
-            <Link key={l.label} href={resolve(l.href)} className="hover:text-fg transition-colors">
+            <Link key={l.label} href={resolve(l.href)} className="transition-colors hover:text-cold">
               {l.label}
             </Link>
           ))}
         </div>
-        <div className="flex items-center gap-3">
+
+        <div className="flex items-center gap-2">
+          {/* Language is a labelled control, not a dim glyph: the previous build
+              hid it against the dark ground and reviewers never found it. */}
           <Link
             href={switchHref}
-            aria-label={`Switch language to ${dict.nav.switchLabel}`}
-            className="font-mono text-[12px] text-dim hover:text-cold transition-colors px-2 py-1.5 border border-transparent hover:border-line rounded"
+            title={dict.nav.switchTitle}
+            aria-label={dict.nav.switchTitle}
+            className="inline-flex h-9 items-center rounded-[3px] border border-coldline bg-coldsoft px-3 font-display text-[12.5px] font-semibold tracking-[0.06em] text-cold transition-colors hover:border-cold"
           >
             {dict.nav.switchLabel}
           </Link>
+
+          <ThemeToggle labels={{ light: dict.nav.themeLight, dark: dict.nav.themeDark }} />
+
           <a
             href={`mailto:${dict.profile.email}`}
-            className="text-[13px] font-semibold px-5 py-2 border border-line rounded hover:border-cold hover:text-cold text-fg transition-colors"
+            className="hidden h-9 items-center rounded-[3px] bg-cold px-4 text-[13.5px] font-semibold text-paper transition-opacity hover:opacity-90 sm:inline-flex"
           >
             {dict.nav.contact}
           </a>

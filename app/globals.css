@@ -1,30 +1,188 @@
 @import "tailwindcss";
 
-@theme {
-  /* ==== TOKENS — PROYECTO DAVIRSON v1 ==== */
-  --color-ink: #0D0D10;
-  --color-surface: #14151A;
-  --color-surface2: #191B21;
-  --color-line: #22252C;
-  --color-linesoft: #1B1D23;
-  --color-fg: #F0F2F5;
-  --color-body: #99A2AD;
-  --color-dim: #616B77;
-  --color-cold: #8AB8D0;
-  --color-warm: #D9A05B;
-  --color-live: #5FBF8A;
-  --color-building: #E3C368;
-  --color-research: #7FA8D9;
-  --color-idea: #8A93A0;
-}
+/* ============================================================
+   RESEARCH TEAR SHEET — visual world v2
+   The document an analyst reads to decide on an asset: verdict at
+   the top, a band of tabular figures, evidence below, disclosures
+   at the foot. Light is the home state (the reader is in a bright
+   office, often printing); dark is a real second theme, re-stepped
+   rather than inverted.
+   ============================================================ */
 
 @theme {
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* --- surfaces (light) --- */
+  --color-paper: #ffffff;
+  --color-band: #f4f6f8;
+  --color-band2: #e9edf1;
+  --color-rule: #d8dde3;
+  --color-rulesoft: #e8ecf0;
+
+  /* --- ink (light): every step is AA on paper --- */
+  --color-ink: #14181d;      /* 15.8:1 */
+  --color-body: #454e57;     /*  8.4:1 */
+  --color-muted: #626c76;    /*  5.4:1 */
+
+  /* --- institutional blue: the technical voice --- */
+  --color-cold: #0f4c81;     /*  8.1:1 on paper */
+  --color-coldsoft: #e6eef7;
+  --color-coldline: #b9cfe4;
+
+  /* --- amber: reserved for human/purpose content (binding rule) --- */
+  --color-warm: #96551a;     /*  6.0:1 on paper */
+  --color-warmsoft: #f7efe5;
+
+  /* --- verdict signals --- */
+  --color-pos: #1a6b48;
+  --color-neg: #9c2b2b;
+
+  /* --- status (module states, unchanged meanings) --- */
+  --color-live: #1a6b48;
+  --color-building: #8a6a10;
+  --color-research: #0f4c81;
+  --color-idea: #626c76;
+
+  /* --- type: two faces, committed. Archivo is the grotesque of
+     American financial print; Source Serif 4 carries the figures
+     that a printed sheet sets large. --- */
+  --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-figure: "Source Serif 4", ui-serif, Georgia, serif;
 }
 
-html { scroll-behavior: smooth; }
-body { background: var(--color-ink); color: var(--color-body); }
+/* --- dark: re-stepped against its own ground, never an inversion --- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-paper: #0e1216;
+    --color-band: #161c22;
+    --color-band2: #1d242b;
+    --color-rule: #29323b;
+    --color-rulesoft: #1e252c;
 
-::selection { background: rgba(138, 184, 208, 0.25); color: var(--color-fg); }
+    --color-ink: #eef2f6;
+    --color-body: #b3bcc5;
+    --color-muted: #8b959f;
+
+    --color-cold: #74b0e4;
+    --color-coldsoft: #14212e;
+    --color-coldline: #2b455f;
+
+    --color-warm: #d9a05b;
+    --color-warmsoft: #241c12;
+
+    --color-pos: #4bbd8a;
+    --color-neg: #e07070;
+
+    --color-live: #4bbd8a;
+    --color-building: #d9b45b;
+    --color-research: #74b0e4;
+    --color-idea: #8b959f;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-paper: #0e1216;
+  --color-band: #161c22;
+  --color-band2: #1d242b;
+  --color-rule: #29323b;
+  --color-rulesoft: #1e252c;
+
+  --color-ink: #eef2f6;
+  --color-body: #b3bcc5;
+  --color-muted: #8b959f;
+
+  --color-cold: #74b0e4;
+  --color-coldsoft: #14212e;
+  --color-coldline: #2b455f;
+
+  --color-warm: #d9a05b;
+  --color-warmsoft: #241c12;
+
+  --color-pos: #4bbd8a;
+  --color-neg: #e07070;
+
+  --color-live: #4bbd8a;
+  --color-building: #d9b45b;
+  --color-research: #74b0e4;
+  --color-idea: #8b959f;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light dark;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-body);
+  /* Figures align in columns everywhere: this is a sheet of data. */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "cv05" 1;
+}
+
+/* --- browser surfaces wear the palette, not the defaults --- */
+::selection {
+  background: var(--color-cold);
+  color: var(--color-paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cold);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-rule) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-rule);
+  border: 3px solid var(--color-paper);
+  border-radius: 6px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+a {
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+/* --- the one authored moment: the sheet prints itself in ---
+   Rows settle in reading order from an already-visible default, so
+   nothing depends on JS to be readable. */
+@keyframes sheet-settle {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.settle {
+  animation: sheet-settle 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .settle { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  body { background: #fff; color: #000; }
+  .no-print { display: none !important; }
+}

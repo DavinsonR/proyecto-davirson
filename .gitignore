@@ -9,3 +9,7 @@
 /.idea
 /.vscode
 next-env.d.ts
+
+# Impeccable working files (local evidence and round state, not shipped)
+.impeccable/review/
+.impeccable/questions/

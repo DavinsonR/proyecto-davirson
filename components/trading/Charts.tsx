@@ -1,24 +1,23 @@
 "use client";
 
 // ============================================================
-// Primitivos de visualización — SVG a mano, cero dependencias.
-// Paleta validada (dataviz) sobre superficie #14151A:
-//   serie única categórica  #3E9BD6  (banda L y croma: PASS)
-//   benchmark = referencia  #8A93A0  punteada — su identidad la
-//   lleva la FORMA (trazo punteado + leyenda + etiquetas), no el
-//   matiz, así que es legible incluso en escala de grises.
-// Grid: hairline sólida #1B1D23. El texto usa tokens de texto,
-// nunca el color de la serie.
+// Hand-built SVG, no chart library. Colors are theme tokens, so the
+// same marks read correctly on paper and in the dark theme:
+//   series    = the institutional blue that owns the sheet's bands
+//   benchmark = muted ink, dashed — its identity is carried by FORM
+//               (dash + legend + direct labels), so it survives
+//               grayscale printing and color-vision deficiency.
+// Text always wears text tokens, never the series color.
 // ============================================================
 
 import { useMemo, useRef, useState } from "react";
 import { compactMoney, money } from "@/lib/trading-sim";
 
 export const CHART = {
-  series: "#3E9BD6",
-  benchmark: "#8A93A0",
-  grid: "#1B1D23",
-  surface: "#14151A",
+  series: "var(--color-cold)",
+  benchmark: "var(--color-muted)",
+  grid: "var(--color-rule)",
+  surface: "var(--color-paper)",
 };
 
 // ---------- curva de equity: estrategia vs buy & hold ----------
@@ -99,7 +98,7 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
         {geom.ticks.map((v) => (
           <g key={v}>
             <line x1={PAD.left} x2={W - PAD.right} y1={geom.y(v)} y2={geom.y(v)} stroke={CHART.grid} strokeWidth="1" />
-            <text x={PAD.left - 8} y={geom.y(v) + 3.5} textAnchor="end" fontSize="10" fill="#616B77" fontFamily="var(--font-mono)">
+            <text x={PAD.left - 8} y={geom.y(v) + 3.5} textAnchor="end" fontSize="10" fill="var(--color-muted)">
               {compactMoney(lang, v)}
             </text>
           </g>
@@ -111,9 +110,9 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
             <line
               x1={geom.x(geom.splitIdx)} x2={geom.x(geom.splitIdx)}
               y1={PAD.top} y2={H - PAD.bottom}
-              stroke="#2A313B" strokeWidth="1"
+              stroke="var(--color-rule)" strokeWidth="1"
             />
-            <text x={geom.x(geom.splitIdx) + 5} y={PAD.top + 9} fontSize="9.5" fill="#616B77" fontFamily="var(--font-mono)">
+            <text x={geom.x(geom.splitIdx) + 5} y={PAD.top + 9} fontSize="9.5" fill="var(--color-muted)">
               {labels.split}
             </text>
           </g>
@@ -127,21 +126,21 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
         {/* puntos finales con anillo de superficie + etiquetas directas */}
         <circle cx={geom.x(points.length - 1)} cy={endBenchY} r="4" fill={CHART.benchmark} stroke={CHART.surface} strokeWidth="2" />
         <circle cx={geom.x(points.length - 1)} cy={endStrategyY} r="4" fill={CHART.series} stroke={CHART.surface} strokeWidth="2" />
-        <text x={W - PAD.right + 10} y={labelStrategyY + 3.5} fontSize="10.5" fill="#F0F2F5" fontFamily="var(--font-mono)">
+        <text x={W - PAD.right + 10} y={labelStrategyY + 3.5} fontSize="10.5" fill="var(--color-ink)">
           {compactMoney(lang, last[1])}
         </text>
-        <text x={W - PAD.right + 10} y={labelBenchY + 3.5} fontSize="10.5" fill="#99A2AD" fontFamily="var(--font-mono)">
+        <text x={W - PAD.right + 10} y={labelBenchY + 3.5} fontSize="10.5" fill="var(--color-body)">
           {compactMoney(lang, last[2])}
         </text>
 
         {/* fechas: inicio / fin */}
-        <text x={PAD.left} y={H - 8} fontSize="10" fill="#616B77" fontFamily="var(--font-mono)">{points[0][0]}</text>
-        <text x={W - PAD.right} y={H - 8} textAnchor="end" fontSize="10" fill="#616B77" fontFamily="var(--font-mono)">{last[0]}</text>
+        <text x={PAD.left} y={H - 8} fontSize="10" fill="var(--color-muted)">{points[0][0]}</text>
+        <text x={W - PAD.right} y={H - 8} textAnchor="end" fontSize="10" fill="var(--color-muted)">{last[0]}</text>
 
         {/* capa hover: crosshair + anillos */}
         {h && (
           <g pointerEvents="none">
-            <line x1={geom.x(hover!)} x2={geom.x(hover!)} y1={PAD.top} y2={H - PAD.bottom} stroke="#3E9BD6" strokeOpacity="0.35" strokeWidth="1" />
+            <line x1={geom.x(hover!)} x2={geom.x(hover!)} y1={PAD.top} y2={H - PAD.bottom} stroke="var(--color-cold)" strokeOpacity="0.4" strokeWidth="1" />
             <circle cx={geom.x(hover!)} cy={geom.y(h[2])} r="4.5" fill={CHART.benchmark} stroke={CHART.surface} strokeWidth="2" />
             <circle cx={geom.x(hover!)} cy={geom.y(h[1])} r="4.5" fill={CHART.series} stroke={CHART.surface} strokeWidth="2" />
           </g>
@@ -152,11 +151,11 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
       {h && (
         <div
           role="status"
-          className="pointer-events-none absolute top-2 z-10 rounded border border-line bg-ink/95 px-3 py-2 font-mono text-[11px] leading-relaxed shadow-lg"
+          className="pointer-events-none absolute top-2 z-10 rounded border border-ink bg-paper px-3 py-2 text-[11.5px] leading-relaxed"
           style={{ left: `min(max(${hoverLeftPct}%, 8%), 72%)`, transform: "translateX(-50%)" }}
         >
-          <p className="text-dim">{h[0]}</p>
-          <p className="text-fg">
+          <p className="text-muted">{h[0]}</p>
+          <p className="text-ink">
             <span className="mr-1.5 inline-block h-[2px] w-3 align-middle" style={{ background: CHART.series }} />
             {labels.strategy}: {money(lang, h[1])}
           </p>
@@ -169,10 +168,10 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
 
       {/* vista tabla (accesibilidad): muestreo trimestral */}
       <details className="mt-2">
-        <summary className="cursor-pointer font-mono text-[10.5px] text-dim hover:text-body">{labels.tableToggle}</summary>
-        <div className="mt-2 max-h-48 overflow-y-auto rounded border border-linesoft">
-          <table className="w-full font-mono text-[10.5px]">
-            <thead className="sticky top-0 bg-surface2 text-dim">
+        <summary className="cursor-pointer text-[10.5px] text-muted hover:text-body">{labels.tableToggle}</summary>
+        <div className="mt-2 max-h-48 overflow-y-auto rounded border border-rulesoft">
+          <table className="w-full text-[10.5px]">
+            <thead className="sticky top-0 bg-band2 text-muted">
               <tr>
                 <th className="px-2 py-1 text-left font-normal">{labels.date}</th>
                 <th className="px-2 py-1 text-right font-normal">{labels.strategy}</th>
@@ -181,7 +180,7 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
             </thead>
             <tbody className="text-body">
               {points.filter((_, i) => i % 30 === 0 || i === points.length - 1).map((p) => (
-                <tr key={p[0]} className="border-t border-linesoft">
+                <tr key={p[0]} className="border-t border-rulesoft">
                   <td className="px-2 py-1">{p[0]}</td>
                   <td className="px-2 py-1 text-right">{money(lang, p[1])}</td>
                   <td className="px-2 py-1 text-right">{money(lang, p[2])}</td>
@@ -213,14 +212,14 @@ export function HBars({ rows, max }: { rows: BarRow[]; max?: number }) {
         const w = Math.max((r.value / top) * 100, 0);
         return (
           <div key={r.label} className="group">
-            <div className="mb-1 flex items-baseline justify-between font-mono text-[11px]">
+            <div className="mb-1 flex items-baseline justify-between text-[11px]">
               <span className="text-body">{r.label}</span>
-              <span className="text-fg">
+              <span className="text-ink">
                 {r.display}
-                {r.note && <span className="ml-2 text-dim">{r.note}</span>}
+                {r.note && <span className="ml-2 text-muted">{r.note}</span>}
               </span>
             </div>
-            <div className="h-[14px] rounded-[3px] bg-[#1B1E25]">
+            <div className="h-[14px] rounded-[3px] bg-rule">
               <div
                 className="h-full rounded-r-[4px] rounded-l-[2px] transition-all duration-500"
                 style={{ width: `${Math.max(w, r.value > 0 ? 1.5 : 0.4)}%`, background: CHART.series, opacity: r.value === 0 ? 0.25 : 1 }}
@@ -243,11 +242,11 @@ export function Funnel({ stages }: { stages: { label: string; value: number; dis
         const w = Math.max((s.value / top) * 100, 2.4);
         return (
           <div key={s.label}>
-            <div className="mb-1 flex items-baseline gap-3 font-mono text-[11px]">
-              <span className="text-fg text-[13px] font-semibold">{s.display}</span>
+            <div className="mb-1 flex items-baseline gap-3 text-[11px]">
+              <span className="text-ink text-[13px] font-semibold">{s.display}</span>
               <span className="text-body">{s.label}</span>
             </div>
-            <div className="h-[22px] rounded-[3px] bg-[#1B1E25]">
+            <div className="h-[22px] rounded-[3px] bg-rule">
               <div
                 className="h-full rounded-r-[4px] rounded-l-[2px] transition-all duration-700"
                 style={{ width: `${w}%`, background: CHART.series, opacity: 1 - i * 0.18 }}

@@ -69,7 +69,10 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
   // ---- derivados del índice ----
   const funnel = useMemo(() => {
     const rows = index?.overfitting?.by_n_components ?? [];
-    const total = rows.find((r) => r.is_grand_total);
+    // The export carries the grand total under its own `overall` key; older
+    // shapes kept it as a flagged row inside the array. Accept both, so a
+    // schema change upstream degrades to stale-but-correct, never to dashes.
+    const total = index?.overfitting?.overall ?? rows.find((r) => r.is_grand_total);
     const byN = rows.filter((r) => !r.is_grand_total && r.n_components != null);
     return { total, byN };
   }, [index]);
@@ -113,11 +116,11 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
   // ---- estados de carga ----
   if (indexError)
     return (
-      <div className="border border-line rounded bg-surface p-8 text-center">
-        <p className="font-mono text-[13px] text-body">{dict.error}</p>
+      <div className="border border-rule rounded bg-band p-8 text-center">
+        <p className="text-[13px] text-body">{dict.error}</p>
         <button
           onClick={loadIndex}
-          className="mt-4 font-mono text-[12px] px-4 py-2 border border-line rounded hover:border-cold hover:text-cold transition-colors"
+          className="mt-4 text-[12px] px-4 py-2 border border-rule rounded hover:border-cold hover:text-cold transition-colors"
         >
           {dict.retry}
         </button>
@@ -126,11 +129,11 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
 
   if (!index)
     return (
-      <div className="border border-line rounded bg-surface p-8">
-        <p className="font-mono text-[12px] text-dim animate-pulse">{dict.loading}</p>
+      <div className="border border-rule rounded bg-band p-8">
+        <p className="text-[12px] text-muted animate-pulse">{dict.loading}</p>
         <div className="mt-4 space-y-2.5">
           {[80, 60, 72].map((w, i) => (
-            <div key={i} className="h-[14px] rounded bg-[#1B1E25] animate-pulse" style={{ width: `${w}%` }} />
+            <div key={i} className="h-[14px] rounded bg-rule animate-pulse" style={{ width: `${w}%` }} />
           ))}
         </div>
       </div>
@@ -143,24 +146,24 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
     <div className="space-y-14">
       {/* ============ 1. EL VEREDICTO — stat tiles + embudo ============ */}
       <section aria-labelledby="ts-verdict">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="mb-8 grid grid-cols-2 border-t-2 border-cold lg:grid-cols-4">
           {[
             { label: dict.stats.variants, value: num(lang, total?.n_variants ?? null, 0) },
             { label: dict.stats.beatIs, value: num(lang, total?.n_beat_is ?? null, 0) },
             { label: dict.stats.survivors, value: num(lang, total?.n_beat_is_and_oos ?? null, 0) },
             { label: dict.stats.survival, value: pct(lang, total?.oos_survival_rate ?? null, 1), hero: true },
           ].map((s) => (
-            <div key={s.label} className="border border-line bg-surface rounded p-5">
-              <p className="font-mono text-[10.5px] tracking-[0.1em] uppercase text-dim">{s.label}</p>
-              <p className={`font-display font-medium text-fg mt-2 ${s.hero ? "text-[34px]" : "text-[26px]"}`}>
+            <div key={s.label} className="border-t border-rule pt-5">
+              <p className="text-[12.5px] tracking-[0.1em] uppercase text-muted">{s.label}</p>
+              <p className={`font-display font-medium text-ink mt-2 ${s.hero ? "text-[34px]" : "text-[26px]"}`}>
                 {s.value}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="border border-line bg-surface rounded p-6 md:p-8">
-          <h3 id="ts-verdict" className="font-display text-[18px] font-medium text-fg mb-1.5">{dict.funnel.title}</h3>
+        <div className="border-t border-rule pt-7">
+          <h3 id="ts-verdict" className="font-display text-[18px] font-medium text-ink mb-1.5">{dict.funnel.title}</h3>
           <p className="text-[13.5px] leading-[1.7] max-w-[620px] mb-6">{dict.funnel.desc}</p>
           <Funnel
             stages={[
@@ -174,8 +177,8 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
 
       {/* ============ 2. SUPERVIVENCIA Y EXPOSICIÓN por nº de señales ============ */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="border border-line bg-surface rounded p-6 md:p-8">
-          <h3 className="font-display text-[16.5px] font-medium text-fg mb-1.5">{dict.survivalChart.title}</h3>
+        <div className="border-t border-rule pt-7">
+          <h3 className="font-display text-[16.5px] font-medium text-ink mb-1.5">{dict.survivalChart.title}</h3>
           <p className="text-[13px] leading-[1.65] mb-6">{dict.survivalChart.desc}</p>
           <HBars
             max={0.2}
@@ -186,8 +189,8 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
             }))}
           />
         </div>
-        <div className="border border-line bg-surface rounded p-6 md:p-8">
-          <h3 className="font-display text-[16.5px] font-medium text-fg mb-1.5">{dict.exposureChart.title}</h3>
+        <div className="border-t border-rule pt-7">
+          <h3 className="font-display text-[16.5px] font-medium text-ink mb-1.5">{dict.exposureChart.title}</h3>
           <p className="text-[13px] leading-[1.65] mb-6">{dict.exposureChart.desc}</p>
           <HBars
             max={0.45}
@@ -202,26 +205,23 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
       </section>
 
       {/* ============ 3. EXPLORADOR — 45 activos, curvas reales ============ */}
-      <section className="border border-line rounded-md bg-surface overflow-hidden">
-        <div className="flex items-center gap-2 px-4 py-3 bg-surface2 border-b border-linesoft">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#2E333C]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#2E333C]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#2E333C]" />
-          <span className="ml-2.5 font-mono text-[11.5px] text-dim">
+      <section className="border border-rule rounded-md bg-band overflow-hidden">
+        <div className="flex items-center gap-2 border-b border-rule bg-band px-4 py-3">
+          <span className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
             {dict.explorer.windowTitle} — {symbol}
           </span>
         </div>
 
         <div className="p-6 md:p-8">
           <div className="flex flex-wrap items-center gap-3 mb-6">
-            <label className="font-mono text-[11px] text-dim uppercase tracking-[0.1em]" htmlFor="ts-asset">
+            <label className="text-[12.5px] text-muted uppercase tracking-[0.1em]" htmlFor="ts-asset">
               {dict.explorer.assetLabel}
             </label>
             <select
               id="ts-asset"
               value={symbol}
               onChange={(e) => setSymbol(e.target.value)}
-              className="font-mono text-[12.5px] bg-ink border border-line rounded px-3 py-2 text-fg focus:border-cold outline-none"
+              className="text-[12.5px] bg-paper border border-rule rounded px-3 py-2 text-ink focus:border-cold outline-none"
             >
               {assetGroups.map((g) => (
                 <optgroup key={g.region} label={dict.regions[g.region as keyof Dict["regions"]] ?? g.region}>
@@ -242,10 +242,10 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
                 role="tab"
                 aria-selected={b.strategy === (currentBacktest?.strategy ?? "")}
                 onClick={() => setStrategy(b.strategy)}
-                className={`font-mono text-[11.5px] px-3.5 py-1.5 rounded-[3px] border transition-colors ${
+                className={`text-[11.5px] px-3.5 py-1.5 rounded-[3px] border transition-colors ${
                   b.strategy === (currentBacktest?.strategy ?? "")
-                    ? "border-cold text-ink bg-cold font-semibold"
-                    : "border-line text-body hover:border-cold hover:text-fg"
+                    ? "border-cold text-paper bg-cold font-semibold"
+                    : "border-rule text-body hover:border-cold hover:text-ink"
                 }`}
               >
                 {b.strategy}
@@ -253,13 +253,13 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
             ))}
           </div>
 
-          {symbolLoading && <p className="font-mono text-[12px] text-dim animate-pulse py-16 text-center">{dict.loading}</p>}
+          {symbolLoading && <p className="text-[12px] text-muted animate-pulse py-16 text-center">{dict.loading}</p>}
 
           {!symbolLoading && currentBacktest && (
             <>
               {/* leyenda: obligatoria con 2 series */}
-              <div className="flex items-center gap-5 mb-3 font-mono text-[11px]">
-                <span className="flex items-center gap-2 text-fg">
+              <div className="flex items-center gap-5 mb-3 text-[12.5px]">
+                <span className="flex items-center gap-2 text-ink">
                   <span className="inline-block h-[2px] w-5" style={{ background: CHART.series }} />
                   {currentBacktest.strategy}
                 </span>
@@ -291,9 +291,9 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
                   { label: dict.metrics.trades, v: num(lang, currentBacktest.metrics.n_trades, 0) },
                   { label: dict.metrics.win, v: pct(lang, currentBacktest.metrics.win_rate, 0) },
                 ].map((m) => (
-                  <div key={m.label} className="bg-ink border border-linesoft rounded px-3 py-2.5">
-                    <p className="font-mono text-[9.5px] uppercase tracking-[0.08em] text-dim">{m.label}</p>
-                    <p className="font-mono text-[13.5px] text-fg mt-1">{m.v}</p>
+                  <div key={m.label} className="bg-paper border border-rulesoft rounded px-3 py-2.5">
+                    <p className="text-[9.5px] uppercase tracking-[0.08em] text-muted">{m.label}</p>
+                    <p className="text-[13.5px] text-ink mt-1">{m.v}</p>
                   </div>
                 ))}
               </div>
@@ -301,11 +301,11 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
               {/* combinaciones del activo */}
               {combos.length > 0 && (
                 <div className="mt-8">
-                  <h4 className="font-display text-[15px] font-medium text-fg mb-1">{dict.combos.title}</h4>
+                  <h4 className="font-display text-[15px] font-medium text-ink mb-1">{dict.combos.title}</h4>
                   <p className="text-[12.5px] leading-[1.6] mb-4 max-w-[640px]">{dict.combos.desc}</p>
-                  <div className="max-h-[340px] overflow-y-auto rounded border border-linesoft">
-                    <table className="w-full font-mono text-[11px]">
-                      <thead className="sticky top-0 bg-surface2 text-dim text-left">
+                  <div className="max-h-[340px] overflow-y-auto rounded border border-rulesoft">
+                    <table className="w-full text-[12.5px]">
+                      <thead className="sticky top-0 bg-band2 text-muted text-left">
                         <tr>
                           <th className="px-3 py-2 font-normal">{dict.combos.strategy}</th>
                           <th className="px-3 py-2 font-normal text-right">{dict.combos.exposure}</th>
@@ -318,8 +318,8 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
                         {combos.map((c) => {
                           const dead = (c.n_trades ?? 0) === 0;
                           return (
-                            <tr key={c.strategy} className={`border-t border-linesoft ${dead ? "opacity-45" : ""}`}>
-                              <td className="px-3 py-1.5 text-fg">{c.strategy}</td>
+                            <tr key={c.strategy} className={`border-t border-rulesoft ${dead ? "opacity-45" : ""}`}>
+                              <td className="px-3 py-1.5 text-ink">{c.strategy}</td>
                               <td className="px-3 py-1.5 text-right">{pct(lang, c.exposure, 1)}</td>
                               <td className="px-3 py-1.5 text-right">{pct(lang, c.excess_return, 1, true)}</td>
                               <td className="px-3 py-1.5 text-right">{pct(lang, c.oos_excess_return, 1, true)}</td>
@@ -338,19 +338,19 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
           )}
 
           {!symbolLoading && !currentBacktest && (
-            <p className="font-mono text-[12px] text-dim py-12 text-center">{dict.explorer.noData}</p>
+            <p className="text-[12px] text-muted py-12 text-center">{dict.explorer.noData}</p>
           )}
         </div>
       </section>
 
       {/* ============ 4. LEADERBOARD de estrategias individuales ============ */}
-      <section className="border border-line bg-surface rounded p-6 md:p-8">
-        <h3 className="font-display text-[18px] font-medium text-fg mb-1.5">{dict.leaderboard.title}</h3>
+      <section className="border-t border-rule pt-7">
+        <h3 className="font-display text-[18px] font-medium text-ink mb-1.5">{dict.leaderboard.title}</h3>
         <p className="text-[13.5px] leading-[1.7] max-w-[620px] mb-5">{dict.leaderboard.desc}</p>
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[560px] font-mono text-[11.5px]">
-            <thead className="text-dim text-left">
-              <tr className="border-b border-line">
+          <table className="w-full min-w-[560px] text-[11.5px]">
+            <thead className="text-muted text-left">
+              <tr className="border-b border-rule">
                 <th className="px-3 py-2 font-normal">{dict.leaderboard.strategy}</th>
                 <th className="px-3 py-2 font-normal text-right">{dict.leaderboard.beat}</th>
                 <th className="px-3 py-2 font-normal text-right">{dict.leaderboard.avgReturn}</th>
@@ -361,8 +361,8 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
             </thead>
             <tbody className="text-body">
               {singlesLeaderboard.map((r) => (
-                <tr key={r.strategy} className="border-b border-linesoft">
-                  <td className="px-3 py-2 text-fg">{r.strategy}</td>
+                <tr key={r.strategy} className="border-b border-rulesoft">
+                  <td className="px-3 py-2 text-ink">{r.strategy}</td>
                   <td className="px-3 py-2 text-right">
                     {num(lang, r.n_beat_buy_hold, 0)}/{num(lang, r.n_backtests, 0)} ({pct(lang, r.beat_rate, 0)})
                   </td>
@@ -379,14 +379,14 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
 
       {/* ============ 5. DESCOMPOSICIÓN CAMBIARIA (ADRs Latam) ============ */}
       {fx365.length > 0 && (
-        <section className="border border-line bg-surface rounded p-6 md:p-8">
-          <h3 className="font-display text-[18px] font-medium text-fg mb-1.5">{dict.fx.title}</h3>
+        <section className="border-t border-rule pt-7">
+          <h3 className="font-display text-[18px] font-medium text-ink mb-1.5">{dict.fx.title}</h3>
           <p className="text-[13.5px] leading-[1.7] max-w-[660px] mb-2">{dict.fx.desc}</p>
-          <p className="font-mono text-[11px] text-dim mb-5">{dict.fx.formula}</p>
+          <p className="text-[12.5px] text-muted mb-5">{dict.fx.formula}</p>
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[560px] font-mono text-[11.5px]">
-              <thead className="text-dim text-left">
-                <tr className="border-b border-line">
+            <table className="w-full min-w-[560px] text-[11.5px]">
+              <thead className="text-muted text-left">
+                <tr className="border-b border-rule">
                   <th className="px-3 py-2 font-normal">{dict.fx.asset}</th>
                   <th className="px-3 py-2 font-normal">{dict.fx.pair}</th>
                   <th className="px-3 py-2 font-normal text-right">{dict.fx.usd}</th>
@@ -397,13 +397,13 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
               </thead>
               <tbody className="text-body">
                 {fx365.map((r) => (
-                  <tr key={r.symbol} className="border-b border-linesoft">
-                    <td className="px-3 py-2 text-fg">{r.symbol}</td>
+                  <tr key={r.symbol} className="border-b border-rulesoft">
+                    <td className="px-3 py-2 text-ink">{r.symbol}</td>
                     <td className="px-3 py-2">{r.fx_pair}</td>
                     <td className="px-3 py-2 text-right">{pct(lang, r.usd_return, 1, true)}</td>
                     <td className="px-3 py-2 text-right">{pct(lang, r.local_return, 1, true)}</td>
                     <td className="px-3 py-2 text-right">{pct(lang, r.fx_return, 1, true)}</td>
-                    <td className="px-3 py-2 text-right text-fg">
+                    <td className="px-3 py-2 text-right text-ink">
                       {r.fx_drag_pp == null ? "—" : `${(r.fx_drag_pp * 100).toFixed(1).replace(".", lang === "es" ? "," : ".")} pp`}
                     </td>
                   </tr>
@@ -411,20 +411,17 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
               </tbody>
             </table>
           </div>
-          <p className="text-[12px] leading-[1.6] text-dim mt-4 max-w-[660px]">{dict.fx.note}</p>
+          <p className="text-[12px] leading-[1.6] text-muted mt-4 max-w-[660px]">{dict.fx.note}</p>
         </section>
       )}
 
       {/* ============ 6. SALUD DEL PIPELINE ============ */}
-      <section className="border border-line rounded-md bg-surface overflow-hidden">
-        <div className="flex items-center gap-2 px-4 py-3 bg-surface2 border-b border-linesoft">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#2E333C]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#2E333C]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#2E333C]" />
-          <span className="ml-2.5 font-mono text-[11.5px] text-dim">{dict.health.windowTitle}</span>
+      <section className="border border-rule rounded-md bg-band overflow-hidden">
+        <div className="flex items-center gap-2 border-b border-rule bg-band px-4 py-3">
+          <span className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">{dict.health.windowTitle}</span>
         </div>
-        <div className="p-6 font-mono text-[11.5px] leading-[1.9]">
-          <p className="text-dim">
+        <div className="p-6 text-[11.5px] leading-[1.9]">
+          <p className="text-muted">
             {dict.health.totals
               .replace("{assets}", num(lang, index.pipeline.totals.assets, 0))
               .replace("{candles}", num(lang, index.pipeline.totals.bronze_rows, 0))
@@ -434,21 +431,21 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
           <div className="mt-3 space-y-0.5">
             {index.pipeline.recent_ingest_runs.slice(0, 8).map((r, i) => (
               <p key={i} className="text-body">
-                <span className="text-dim">{r.finished_at?.slice(5, 16).replace("T", " ") ?? "—"}</span>{" "}
+                <span className="text-muted">{r.finished_at?.slice(5, 16).replace("T", " ") ?? "—"}</span>{" "}
                 <span className="text-cold">{r.source}</span>/{r.symbol}{" "}
                 {r.status === "success" ? (
                   <span className="text-live">ok</span>
                 ) : (
                   <span className="text-building">deferred</span>
                 )}{" "}
-                <span className="text-dim">+{r.rows_inserted ?? 0}</span>
+                <span className="text-muted">+{r.rows_inserted ?? 0}</span>
               </p>
             ))}
           </div>
         </div>
       </section>
 
-      <p className="font-mono text-[11px] text-dim">
+      <p className="text-[12.5px] text-muted">
         {dict.updated} {generated} ·{" "}
         <a href={TRADING_SIM_REPO} target="_blank" rel="noopener noreferrer" className="text-cold hover:underline">
           {dict.repoCta}

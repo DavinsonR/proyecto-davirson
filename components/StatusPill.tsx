@@ -1,10 +1,12 @@
 import type { Status } from "@/lib/dictionaries";
 
+/* Status wears the sheet's own signal colors, tinted from each hue rather than
+   the old dark-only blocks, so the pill stays legible on paper and in dark. */
 const styles: Record<Status, string> = {
-  live: "text-live border-[#2A4A3A] bg-[#14231C]",
-  building: "text-building border-[#4A4322] bg-[#232012]",
-  research: "text-research border-[#2A3A4E] bg-[#131B26]",
-  idea: "text-idea border-[#2A313B] bg-[#171C23]",
+  live: "text-live border-live/35 bg-live/10",
+  building: "text-building border-building/35 bg-building/10",
+  research: "text-research border-research/35 bg-research/10",
+  idea: "text-idea border-idea/35 bg-idea/10",
 };
 
 const labels: Record<Status, string> = {
@@ -16,7 +18,9 @@ const labels: Record<Status, string> = {
 
 export default function StatusPill({ status, text }: { status: Status; text?: string }) {
   return (
-    <span className={`font-mono text-[10px] tracking-[0.1em] px-2.5 py-1 rounded-full border whitespace-nowrap ${styles[status]}`}>
+    <span
+      className={`inline-block rounded-full border px-2.5 py-1 text-[11px] font-semibold tracking-[0.09em] whitespace-nowrap ${styles[status]}`}
+    >
       {text ?? labels[status]}
     </span>
   );

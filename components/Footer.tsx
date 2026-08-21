@@ -1,15 +1,14 @@
-import type { Dictionary } from "@/lib/dictionaries";
+import type { Dictionary, Locale } from "@/lib/dictionaries";
 
-export default function Footer({ dict }: { dict: Dictionary }) {
-  const words = dict.footer.right.split(" ");
-  const last = words.pop();
+export default function Footer({ dict, lang }: { dict: Dictionary; lang: Locale }) {
+  const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-linesoft mt-5 py-10">
-      <div className="max-w-[980px] mx-auto px-6 flex flex-wrap items-center justify-between gap-4 text-[12.5px] text-dim">
-        <span>{dict.footer.left}</span>
+    <footer className="border-t border-rule py-9">
+      <div className="mx-auto flex max-w-[1080px] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 text-[13.5px] text-body">
         <span>
-          {words.join(" ")} <span className="text-warm">{last}</span>
+          © {year} · {dict.footer.left}
         </span>
+        <span lang={lang}>{dict.footer.right}</span>
       </div>
     </footer>
   );

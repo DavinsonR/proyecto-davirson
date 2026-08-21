@@ -111,7 +111,7 @@ export type IndexData = {
   generated_at: string;
   assets: IndexAsset[];
   leaderboard: LeaderboardRow[];
-  overfitting?: { by_n_components?: OverfittingRow[] } | null;
+  overfitting?: { by_n_components?: OverfittingRow[]; overall?: OverfittingRow } | null;
   fx_decomposition?: FxDecompRow[] | null;
   pipeline: {
     recent_ingest_runs: IngestRun[];
