@@ -211,7 +211,13 @@ function build(lang: Locale): string {
   w(`\\textbf{\\color{ink}${tex(t.certs)}:} ` +
     cv.certs.map((c) => `${tex(c.title)} (${tex(c.inst)}, ${tex(c.year)})`).join(" \\,\\textperiodcentered\\, ") + "\\par\\vspace{3pt}");
   w(`\\textbf{\\color{ink}${tex(t.awards)}:} ` +
-    cv.awards.map((a) => `${tex(a.title)} (${tex(a.year)})`).join(" \\,\\textperiodcentered\\, ") + "\\par");
+    cv.awards
+      .map((a) => {
+        const label = `${tex(a.title)} (${tex(a.year)})`;
+        // el premio con evidencia pública se lleva su enlace al PDF
+        return a.href ? `\\href{${a.href}}{${label}}` : label;
+      })
+      .join(" \\,\\textperiodcentered\\, ") + "\\par");
   w("");
 
   // ---------- remoto ----------

@@ -378,6 +378,16 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
                       <span className="text-[14px] text-muted">{a.year}</span>
                     </div>
                     <p className="mt-1 text-[14px] leading-[1.6] text-body">{a.desc}</p>
+                    {a.href && (
+                      <a
+                        href={a.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1.5 inline-block text-[14px] font-medium text-cold hover:underline"
+                      >
+                        {a.hrefLabel} ↗
+                      </a>
+                    )}
                   </div>
                 ))}
               </div>

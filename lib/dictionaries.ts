@@ -8,9 +8,12 @@ export type Locale = (typeof locales)[number];
 
 export type Status = "live" | "building" | "research" | "idea";
 
+// Un reconocimiento puede tener evidencia pública; la mayoría no la tiene.
+export type Award = { title: string; year: string; desc: string; href?: string; hrefLabel?: string };
+
 const profile = {
   name: "Davirson Novoa Ramírez",
-  email: "Davinsonnovoaramirez@gmail.com",
+  email: "davinsonnovoaramirez@gmail.com",
   linkedin: "https://linkedin.com/in/davirson-novoa-ramirez-2721641b5",
   github: "https://github.com/DavinsonR",
   kaggle: "https://kaggle.com/davinsonnovoa",
@@ -111,18 +114,18 @@ export const dictionaries = {
       },
       funnel: {
         title: "El embudo de la honestidad",
-        desc: "De todas las variantes que le ganaron a comprar-y-mantener en el periodo de entrenamiento, solo una de cada nueve siguió ganando en el periodo de validación que nunca influyó en su selección. El resto era ruido con buena suerte.",
+        desc: "De todas las variantes que le ganaron a comprar-y-mantener en el periodo de entrenamiento, solo una de cada ocho siguió ganando en el periodo de validación que nunca influyó en su selección. El resto era ruido con buena suerte.",
         stageAll: "variantes evaluadas (5 estrategias + todas sus combinaciones AND)",
         stageIs: "le ganaron a buy & hold dentro de muestra",
         stageBoth: "siguieron ganándole fuera de muestra",
       },
       survivalChart: {
         title: "Supervivencia por nº de señales combinadas",
-        desc: "Combinar más señales no aumenta la probabilidad de que un hallazgo sea real: la supervivencia es plana en ~11%. La complejidad no compra robustez.",
+        desc: "Combinar más señales no aumenta la probabilidad de que un hallazgo sea real: la supervivencia se queda en el mismo rango con una señal que con cuatro, y la señal sola es la que mejor aguanta. La complejidad no compra robustez.",
       },
       exposureChart: {
         title: "Tiempo en el mercado por nº de señales",
-        desc: "Cada filtro adicional no mejora las entradas — te saca del mercado. Con las 5 señales exigidas a la vez: cero operaciones en 4,5 años.",
+        desc: "Cada filtro adicional no mejora las entradas — te saca del mercado. Exigiendo las 5 señales a la vez la exposición cae a prácticamente cero, y ninguna de esas variantes le ganó a comprar y mantener: ni siquiera en el periodo de entrenamiento.",
         never: "nunca coinciden",
       },
       signalOne: "señal",
@@ -140,7 +143,7 @@ export const dictionaries = {
       regions: { global: "Global", us: "Estados Unidos", latam: "Latinoamérica", emerging: "Emergentes" },
       metrics: { ret: "retorno", bh: "buy & hold", dd: "drawdown máx", sharpe: "sharpe", trades: "operaciones", win: "% ganadoras" },
       combos: {
-        title: "Las 31 combinaciones de este activo",
+        title: "Las {n} combinaciones de este activo",
         desc: "\"Luz verde en MACD + volumen\" y todas las demás. Ordenadas por su exceso de retorno fuera de muestra — la única cifra que no se usó para elegir nada. Las filas atenuadas nunca abrieron una posición.",
         strategy: "combinación",
         exposure: "expos.",
@@ -206,7 +209,7 @@ export const dictionaries = {
           },
           {
             title: "datos auditables",
-            body: "60.000 velas de Tiingo, Tiingo FX, Coinbase y Kraken en un warehouse PostgreSQL con arquitectura medallion, 89 tests de calidad de datos en dbt, 139 pruebas unitarias en Python y reconciliación entre fuentes. Todo reproducible desde el repo.",
+            body: "Más de 58.000 velas de Tiingo, Tiingo FX, Coinbase y Kraken en un warehouse PostgreSQL con arquitectura medallion, 89 tests de calidad de datos en dbt, 171 pruebas unitarias en Python y reconciliación entre fuentes. Todo reproducible desde el repo.",
           },
         ],
         repoCta: "ver el pipeline completo en GitHub →",
@@ -230,7 +233,7 @@ export const dictionaries = {
           tag: "Finanzas + datos",
         },
         {
-          period: "2023 — 2024",
+          period: "2023",
           title: "Investigación económica · LEE Javeriana",
           desc: "Investigación aplicada y analítica social voluntaria con equipos remotos internacionales.",
           tag: "Datos",
@@ -256,7 +259,7 @@ export const dictionaries = {
       items: [
         {
           term: "Construido en público",
-          text: "Este sitio y los proyectos detrás se documentan mientras se hacen, incluidos los errores. La bitácora de ingeniería registra 23 fallos encontrados y corregidos.",
+          text: "Este sitio y los proyectos detrás se documentan mientras se hacen, incluidos los errores. La bitácora de ingeniería registra 28 fallos encontrados y corregidos, numerados uno a uno.",
         },
         {
           term: "Rendimientos pasados",
@@ -414,8 +417,8 @@ export const dictionaries = {
             "GitHub Actions", "Supabase", "Power BI (TMDL / PBIP)", "Next.js",
           ],
           bullets: [
-            "Ingesta incremental por watermark desde 4 fuentes (Tiingo, Coinbase, Kraken, FX) hacia un warehouse PostgreSQL de tres capas: 48 activos y 60.000 velas, idempotente y reanudable.",
-            "89 pruebas automáticas de calidad en dbt más 139 pruebas unitarias en Python; el pipeline falla antes de publicar un dato malo, no después.",
+            "Ingesta incremental por watermark desde 4 fuentes (Tiingo, Coinbase, Kraken, FX) hacia un warehouse PostgreSQL de tres capas: 48 activos y más de 58.000 velas, idempotente y reanudable.",
+            "89 pruebas automáticas de calidad en dbt más 171 pruebas unitarias en Python; el pipeline falla antes de publicar un dato malo, no después.",
             "Motor de backtesting sin look-ahead con validación out-of-sample 70/30 sobre 1.392 variantes de estrategia: solo el 13% de las ganadoras in-sample sobrevivió a la ventana ciega.",
             "Descomposición cambiaria de ADRs latinoamericanos, separando el retorno de la empresa del movimiento de la divisa mediante la identidad (1+r_USD) × (1+r_FX) = (1+r_local).",
             "Orquestación diaria en GitHub Actions con circuit breaker de rate limit, sobre infraestructura de costo cero.",
@@ -448,10 +451,18 @@ export const dictionaries = {
         { name: "Machine learning", level: 60, note: "6 / 10 · Stanford 2024" },
       ],
       awardsLabel: "Reconocimientos",
-      awards: [
-        { title: "Ganador — BodyTech Trends Hackathon", year: "2024", desc: "Solución de analítica de datos para el sector salud y fitness." },
+      // Ojo: si el workbook se renombra en Tableau Public, la URL cambia y este
+      // enlace hay que actualizarlo aquí (fuente única).
+      awards: ([
+        {
+          title: "Ganador — BodyTech Trends Hackathon",
+          year: "2024",
+          desc: "Analítica y diseño del tablero en Tableau sobre tendencias de consumo del sector salud y fitness. Sigue publicado.",
+          href: "https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrends-ADataAnalysisProyect/TrendsAnalysis",
+          hrefLabel: "ver el tablero en Tableau Public",
+        },
         { title: "Becario Ecopetrol — Programa Mario Galán Gómez", year: "2018", desc: "Beca por mérito académico y potencial de liderazgo." },
-      ],
+      ] as Award[]),
       eduLabel: "Educación y certificaciones",
       education: [
         { title: "Maestría en Economía", inst: "Pontificia Universidad Javeriana", period: "2025 — 2026", status: "building" as Status, statusText: "EN CURSO" },
@@ -533,7 +544,7 @@ export const dictionaries = {
         matterLabel: "Why it matters",
         matter: "This is the same architecture a finance team needs for reporting: reconciled sources, verifiable quality, and a dashboard nobody has to rebuild by hand.",
         findingLabel: "Published finding",
-        finding: "Of 1,392 strategy variants evaluated, barely one in eight of the in-sample winners survived out-of-sample validation. I published every one that did not.",
+        finding: "Of more than 1,300 strategy variants evaluated, barely one in eight of the in-sample winners survived out-of-sample validation. I published every one that did not.",
         stack: ["PostgreSQL", "dbt", "Python", "Power BI", "GitHub Actions", "Prefect"],
         repoCta: "See the code",
         liveCta: "Open the lab",
@@ -569,18 +580,18 @@ export const dictionaries = {
       },
       funnel: {
         title: "The honesty funnel",
-        desc: "Of all the variants that beat buy-and-hold during the training period, only one in nine kept winning in the validation window that never influenced their selection. The rest was noise with good luck.",
+        desc: "Of all the variants that beat buy-and-hold during the training period, only one in eight kept winning in the validation window that never influenced their selection. The rest was noise with good luck.",
         stageAll: "variants evaluated (5 strategies + every AND-combination)",
         stageIs: "beat buy & hold in sample",
         stageBoth: "kept beating it out of sample",
       },
       survivalChart: {
         title: "Survival by number of combined signals",
-        desc: "Combining more signals does not increase the odds that a finding is real: survival is flat at ~11%. Complexity does not buy robustness.",
+        desc: "Combining more signals does not increase the odds that a finding is real: survival stays in the same range with one signal as with four, and the lone signal holds up best. Complexity does not buy robustness.",
       },
       exposureChart: {
         title: "Time in the market by signal count",
-        desc: "Each extra filter does not improve the entries — it takes you out of the market. Demanding all 5 signals at once: zero trades in 4.5 years.",
+        desc: "Each extra filter does not improve the entries — it takes you out of the market. Demanding all 5 signals at once drops exposure to practically zero, and not one of those variants beat buy & hold: not even in the training period.",
         never: "they never align",
       },
       signalOne: "signal",
@@ -598,7 +609,7 @@ export const dictionaries = {
       regions: { global: "Global", us: "United States", latam: "Latin America", emerging: "Emerging" },
       metrics: { ret: "return", bh: "buy & hold", dd: "max drawdown", sharpe: "sharpe", trades: "trades", win: "win rate" },
       combos: {
-        title: "This asset's 31 combinations",
+        title: "This asset's {n} combinations",
         desc: "\"Green light on MACD + volume\" and all the rest. Sorted by out-of-sample excess return — the only figure that was never used to pick anything. Dimmed rows never opened a position.",
         strategy: "combination",
         exposure: "expos.",
@@ -664,7 +675,7 @@ export const dictionaries = {
           },
           {
             title: "auditable data",
-            body: "60,000 candles from Tiingo, Tiingo FX, Coinbase and Kraken in a PostgreSQL medallion warehouse, 89 dbt data-quality tests, 139 Python unit tests and cross-source reconciliation. Everything reproducible from the repo.",
+            body: "More than 58,000 candles from Tiingo, Tiingo FX, Coinbase and Kraken in a PostgreSQL medallion warehouse, 89 dbt data-quality tests, 171 Python unit tests and cross-source reconciliation. Everything reproducible from the repo.",
           },
         ],
         repoCta: "see the full pipeline on GitHub →",
@@ -688,7 +699,7 @@ export const dictionaries = {
           tag: "Finance + data",
         },
         {
-          period: "2023 — 2024",
+          period: "2023",
           title: "Economic research · LEE Javeriana",
           desc: "Applied research and volunteer social analytics with international remote teams.",
           tag: "Data",
@@ -714,7 +725,7 @@ export const dictionaries = {
       items: [
         {
           term: "Built in public",
-          text: "This site and the projects behind it are documented as they are made, failures included. The engineering log records 23 defects found and fixed.",
+          text: "This site and the projects behind it are documented as they are made, failures included. The engineering log records 28 defects found and fixed, numbered one by one.",
         },
         {
           term: "Past results",
@@ -872,8 +883,8 @@ export const dictionaries = {
             "GitHub Actions", "Supabase", "Power BI (TMDL / PBIP)", "Next.js",
           ],
           bullets: [
-            "Watermark-based incremental ingestion from 4 sources (Tiingo, Coinbase, Kraken, FX) into a three-layer PostgreSQL warehouse: 48 assets and 60,000 candles, idempotent and resumable.",
-            "89 automated dbt data-quality tests plus 139 Python unit tests; the pipeline fails before publishing bad data, not after.",
+            "Watermark-based incremental ingestion from 4 sources (Tiingo, Coinbase, Kraken, FX) into a three-layer PostgreSQL warehouse: 48 assets and more than 58,000 candles, idempotent and resumable.",
+            "89 automated dbt data-quality tests plus 171 Python unit tests; the pipeline fails before publishing bad data, not after.",
             "No-look-ahead backtesting engine with 70/30 out-of-sample validation over 1,392 strategy variants: only 13% of the in-sample winners survived the blind window.",
             "FX decomposition for Latin American ADRs, separating company performance from the currency move through the identity (1+r_USD) × (1+r_FX) = (1+r_local).",
             "Daily orchestration on GitHub Actions with a rate-limit circuit breaker, running on zero-cost infrastructure.",
@@ -906,10 +917,16 @@ export const dictionaries = {
         { name: "Machine learning", level: 60, note: "6 / 10 · Stanford 2024" },
       ],
       awardsLabel: "Recognition",
-      awards: [
-        { title: "Winner — BodyTech Trends Hackathon", year: "2024", desc: "Data analytics solution for the health and fitness sector." },
+      awards: ([
+        {
+          title: "Winner — BodyTech Trends Hackathon",
+          year: "2024",
+          desc: "Analytics and dashboard design in Tableau on consumer trends in the health and fitness sector. Still published.",
+          href: "https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrends-ADataAnalysisProyect/TrendsAnalysis",
+          hrefLabel: "see the dashboard on Tableau Public",
+        },
         { title: "Ecopetrol Scholar — Mario Galán Gómez Program", year: "2018", desc: "Scholarship for academic merit and leadership potential." },
-      ],
+      ] as Award[]),
       eduLabel: "Education & certifications",
       education: [
         { title: "M.Sc. in Economics", inst: "Pontificia Universidad Javeriana", period: "2025 — 2026", status: "building" as Status, statusText: "IN PROGRESS" },

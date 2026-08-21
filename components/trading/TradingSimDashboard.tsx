@@ -301,7 +301,9 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
               {/* combinaciones del activo */}
               {combos.length > 0 && (
                 <div className="mt-8">
-                  <h4 className="font-display text-[15px] font-medium text-ink mb-1">{dict.combos.title}</h4>
+                  <h4 className="font-display text-[15px] font-medium text-ink mb-1">
+                    {dict.combos.title.replace("{n}", String(combos.length))}
+                  </h4>
                   <p className="text-[14px] leading-[1.6] mb-4 max-w-[640px]">{dict.combos.desc}</p>
                   <div className="max-h-[340px] overflow-y-auto rounded border border-rulesoft">
                     <table className="w-full text-[14px]">
