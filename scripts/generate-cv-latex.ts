@@ -76,7 +76,7 @@ function build(lang: Locale): string {
   const w = (s = "") => L.push(s);
 
   const bullets = (items: readonly string[]) => {
-    w("\\begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=2pt, parsep=0pt]");
+    w("\\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]");
     for (const b of items) w(`  \\item ${tex(b)}`);
     w("\\end{itemize}");
   };
@@ -95,7 +95,7 @@ function build(lang: Locale): string {
   w(`\\usepackage[${lang === "es" ? "spanish,es-noshorthands" : t.lang}]{babel}`);
   w("\\usepackage{lmodern}");
   w("\\usepackage{microtype}");
-  w("\\usepackage[top=1.5cm,bottom=1.4cm,left=1.6cm,right=1.6cm]{geometry}");
+  w("\\usepackage[top=1.3cm,bottom=1.2cm,left=1.5cm,right=1.5cm]{geometry}");
   w("\\usepackage{enumitem}");
   w("\\usepackage{titlesec}");
   w("\\usepackage{xcolor}");
@@ -110,13 +110,13 @@ function build(lang: Locale): string {
   w("");
   w("\\pagestyle{empty}");
   w("\\setlength{\\parindent}{0pt}");
-  w("\\linespread{0.97}");
+  w("\\linespread{0.94}");
   w("\\color{body}");
   w("");
   w("% Sección: versalitas con regla completa debajo — la firma del formato.");
   w("\\titleformat{\\section}");
   w("  {\\normalfont\\scshape\\bfseries\\color{ink}\\large}{}{0pt}{}[\\vspace{-6pt}\\color{cold}\\rule{\\linewidth}{0.8pt}]");
-  w("\\titlespacing*{\\section}{0pt}{9pt}{4pt}");
+  w("\\titlespacing*{\\section}{0pt}{7pt}{3pt}");
   w("");
   w("% Un encabezado con la fecha alineada al margen derecho.");
   w("\\newcommand{\\headline}[2]{\\needspace{3\\baselineskip}\\textbf{\\color{ink}#1}\\hfill{\\small #2}\\par}");
@@ -193,7 +193,7 @@ function build(lang: Locale): string {
   w("\\begin{multicols}{2}");
   w("\\begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=0pt, parsep=0pt]");
   for (const sk of cv.skillsTech) {
-    w(`  \\item \\textbf{\\color{ink}${tex(sk.name)}} --- ${tex(sk.note)}`);
+    w(`  \\item \\textbf{\\color{ink}${tex(sk.name)}} --- ${tex(sk.proof)}`);
   }
   w("\\end{itemize}");
   w("\\end{multicols}");

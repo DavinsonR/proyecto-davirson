@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import { getDictionary } from "@/lib/dictionaries";
 import StatusPill from "@/components/StatusPill";
 import CountUp from "@/components/CountUp";
+import BackLink from "@/components/BackLink";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -31,6 +32,9 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
           <div className="settle flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-rulesoft py-3 text-[12.5px] tracking-[0.08em] text-muted uppercase">
             <span className="font-semibold text-cold">{cv.targetsLabel}</span>
             <span>{dict.sheet.asOf}</span>
+          </div>
+          <div className="pt-4">
+            <BackLink href={`/${lang}`} label={dict.nav.backHome} />
           </div>
 
           <div className="pt-10 pb-11">
@@ -144,7 +148,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
       </section>
 
       {/* ===== EXPERIENCE ===== */}
-      <section className="border-b border-rule py-14">
+      <section id="experiencia" className="scroll-mt-16 border-b border-rule py-14">
         <div className={wrap}>
           <h2 data-reveal className={`reveal ${label}`}>
             {cv.expLabel}
@@ -321,23 +325,10 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
                     key={s.name}
                     data-reveal
                     className="reveal border-t border-rulesoft py-3"
-                    style={d(ri * 70)}
+                    style={d(ri * 60)}
                   >
-                    <div className="flex items-baseline justify-between gap-4">
-                      <dt className="text-[14.5px] font-medium text-ink">{s.name}</dt>
-                      <dd className="text-[14px] whitespace-nowrap text-muted">{s.note}</dd>
-                    </div>
-                    <div className="mt-2 flex gap-[3px]" aria-hidden="true">
-                      {Array.from({ length: 10 }, (_, i) => (
-                        <span
-                          key={i}
-                          className={`h-[6px] flex-1 rounded-[1px] ${
-                            i < Math.round(s.level / 10) ? "bar-in bg-cold" : "bg-rule"
-                          }`}
-                          style={d(ri * 70 + i * 55)}
-                        />
-                      ))}
-                    </div>
+                    <dt className="text-[14.5px] font-semibold text-ink">{s.name}</dt>
+                    <dd className="mt-1 text-[14px] leading-[1.55] text-body">{s.proof}</dd>
                   </div>
                 ))}
               </dl>

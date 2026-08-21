@@ -9,7 +9,7 @@
 \usepackage[spanish,es-noshorthands]{babel}
 \usepackage{lmodern}
 \usepackage{microtype}
-\usepackage[top=1.5cm,bottom=1.4cm,left=1.6cm,right=1.6cm]{geometry}
+\usepackage[top=1.3cm,bottom=1.2cm,left=1.5cm,right=1.5cm]{geometry}
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{xcolor}
@@ -24,13 +24,13 @@
 
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
-\linespread{0.97}
+\linespread{0.94}
 \color{body}
 
 % Sección: versalitas con regla completa debajo — la firma del formato.
 \titleformat{\section}
   {\normalfont\scshape\bfseries\color{ink}\large}{}{0pt}{}[\vspace{-6pt}\color{cold}\rule{\linewidth}{0.8pt}]
-\titlespacing*{\section}{0pt}{9pt}{4pt}
+\titlespacing*{\section}{0pt}{7pt}{3pt}
 
 % Un encabezado con la fecha alineada al margen derecho.
 \newcommand{\headline}[2]{\needspace{3\baselineskip}\textbf{\color{ink}#1}\hfill{\small #2}\par}
@@ -57,7 +57,7 @@ No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol fi
 \headline{Neoris EPAM}{Bogotá, Colombia \,\textperiodcentered\, remoto}
 \vspace{1pt}
 \subline{Business Consultant, FP\&A}{Mar 2026 --- presente}
-\begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=2pt, parsep=0pt]
+\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Diseñé y lideré 3 sistemas de gestión financiera para el cierre y forecast de gastos SG\&A en Norteamérica, con impacto en 12 países/regiones.
   \item Gestioné el cierre mensual y la confirmación del forecast a nivel compañía, analizando variaciones contra plan y forecast anterior.
   \item Di seguimiento a la variación cambiaria en moneda constante y a la inflación por moneda.
@@ -68,19 +68,19 @@ No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol fi
 {\small\itshape\color{cold} Progresión interna: de practicante a especialista en 26 meses.}\par
 \vspace{1pt}
 \subline{Especialista en Facturación (Argentina \& Brasil)}{Dic 2024 --- Mar 2026}
-\begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=2pt, parsep=0pt]
+\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Ejecuté reconocimiento de ingresos en SAP bajo los requisitos de Sarbanes-Oxley (SOX).
   \item Desarrollé modelos y visualizaciones en Power BI para análisis de ingresos y tendencias.
   \item Realicé auditorías internas en proyectos tecnológicos integrados, asegurando trazabilidad y cumplimiento.
 \end{itemize}
 \subline{Analista de Tesorería}{Oct 2024 --- Dic 2024}
-\begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=2pt, parsep=0pt]
+\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Automaticé la conciliación bancaria en SAP, mejorando precisión y eficiencia.
   \item Eliminé cerca de 10 horas mensuales de reporting manual por analista --- unas 60 horas al mes devueltas al equipo --- optimizando y automatizando el proceso.
   \item Implementé flujos de trabajo automatizados con Power Automate.
 \end{itemize}
 \subline{Practicante de Tesorería}{Ene 2024 --- Jun 2024}
-\begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=2pt, parsep=0pt]
+\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Desarrollé en Python un análisis integral de descalces cambiarios en mercados latinoamericanos, identificando riesgos y oportunidades de cobertura.
   \item Construí dashboards en Power BI para proyección de flujo de caja en 15+ países.
   \item Automaticé reportes de transacciones bancarias en 10+ operaciones regionales.
@@ -89,7 +89,7 @@ No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol fi
 \headline{LEE Javeriana}{remoto}
 \vspace{1pt}
 \subline{Asistente de Investigación}{Jul 2023 --- Dic 2023}
-\begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=2pt, parsep=0pt]
+\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Analicé datos del sistema educativo colombiano con enfoque en educación superior.
   \item Desarrollé dashboards en Power BI para visualización de resultados de investigación.
   \item Contribuí a estudios de evaluación de impacto mediante análisis estadístico.
@@ -98,7 +98,7 @@ No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol fi
 \headline{Solidariamente (voluntariado)}{remoto}
 \vspace{1pt}
 \subline{Analista de datos sociales}{Ene 2023 --- Jul 2023}
-\begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=2pt, parsep=0pt]
+\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Entregué herramientas analíticas e insights para ONG en entornos multiculturales.
   \item Colaboré con equipos internacionales en iniciativas de impacto social basadas en datos.
 \end{itemize}
@@ -108,7 +108,7 @@ No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol fi
 {\small\itshape Código abierto y verificable. Nada de esto es un ejercicio de curso.}\par\vspace{3pt}
 \headline{market-data-medallion}{2026 --- en operación}
 \subline{Plataforma de datos de mercado --- diseño, construcción y operación}{\href{https://github.com/DavinsonR/market-data-medallion}{github.com/DavinsonR/market-data-medallion}}
-\begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=2pt, parsep=0pt]
+\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Ingesta incremental por watermark desde 4 fuentes (Tiingo, Coinbase, Kraken, FX) hacia un warehouse PostgreSQL de tres capas: 48 activos y más de 58.000 velas, idempotente y reanudable.
   \item 89 pruebas automáticas de calidad en dbt más 171 pruebas unitarias en Python; el pipeline falla antes de publicar un dato malo, no después.
   \item Motor de backtesting sin look-ahead con validación out-of-sample 70/30 sobre 1.392 variantes de estrategia: solo el 13\% de las ganadoras in-sample sobrevivió a la ventana ciega.
@@ -117,20 +117,30 @@ No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol fi
 \end{itemize}
 {\small\textbf{Stack:} PostgreSQL \,\textperiodcentered\, Arquitectura medallion \,\textperiodcentered\, dbt \,\textperiodcentered\, Python \,\textperiodcentered\, Prefect \,\textperiodcentered\, GitHub Actions \,\textperiodcentered\, Supabase \,\textperiodcentered\, Power BI (TMDL / PBIP) \,\textperiodcentered\, Next.js}\par
 \vspace{4pt}
+\headline{BodyTrends}{2024}
+\subline{Analítica de demanda de búsqueda para una cadena de gimnasios --- ganador del hackathon}{\href{https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrends-ADataAnalysisProyect/TrendsAnalysis}{Ver el dashboard en Tableau Public}}
+\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Limpié y estructuré 19.560 registros de keywords de Google Ads en Python, con búsquedas mensuales, competencia y variación interanual desagregadas por sede.
+  \item Construí en Tableau el análisis de tendencias de demanda por sede, para responder qué busca la gente cerca de cada gimnasio y en qué momento del año.
+  \item Ganó el BodyTech Trends Hackathon 2024. El dashboard sigue publicado y es consultable por cualquiera.
+\end{itemize}
+{\small\textbf{Stack:} Tableau \,\textperiodcentered\, Python \,\textperiodcentered\, pandas \,\textperiodcentered\, Google Ads Keyword Planner \,\textperiodcentered\, Excel}\par
+\vspace{4pt}
 
 \section*{Habilidades}
 \textbf{\color{ink}Dominio financiero:} FP\&A \,\textperiodcentered\, Cierre y forecast \,\textperiodcentered\, SG\&A \,\textperiodcentered\, Revenue recognition (SOX) \,\textperiodcentered\, Tesorería \,\textperiodcentered\, Análisis cambiario \,\textperiodcentered\, Presupuestos \,\textperiodcentered\, Moneda constante \,\textperiodcentered\, SAP \,\textperiodcentered\, JD Edwards \,\textperiodcentered\, MicroStrategy\par\vspace{3pt}
-\textbf{\color{ink}Datos e ingeniería:} SQL analítico \,\textperiodcentered\, PostgreSQL \,\textperiodcentered\, dbt \,\textperiodcentered\, Arquitectura medallion \,\textperiodcentered\, Python (pandas) \,\textperiodcentered\, ETL incremental \,\textperiodcentered\, Prefect \,\textperiodcentered\, GitHub Actions \,\textperiodcentered\, Supabase \,\textperiodcentered\, Power BI \,\textperiodcentered\, DAX \,\textperiodcentered\, Power Query \,\textperiodcentered\, Git \,\textperiodcentered\, Next.js \,\textperiodcentered\, Vercel\par\vspace{3pt}
-\textbf{\color{ink}Nivel declarado}\par\vspace{2pt}
+\textbf{\color{ink}Datos e ingeniería:} SQL analítico \,\textperiodcentered\, PostgreSQL \,\textperiodcentered\, dbt \,\textperiodcentered\, Arquitectura medallion \,\textperiodcentered\, Python (pandas) \,\textperiodcentered\, ETL incremental \,\textperiodcentered\, Prefect \,\textperiodcentered\, GitHub Actions \,\textperiodcentered\, Supabase \,\textperiodcentered\, Power BI \,\textperiodcentered\, DAX \,\textperiodcentered\, Power Query \,\textperiodcentered\, Tableau \,\textperiodcentered\, Git \,\textperiodcentered\, Next.js \,\textperiodcentered\, Vercel\par\vspace{3pt}
+\textbf{\color{ink}Nivel declarado, con su prueba}\par\vspace{2pt}
 \begin{multicols}{2}
 \begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=0pt, parsep=0pt]
-  \item \textbf{\color{ink}Modelado financiero y Excel} --- 9 / 10 \,\textperiodcentered\, uso diario
-  \item \textbf{\color{ink}Power BI (DAX, modelo semántico)} --- 8 / 10 \,\textperiodcentered\, desde 2023
-  \item \textbf{\color{ink}SQL (PostgreSQL, MySQL)} --- 7 / 10 \,\textperiodcentered\, warehouse en producción
-  \item \textbf{\color{ink}Python (pandas, ETL)} --- 7 / 10 \,\textperiodcentered\, pipeline propio
-  \item \textbf{\color{ink}dbt y warehousing} --- 6 / 10 \,\textperiodcentered\, 89 pruebas en producción
-  \item \textbf{\color{ink}Git y CI/CD (GitHub Actions)} --- 6 / 10 \,\textperiodcentered\, cron diario operando
-  \item \textbf{\color{ink}Machine learning} --- 6 / 10 \,\textperiodcentered\, Stanford 2024
+  \item \textbf{\color{ink}Excel y modelado financiero} --- Cierre y forecast de SG\&A para 12 países en Neoris EPAM
+  \item \textbf{\color{ink}Power BI} --- Modelo semántico de 7 tablas en TMDL, cargado contra Supabase
+  \item \textbf{\color{ink}Tableau} --- Dashboard ganador del BodyTech Trends Hackathon, público
+  \item \textbf{\color{ink}SQL \,\textperiodcentered\, PostgreSQL} --- Warehouse medallion de tres capas, 60.000 velas en producción
+  \item \textbf{\color{ink}Python} --- Ingesta incremental, motor de backtesting, descomposición cambiaria
+  \item \textbf{\color{ink}dbt} --- 89 pruebas de calidad que corren antes de publicar un dato
+  \item \textbf{\color{ink}Git \,\textperiodcentered\, GitHub Actions} --- Cron diario en operación, con circuit breaker de rate limit
+  \item \textbf{\color{ink}Machine learning} --- Especialización de Stanford en Coursera, 2024
 \end{itemize}
 \end{multicols}
 

@@ -4,6 +4,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import TradingSimDashboard from "@/components/trading/TradingSimDashboard";
 import { TRADING_SIM_REPO } from "@/lib/trading-sim";
 import StatusPill from "@/components/StatusPill";
+import BackLink from "@/components/BackLink";
 
 export async function generateMetadata({
   params,
@@ -30,7 +31,8 @@ export default async function TradingSimPage({
       {/* ================= HERO ================= */}
       <header className="pt-20 pb-14">
         <div className={wrap}>
-          <div className="mb-6 flex items-center gap-3">
+          <div className="mb-6 flex flex-wrap items-center gap-4">
+            <BackLink href={`/${lang}`} label={dict.nav.backHome} />
             <StatusPill status="building" />
           </div>
           <h1 className="font-display text-[clamp(30px,4.8vw,50px)] font-medium leading-[1.14] tracking-[-0.02em] text-ink max-w-[820px]">
@@ -77,6 +79,56 @@ export default async function TradingSimPage({
               {t.method.backCta}
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* ===== THE 89 TESTS, ITEMISED ===== */}
+      <section id="calidad" className="scroll-mt-16 border-t border-rule py-16">
+        <div className={wrap}>
+          <p
+            data-reveal
+            className="reveal text-[12.5px] font-semibold tracking-[0.09em] text-cold uppercase"
+          >
+            {dict.quality.label}
+          </p>
+          <h2
+            data-reveal
+            className="reveal mt-3 max-w-[24ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink"
+            style={{ "--d": "60ms" } as React.CSSProperties}
+          >
+            {dict.quality.title}
+          </h2>
+          <p
+            data-reveal
+            className="reveal mt-3 max-w-[68ch] text-[15px] leading-[1.7]"
+            style={{ "--d": "110ms" } as React.CSSProperties}
+          >
+            {dict.quality.desc}
+          </p>
+
+          <dl className="mt-9">
+            {dict.quality.rows.map((r, i) => (
+              <div
+                key={r.name}
+                data-reveal
+                className="reveal grid grid-cols-[auto_1fr] items-baseline gap-x-5 border-t border-rule py-4 first:border-t-2 first:border-ink sm:grid-cols-[64px_180px_1fr]"
+                style={{ "--d": `${i * 70}ms` } as React.CSSProperties}
+              >
+                <dd className="font-figure text-[26px] leading-none text-cold">{r.n}</dd>
+                <dt className="text-[14.5px] font-semibold text-ink">{r.name}</dt>
+                <dd className="col-span-2 mt-1 max-w-[70ch] text-[14.5px] leading-[1.65] text-body sm:col-span-1 sm:mt-0">
+                  {r.what}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          <p
+            data-reveal
+            className="reveal mt-6 border-t border-rule pt-5 text-[14.5px] leading-[1.65] text-body"
+          >
+            {dict.quality.note}
+          </p>
         </div>
       </section>
     </main>

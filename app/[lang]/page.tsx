@@ -132,7 +132,14 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <p className="mt-1 text-[14px] text-body">{sheet.metricsNote}</p>
             <dl className="grid grid-cols-2 pt-3 pb-6 lg:grid-cols-4">
               {sheet.metrics.map((m, i) => {
-                const proof = [`/${lang}/cv`, `/${lang}/cv`, `/${lang}/projects/trading-sim`, TRADING_SIM_REPO][i];
+                // Each figure lands where its evidence actually is. The first reviewer to
+                // click one found the CV's masthead and no sign of what he had clicked.
+                const proof = [
+                  `/${lang}/cv#experiencia`,
+                  `/${lang}/cv#experiencia`,
+                  `/${lang}/projects/trading-sim`,
+                  `/${lang}/projects/trading-sim#calidad`,
+                ][i];
                 const external = proof.startsWith("http");
                 return (
                   <div
@@ -324,26 +331,10 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                   key={r.name}
                   data-reveal
                   className="reveal border-t border-rule py-3"
-                  style={{ "--d": `${ri * 70}ms` } as React.CSSProperties}
+                  style={{ "--d": `${ri * 60}ms` } as React.CSSProperties}
                 >
-                  <div className="flex items-baseline justify-between gap-4">
-                    <dt className="text-[14.5px] font-medium text-ink">{r.name}</dt>
-                    <dd className="font-figure text-[19px] leading-none text-cold">
-                      {r.level}
-                      <span className="text-muted">/10</span>
-                    </dd>
-                  </div>
-                  <div className="mt-2 flex gap-[3px]" aria-hidden="true">
-                    {Array.from({ length: 10 }, (_, i) => (
-                      <span
-                        key={i}
-                        className={`h-[6px] flex-1 rounded-[1px] ${
-                          i < r.level ? "bar-in bg-cold" : "bg-rule"
-                        }`}
-                        style={{ "--d": `${ri * 70 + i * 55}ms` } as React.CSSProperties}
-                      />
-                    ))}
-                  </div>
+                  <dt className="text-[14.5px] font-semibold text-ink">{r.name}</dt>
+                  <dd className="mt-1 text-[14px] leading-[1.55] text-body">{r.proof}</dd>
                 </div>
               ))}
             </dl>
