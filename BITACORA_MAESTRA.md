@@ -736,3 +736,13 @@ Los cuatro primeros son el mismo problema: **prosa estática describiendo cifras
 - Estos hallazgos **no** se numeran como FALLO-XX: son deuda de contenido, no fallos de ingeniería, y renumerarlos volvería a romper la cifra de la divulgación.
 
 **Pendiente del usuario:** el workbook de Tableau se llama `BodyTrends-ADataAnalysisProyect` — "Proyect" no existe en inglés, y está en la URL y en el título visible. Renombrarlo cambia la URL: al hacerlo hay que actualizar el `href` del premio en `dictionaries.ts` (hay un comentario en el archivo advirtiéndolo).
+
+### Anexo sesión 13 — el tablero del hackathon, republicado y enlazado
+
+El workbook se bajó de Tableau Public (`public.tableau.com/workbooks/<slug>.twb` entrega el `.twbx` completo cuando la descarga está permitida), se corrigió sobre su XML y el usuario lo republicó. Lo que se arregló: tildes en todos los títulos, `Nom Oferta` → `Oferta` y demás nombres de columna crudos, el typo del dashboard `BodyTrends Anaysis` → `BodyTrends Analytics`, un carácter `Æ` suelto en el título de portada, cinco paneles que salían mudos porque tenían el título oculto, la clave de color escrita en el título (el color de las barras es la hora del día; el tamaño de las burbujas, la facturación de la sede), moneda declarada en el eje de ingreso, y fuera el panel de facturación cuyo eje "Date 0–32" era día-del-mes tratado como continuo — su forma era un artefacto, no un hallazgo.
+
+Hallazgo que vale para cualquier publicación futura en Tableau Public: **el estado de resaltado y selección se publica con el libro**. Los rectángulos azules que se veían pegados a los ejes eran `<highlight>` y `<selection-collection>` guardados dentro de `<windows>` — 5.470 caracteres de estado de sesión viajando al público. Se limpian antes de publicar.
+
+Verificación: no se confía en el código HTTP. Tableau Public devuelve 200 incluso para vizzes inexistentes (es una SPA), así que la comprobación válida fue **descargar el workbook publicado** y contar las correcciones dentro del XML servido: 0 resaltados, 0 selecciones, 0 zonas del panel roto, dashboard renombrado, títulos presentes. El enlace nuevo (`BodyTrendsADataAnalysisProject`, sin guion — Tableau lo comió al armar el slug) quedó en las cuatro posiciones del diccionario y en los dos CV.
+
+**Pendiente del usuario:** el título del mapa volvió a quedar oculto al republicar (`show-title='false'`); se activa con clic derecho sobre el mapa → Mostrar título. Y borrar la viz vieja (`...Proyect`) del perfil, que sigue publicada.
