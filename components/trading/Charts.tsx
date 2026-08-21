@@ -151,7 +151,7 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
       {h && (
         <div
           role="status"
-          className="pointer-events-none absolute top-2 z-10 rounded border border-ink bg-paper px-3 py-2 text-[11.5px] leading-relaxed"
+          className="pointer-events-none absolute top-2 z-10 rounded border border-ink bg-paper px-3 py-2 text-[14px] leading-relaxed"
           style={{ left: `min(max(${hoverLeftPct}%, 8%), 72%)`, transform: "translateX(-50%)" }}
         >
           <p className="text-muted">{h[0]}</p>
@@ -168,9 +168,9 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
 
       {/* vista tabla (accesibilidad): muestreo trimestral */}
       <details className="mt-2">
-        <summary className="cursor-pointer text-[10.5px] text-muted hover:text-body">{labels.tableToggle}</summary>
+        <summary className="cursor-pointer text-[14px] text-muted hover:text-body">{labels.tableToggle}</summary>
         <div className="mt-2 max-h-48 overflow-y-auto rounded border border-rulesoft">
-          <table className="w-full text-[10.5px]">
+          <table className="w-full text-[14px]">
             <thead className="sticky top-0 bg-band2 text-muted">
               <tr>
                 <th className="px-2 py-1 text-left font-normal">{labels.date}</th>
@@ -212,7 +212,7 @@ export function HBars({ rows, max }: { rows: BarRow[]; max?: number }) {
         const w = Math.max((r.value / top) * 100, 0);
         return (
           <div key={r.label} className="group">
-            <div className="mb-1 flex items-baseline justify-between text-[11px]">
+            <div className="mb-1 flex items-baseline justify-between text-[14px]">
               <span className="text-body">{r.label}</span>
               <span className="text-ink">
                 {r.display}
@@ -242,8 +242,8 @@ export function Funnel({ stages }: { stages: { label: string; value: number; dis
         const w = Math.max((s.value / top) * 100, 2.4);
         return (
           <div key={s.label}>
-            <div className="mb-1 flex items-baseline gap-3 text-[11px]">
-              <span className="text-ink text-[13px] font-semibold">{s.display}</span>
+            <div className="mb-1 flex items-baseline gap-3 text-[14px]">
+              <span className="text-ink text-[14px] font-semibold">{s.display}</span>
               <span className="text-body">{s.label}</span>
             </div>
             <div className="h-[22px] rounded-[3px] bg-rule">

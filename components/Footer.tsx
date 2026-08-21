@@ -4,7 +4,7 @@ export default function Footer({ dict, lang }: { dict: Dictionary; lang: Locale 
   const year = new Date().getFullYear();
   return (
     <footer className="border-t border-rule py-9">
-      <div className="mx-auto flex max-w-[1080px] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 text-[13.5px] text-body">
+      <div className="mx-auto flex max-w-[1080px] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 text-[14px] text-body">
         <span>
           © {year} · {dict.footer.left}
         </span>

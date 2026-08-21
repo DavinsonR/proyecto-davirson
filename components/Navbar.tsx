@@ -36,7 +36,7 @@ export default function Navbar({ dict, lang }: { dict: Dictionary; lang: Locale 
             href={switchHref}
             title={dict.nav.switchTitle}
             aria-label={dict.nav.switchTitle}
-            className="inline-flex h-9 items-center rounded-[3px] border border-coldline bg-coldsoft px-3 font-display text-[12.5px] font-semibold tracking-[0.06em] text-cold transition-colors hover:border-cold"
+            className="inline-flex h-9 items-center rounded-[3px] border border-coldline bg-coldsoft px-3 font-display text-[14px] font-semibold tracking-[0.06em] text-cold transition-colors hover:border-cold"
           >
             {dict.nav.switchLabel}
           </Link>
@@ -45,7 +45,7 @@ export default function Navbar({ dict, lang }: { dict: Dictionary; lang: Locale 
 
           <a
             href={`mailto:${dict.profile.email}`}
-            className="hidden h-9 items-center rounded-[3px] bg-cold px-4 text-[13.5px] font-semibold text-paper transition-opacity hover:opacity-90 sm:inline-flex"
+            className="hidden h-9 items-center rounded-[3px] bg-cold px-4 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90 sm:inline-flex"
           >
             {dict.nav.contact}
           </a>

@@ -37,7 +37,7 @@ export default async function TradingSimPage({
             {t.title}
           </h1>
           <p className="mt-5 text-[15.5px] leading-[1.75] max-w-[680px]">{t.intro}</p>
-          <p className="mt-3 text-[12px] text-muted max-w-[680px]">{t.pipelineLine}</p>
+          <p className="mt-3 text-[14px] text-muted max-w-[680px]">{t.pipelineLine}</p>
         </div>
       </header>
 
@@ -56,7 +56,7 @@ export default async function TradingSimPage({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {t.method.items.map((m) => (
               <div key={m.title} className="border-t border-rule pt-5">
-                <p className="text-[12px] text-cold mb-2">{m.title}</p>
+                <p className="text-[14px] text-cold mb-2">{m.title}</p>
                 <p className="text-[14px] leading-[1.7]">{m.body}</p>
               </div>
             ))}
@@ -66,13 +66,13 @@ export default async function TradingSimPage({
               href={TRADING_SIM_REPO}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[13px] px-5 py-3 rounded-[3px] bg-cold text-paper font-semibold hover:opacity-90 transition-opacity"
+              className="text-[14px] px-5 py-3 rounded-[3px] bg-cold text-paper font-semibold hover:opacity-90 transition-opacity"
             >
               {t.method.repoCta}
             </a>
             <Link
               href={`/${lang}`}
-              className="text-[13px] px-5 py-3 rounded-[3px] border border-rule text-ink hover:border-cold transition-colors"
+              className="text-[14px] px-5 py-3 rounded-[3px] border border-rule text-ink hover:border-cold transition-colors"
             >
               {t.method.backCta}
             </Link>

@@ -127,7 +127,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 lang={lang}
               />
             </div>
-            <p className="mt-1 text-[13.5px] text-body">{sheet.metricsNote}</p>
+            <p className="mt-1 text-[14px] text-body">{sheet.metricsNote}</p>
             <dl className="grid grid-cols-2 pt-3 pb-6 lg:grid-cols-4">
               {sheet.metrics.map((m, i) => {
                 const proof = [`/${lang}/cv`, `/${lang}/cv`, `/${lang}/projects/trading-sim`, TRADING_SIM_REPO][i];
@@ -150,7 +150,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                         {m.label}
                       </dt>
                     </a>
-                    <p className="mt-1 text-[13.5px] text-body">{m.note}</p>
+                    <p className="mt-1 text-[14px] text-body">{m.note}</p>
                   </div>
                 );
               })}
@@ -207,7 +207,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               {work.project.stack.map((s) => (
                 <span
                   key={s}
-                  className="rounded-[3px] border border-rule px-2.5 py-1 text-[12.5px] text-body"
+                  className="rounded-[3px] border border-rule px-2.5 py-1 text-[14px] text-body"
                 >
                   {s}
                 </span>
@@ -284,10 +284,10 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 >
                   <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
                     <h3 className="font-display text-[16.5px] font-semibold text-ink">{r.title}</h3>
-                    <span className="text-[13px] text-muted">{r.period}</span>
+                    <span className="text-[14px] text-muted">{r.period}</span>
                   </div>
                   <p className="mt-1.5 max-w-[68ch] text-[14.5px] leading-[1.65]">{r.desc}</p>
-                  <p className="mt-2 text-[12px] tracking-[0.08em] text-cold uppercase">{r.tag}</p>
+                  <p className="mt-2 text-[12.5px] tracking-[0.08em] text-cold uppercase">{r.tag}</p>
                 </li>
               ))}
             </ol>

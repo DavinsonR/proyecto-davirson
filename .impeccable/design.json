@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-20T00:00:00Z",
+  "title": "Design System: Davirson Novoa — Research Tear Sheet",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Sheet Paper",
+        "canonical": "#ffffff",
+        "darkValue": "#0e1216",
+        "tonalRamp": ["#0e1216", "#161c22", "#1d242b", "#39424b", "#626c76", "#a8b1ba", "#d8dde3", "#ffffff"]
+      },
+      "band": {
+        "role": "neutral",
+        "displayName": "Neutral Band",
+        "canonical": "#f4f6f8",
+        "darkValue": "#161c22",
+        "tonalRamp": ["#12171c", "#1d242b", "#2b333c", "#454e57", "#626c76", "#a8b1ba", "#e9edf1", "#f4f6f8"]
+      },
+      "band2": {
+        "role": "neutral",
+        "displayName": "Deep Band",
+        "canonical": "#e9edf1",
+        "darkValue": "#1d242b",
+        "tonalRamp": ["#12171c", "#1d242b", "#2b333c", "#454e57", "#626c76", "#a8b1ba", "#d8dde3", "#e9edf1"]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#d8dde3",
+        "darkValue": "#29323b",
+        "tonalRamp": ["#12171c", "#1e252c", "#29323b", "#454e57", "#626c76", "#9aa4ad", "#d8dde3", "#eef1f4"]
+      },
+      "rulesoft": {
+        "role": "neutral",
+        "displayName": "Soft Hairline",
+        "canonical": "#e8ecf0",
+        "darkValue": "#1e252c",
+        "tonalRamp": ["#12171c", "#1e252c", "#29323b", "#454e57", "#7b858f", "#b6bfc7", "#e8ecf0", "#f7f9fb"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Document Ink",
+        "canonical": "#14181d",
+        "darkValue": "#eef2f6",
+        "contrastOnPaper": "15.8:1",
+        "tonalRamp": ["#14181d", "#232a31", "#333c45", "#454e57", "#626c76", "#9aa4ad", "#cfd6dd", "#eef2f6"]
+      },
+      "body": {
+        "role": "neutral",
+        "displayName": "Reading Grey",
+        "canonical": "#454e57",
+        "darkValue": "#b3bcc5",
+        "contrastOnPaper": "8.4:1",
+        "tonalRamp": ["#14181d", "#242b32", "#343d45", "#454e57", "#626c76", "#8b959f", "#b3bcc5", "#e2e7eb"]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Metadata Grey",
+        "canonical": "#626c76",
+        "darkValue": "#8b959f",
+        "contrastOnPaper": "5.4:1",
+        "tonalRamp": ["#181c21", "#282f36", "#3a434b", "#4e5861", "#626c76", "#8b959f", "#b5bec6", "#e3e7ea"]
+      },
+      "cold": {
+        "role": "primary",
+        "displayName": "Institutional Blue",
+        "canonical": "#0f4c81",
+        "darkValue": "#74b0e4",
+        "contrastOnPaper": "8.1:1",
+        "tonalRamp": ["#06192b", "#0a2f4f", "#0f4c81", "#166ab3", "#2f8ada", "#5da5e5", "#9cc7ef", "#e6eef7"]
+      },
+      "coldsoft": {
+        "role": "primary",
+        "displayName": "Blue Wash",
+        "canonical": "#e6eef7",
+        "darkValue": "#14212e",
+        "tonalRamp": ["#0a1520", "#14212e", "#1e3345", "#2b455f", "#4a7ba8", "#89b6dd", "#b9cfe4", "#e6eef7"]
+      },
+      "coldline": {
+        "role": "primary",
+        "displayName": "Blue Hairline",
+        "canonical": "#b9cfe4",
+        "darkValue": "#2b455f",
+        "tonalRamp": ["#0a1520", "#14212e", "#1e3345", "#2b455f", "#4a7ba8", "#89b6dd", "#b9cfe4", "#e6eef7"]
+      },
+      "warm": {
+        "role": "secondary",
+        "displayName": "Reserved Amber",
+        "canonical": "#96551a",
+        "darkValue": "#d9a05b",
+        "contrastOnPaper": "6.0:1",
+        "tonalRamp": ["#2b1809", "#4a2a0d", "#6b3c13", "#96551a", "#c07128", "#d9a05b", "#ecc79a", "#f7efe5"]
+      },
+      "warmsoft": {
+        "role": "secondary",
+        "displayName": "Amber Wash",
+        "canonical": "#f7efe5",
+        "darkValue": "#241c12",
+        "tonalRamp": ["#181208", "#241c12", "#3a2c18", "#6b3c13", "#96551a", "#d9a05b", "#ecc79a", "#f7efe5"]
+      },
+      "pos": {
+        "role": "tertiary",
+        "displayName": "Verdict Green",
+        "canonical": "#1a6b48",
+        "darkValue": "#4bbd8a",
+        "aliasOf": "live",
+        "tonalRamp": ["#07200f", "#0d3a24", "#134f34", "#1a6b48", "#25925f", "#4bbd8a", "#8ad9b6", "#dcf3e8"]
+      },
+      "neg": {
+        "role": "tertiary",
+        "displayName": "Verdict Red",
+        "canonical": "#9c2b2b",
+        "darkValue": "#e07070",
+        "tonalRamp": ["#2a0b0b", "#4a1414", "#6d1f1f", "#9c2b2b", "#c44343", "#e07070", "#efa8a8", "#fae4e4"]
+      },
+      "building": {
+        "role": "tertiary",
+        "displayName": "Caution Ochre",
+        "canonical": "#8a6a10",
+        "darkValue": "#d9b45b",
+        "tonalRamp": ["#241b04", "#3d2e07", "#5e480b", "#8a6a10", "#b28c1c", "#d9b45b", "#ebd497", "#f8f0da"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Sheet Name", "purpose": "The candidate name at the top of the document. Once per surface." },
+      "verdict": { "displayName": "Verdict", "purpose": "What this asset is, stated once, large, in Source Serif 4 and institutional blue." },
+      "figure": { "displayName": "Figure", "purpose": "Large tabular numbers in the figures band and anywhere a number is set large." },
+      "headline": { "displayName": "Section Headline", "purpose": "Section titles across all surfaces." },
+      "lede": { "displayName": "Thesis Lede", "purpose": "The single balanced thesis line under the name; capped at 40ch." },
+      "title": { "displayName": "Row Title", "purpose": "Article and row headings inside a section." },
+      "body": { "displayName": "Body", "purpose": "Running prose at 15-15.5px, capped 62-70ch." },
+      "bodySmall": { "displayName": "Dense Body", "purpose": "Dense rows, capability details, availability block, footer. The 14px floor." },
+      "label": { "displayName": "Field Label", "purpose": "Tracked-caps metadata: classification line, field labels, band labels. Never a sentence." }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "sheet-settle",
+        "value": "sheet-settle 620ms cubic-bezier(0.16, 1, 0.3, 1) both",
+        "purpose": "The one authored moment. Rows settle in from opacity 0 / translateY(10px) / blur(3px), staggered in reading order across the document header only (60ms, 120ms, 180ms, 240ms, 260ms, 300ms, then 340ms + 70ms per figure). Runs from an already-visible default; fully disabled under prefers-reduced-motion."
+      },
+      {
+        "name": "hover-opacity",
+        "value": "transition: opacity 150ms",
+        "purpose": "Filled buttons fade to 90% on hover. No transform, no lift."
+      },
+      {
+        "name": "hover-color",
+        "value": "transition: color 150ms, border-color 150ms",
+        "purpose": "Outlined controls and links move border and text to institutional blue on hover."
+      },
+      {
+        "name": "focus-ring",
+        "value": "outline: 2px solid var(--color-cold); outline-offset: 2px; border-radius: 2px",
+        "purpose": "Global focus-visible ring. Never removed or restyled per component."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "container", "value": "1080px" },
+      { "name": "container-cv", "value": "980px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The download/contact action. Institutional blue, paper text, barely-rounded.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Download CV (PDF)</a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; background: var(--color-cold, #0f4c81); color: var(--color-paper, #ffffff); font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 14.5px; font-weight: 600; padding: 12px 20px; border: none; border-radius: 3px; text-decoration: none; transition: opacity 150ms; } .ds-btn-primary:hover { opacity: 0.9; } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-cold, #0f4c81); outline-offset: 2px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "The secondary pair to every primary. Hairline border, ink text, both move to blue on hover.",
+      "html": "<a class=\"ds-btn-outline\" href=\"#\">See the work</a>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; background: transparent; color: var(--color-ink, #14181d); font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 14.5px; font-weight: 600; padding: 12px 20px; border: 1px solid var(--color-rule, #d8dde3); border-radius: 3px; text-decoration: none; transition: color 150ms, border-color 150ms; } .ds-btn-outline:hover { border-color: var(--color-cold, #0f4c81); color: var(--color-cold, #0f4c81); } .ds-btn-outline:focus-visible { outline: 2px solid var(--color-cold, #0f4c81); outline-offset: 2px; }"
+    },
+    {
+      "name": "Ink Button",
+      "kind": "button",
+      "refersTo": "button-ink",
+      "description": "The strong action on a surface that already spent its blue — the live-demo link.",
+      "html": "<a class=\"ds-btn-ink\" href=\"#\">Open the live demo</a>",
+      "css": ".ds-btn-ink { display: inline-flex; align-items: center; background: var(--color-ink, #14181d); color: var(--color-paper, #ffffff); font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 600; padding: 10px 16px; border: none; border-radius: 3px; text-decoration: none; transition: opacity 150ms; } .ds-btn-ink:hover { opacity: 0.9; }"
+    },
+    {
+      "name": "Stack Chip",
+      "kind": "chip",
+      "refersTo": "chip-stack",
+      "description": "A technology tag. Hairline border, no fill, no accent — a stack tag is not a claim.",
+      "html": "<span class=\"ds-chip\">Python</span><span class=\"ds-chip\">pandas</span><span class=\"ds-chip\">GitHub Actions</span>",
+      "css": ".ds-chip { display: inline-block; margin-right: 8px; background: transparent; color: var(--color-body, #454e57); font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 12.5px; padding: 4px 10px; border: 1px solid var(--color-rule, #d8dde3); border-radius: 3px; }"
+    },
+    {
+      "name": "Status Pill",
+      "kind": "chip",
+      "refersTo": "status-pill-live",
+      "description": "Module state. Tinted from its own status hue so it stays legible on paper and on the dark ground.",
+      "html": "<span class=\"ds-pill ds-pill-live\">LIVE</span><span class=\"ds-pill ds-pill-building\">BUILDING</span>",
+      "css": ".ds-pill { display: inline-block; margin-right: 8px; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.09em; padding: 4px 10px; border: 1px solid; border-radius: 9999px; white-space: nowrap; } .ds-pill-live { color: var(--color-live, #1a6b48); border-color: rgba(26,107,72,0.35); background: rgba(26,107,72,0.10); } .ds-pill-building { color: var(--color-building, #8a6a10); border-color: rgba(138,106,16,0.35); background: rgba(138,106,16,0.10); }"
+    },
+    {
+      "name": "Figures Band",
+      "kind": "custom",
+      "refersTo": "figure-band",
+      "description": "The signature component: a full-bleed blue-wash region opened by a 2px blue rule, carrying tracked-caps label, live stamp, and a row of serif figures divided by blue hairlines. Each figure links to its own proof.",
+      "html": "<div class=\"ds-band\"><div class=\"ds-band-head\"><p class=\"ds-band-label\">Key figures</p><span class=\"ds-stamp\"><i class=\"ds-dot\"></i>Pipeline refreshed 19 Aug 2025</span></div><p class=\"ds-band-note\">Every figure links to the artifact that proves it.</p><dl class=\"ds-figs\"><div class=\"ds-fig\"><a href=\"#\"><dd class=\"ds-fig-val\">4</dd><dt class=\"ds-fig-lab\">Years in finance operations</dt></a><p class=\"ds-fig-note\">Verified in the CV.</p></div><div class=\"ds-fig\"><a href=\"#\"><dd class=\"ds-fig-val\">120+</dd><dt class=\"ds-fig-lab\">Daily reconciliations</dt></a><p class=\"ds-fig-note\">Verified in the CV.</p></div><div class=\"ds-fig\"><a href=\"#\"><dd class=\"ds-fig-val\">1.4x</dd><dt class=\"ds-fig-lab\">Strategy vs benchmark</dt></a><p class=\"ds-fig-note\">Trading sim, out of sample.</p></div></dl></div>",
+      "css": ".ds-band { background: var(--color-coldsoft, #e6eef7); border-top: 2px solid var(--color-cold, #0f4c81); padding: 16px 24px 24px; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; } .ds-band-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; } .ds-band-label { margin: 0; font-size: 12.5px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-cold, #0f4c81); } .ds-stamp { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-muted, #626c76); } .ds-dot { width: 8px; height: 8px; border-radius: 9999px; background: var(--color-live, #1a6b48); } .ds-band-note { margin: 4px 0 0; font-size: 13.5px; color: var(--color-body, #454e57); } .ds-figs { display: grid; grid-template-columns: repeat(3, 1fr); margin: 12px 0 0; } .ds-fig { padding: 8px 0 8px 20px; border-left: 1px solid var(--color-coldline, #b9cfe4); } .ds-fig:first-child { border-left: 0; padding-left: 0; } .ds-fig a { display: block; text-decoration: none; } .ds-fig-val { margin: 0; font-family: \"Source Serif 4\", ui-serif, Georgia, serif; font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums; color: var(--color-ink, #14181d); transition: color 150ms; } .ds-fig-lab { margin: 8px 0 0; font-size: 14px; font-weight: 500; line-height: 1.35; color: var(--color-ink, #14181d); text-decoration: underline; text-decoration-color: var(--color-cold, #0f4c81); text-decoration-thickness: 1.5px; text-underline-offset: 4px; transition: text-decoration-thickness 150ms; } .ds-fig a:hover .ds-fig-val { color: var(--color-cold, #0f4c81); } .ds-fig a:hover .ds-fig-lab { text-decoration-thickness: 2.5px; } .ds-fig-note { margin: 4px 0 0; font-size: 13.5px; color: var(--color-body, #454e57); }"
+    },
+    {
+      "name": "Availability Block",
+      "kind": "card",
+      "refersTo": "availability-block",
+      "description": "The only amber-grounded surface: human/purpose content. An open block opened by a 2px amber rule — not a card, no border on three sides, no shadow.",
+      "html": "<aside class=\"ds-avail\"><p class=\"ds-avail-lead\">Open to finance-data roles, remote or Bogotá hybrid. Available from October.</p><dl class=\"ds-avail-rows\"><div><dt>Email</dt><dd><a href=\"#\">name@example.com</a></dd></div><div class=\"ds-row-split\"><dt>LinkedIn</dt><dd><a href=\"#\">davirson-novoa</a></dd></div><div class=\"ds-row-split\"><dt>GitHub</dt><dd><a href=\"#\">DavinsonR</a></dd></div></dl></aside>",
+      "css": ".ds-avail { background: var(--color-warmsoft, #f7efe5); border-top: 2px solid var(--color-warm, #96551a); padding: 20px; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; max-width: 300px; } .ds-avail-lead { margin: 0; font-size: 14px; line-height: 1.65; color: var(--color-ink, #14181d); } .ds-avail-rows { margin: 16px 0 0; padding-top: 16px; border-top: 1px solid rgba(150,85,26,0.3); font-size: 14px; } .ds-avail-rows > div { margin-bottom: 8px; } .ds-row-split { display: flex; justify-content: space-between; gap: 16px; } .ds-avail-rows dt { color: var(--color-warm, #96551a); } .ds-avail-rows dd { margin: 2px 0 0; } .ds-avail-rows a { color: var(--color-ink, #14181d); text-decoration: underline; text-decoration-color: rgba(150,85,26,0.5); text-underline-offset: 2px; } .ds-avail-rows a:hover { text-decoration-color: var(--color-warm, #96551a); }"
+    },
+    {
+      "name": "Navbar",
+      "kind": "nav",
+      "refersTo": "navbar",
+      "description": "Sticky hairline-capped bar on a 95% paper ground. The language switch is labelled, not a glyph — a dim glyph in the previous build went unfound by reviewers.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-mark\" href=\"#\">Davirson Novoa</a><div class=\"ds-nav-links\"><a href=\"#\">Work</a><a href=\"#\">Track record</a><a href=\"#\">CV</a></div><div class=\"ds-nav-ctrls\"><a class=\"ds-lang\" href=\"#\">EN</a><button class=\"ds-icon-btn\" aria-label=\"Switch theme\"><svg viewBox=\"0 0 16 16\" width=\"15\" height=\"15\" fill=\"none\"><circle cx=\"8\" cy=\"8\" r=\"3.1\" stroke=\"currentColor\" stroke-width=\"1.3\"/><g stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\"><path d=\"M8 1.4v1.5M8 13.1v1.5M1.4 8h1.5M13.1 8h1.5M3.3 3.3l1.1 1.1M11.6 11.6l1.1 1.1M12.7 3.3l-1.1 1.1M4.4 11.6l-1.1 1.1\"/></g></svg></button><a class=\"ds-nav-cta\" href=\"#\">Contact</a></div></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 24px; background: var(--color-paper, #ffffff); border-bottom: 1px solid var(--color-rule, #d8dde3); backdrop-filter: blur(4px); font-family: Archivo, ui-sans-serif, system-ui, sans-serif; } .ds-nav-mark { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: var(--color-ink, #14181d); text-decoration: none; } .ds-nav-links { display: flex; gap: 28px; font-size: 14px; font-weight: 500; } .ds-nav-links a { color: var(--color-body, #454e57); text-decoration: none; transition: color 150ms; } .ds-nav-links a:hover { color: var(--color-cold, #0f4c81); } .ds-nav-ctrls { display: flex; align-items: center; gap: 8px; } .ds-lang { display: inline-flex; align-items: center; height: 36px; padding: 0 12px; font-size: 12.5px; font-weight: 600; letter-spacing: 0.06em; color: var(--color-cold, #0f4c81); background: var(--color-coldsoft, #e6eef7); border: 1px solid var(--color-coldline, #b9cfe4); border-radius: 3px; text-decoration: none; transition: border-color 150ms; } .ds-lang:hover { border-color: var(--color-cold, #0f4c81); } .ds-icon-btn { display: inline-flex; align-items: center; justify-content: center; height: 36px; width: 36px; color: var(--color-body, #454e57); background: transparent; border: 1px solid var(--color-rule, #d8dde3); border-radius: 3px; cursor: pointer; transition: color 150ms, border-color 150ms; } .ds-icon-btn:hover { border-color: var(--color-cold, #0f4c81); color: var(--color-cold, #0f4c81); } .ds-nav-cta { display: inline-flex; align-items: center; height: 36px; padding: 0 16px; font-size: 13.5px; font-weight: 600; color: var(--color-paper, #ffffff); background: var(--color-cold, #0f4c81); border-radius: 3px; text-decoration: none; transition: opacity 150ms; } .ds-nav-cta:hover { opacity: 0.9; }"
+    },
+    {
+      "name": "Skill Scale",
+      "kind": "custom",
+      "refersTo": "skill-scale",
+      "description": "A numbered indicator, not a decorative bar chart: the serif figure leads, ten flat segments confirm.",
+      "html": "<div class=\"ds-skill\"><div class=\"ds-skill-head\"><span class=\"ds-skill-name\">Python (pandas)</span><span class=\"ds-skill-val\">7<i>/10</i></span></div><div class=\"ds-skill-track\"><span class=\"on\"></span><span class=\"on\"></span><span class=\"on\"></span><span class=\"on\"></span><span class=\"on\"></span><span class=\"on\"></span><span class=\"on\"></span><span></span><span></span><span></span></div></div>",
+      "css": ".ds-skill { border-top: 1px solid var(--color-rule, #d8dde3); padding: 12px 0; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; } .ds-skill-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; } .ds-skill-name { font-size: 14.5px; font-weight: 500; color: var(--color-ink, #14181d); } .ds-skill-val { font-family: \"Source Serif 4\", ui-serif, Georgia, serif; font-size: 19px; line-height: 1; font-variant-numeric: tabular-nums; color: var(--color-cold, #0f4c81); } .ds-skill-val i { font-style: normal; color: var(--color-muted, #626c76); } .ds-skill-track { display: flex; gap: 3px; margin-top: 8px; } .ds-skill-track span { flex: 1; height: 6px; border-radius: 1px; background: var(--color-rule, #d8dde3); } .ds-skill-track span.on { background: var(--color-cold, #0f4c81); }"
+    },
+    {
+      "name": "Field Label",
+      "kind": "custom",
+      "refersTo": "typography.label",
+      "description": "Tracked-caps metadata. Labels a field, a band, or the document itself — never a decorative kicker above a headline.",
+      "html": "<h4 class=\"ds-label\">The problem</h4><h4 class=\"ds-label ds-label-cold\">Why it matters</h4>",
+      "css": ".ds-label { margin: 0 0 12px; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-muted, #626c76); } .ds-label-cold { color: var(--color-cold, #0f4c81); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Research Tear Sheet",
+    "overview": "This is a document, not an interface. The reader is a hiring analyst who reads assets for a living: verdict at the top, figures in a ruled band, evidence below, disclosures at the foot. Everything the system does follows from that arrangement. Structure is carried by hairline rules and banded rows — the sheet's own grammar — and never by boxes floating over a ground. Light is the home state because the audience reads in a bright office and prints; dark is a real second theme re-stepped against its own ground (#0e1216), not an inversion of the light one.\n\nThe palette is a two-voice instrument on a paper ground. Institutional blue owns whole bands and every technical claim; amber marks human and purpose content only, and nothing else. Type is two faces, committed: Archivo for all UI and prose, Source Serif 4 reserved for figures set large and for the one verdict line. Figures are tabular everywhere, wired at the body so every column of numbers aligns without per-element work.\n\nThe build refuses, explicitly and by name, the dark developer-portfolio arrangement it replaced: mono type, neon accents, terminal chrome, and a terminal-styled navigation bar. It also refuses ornament that would make it feel like a product page — no cards, no shadows, no gradients, no glow.",
+    "keyCharacteristics": [
+      "Paper-white ground with near-black ink; dark theme re-stepped, never inverted",
+      "Hairline rules and full-bleed tinted bands as the only structural devices",
+      "Institutional blue for data and technical claims; amber for human/purpose content only",
+      "Two faces: Archivo everywhere, Source Serif 4 for large figures and the verdict",
+      "Tabular figures at the body level; every number aligns",
+      "Zero shadows, zero cards, 3px radius on controls and nothing else",
+      "One authored motion moment, disabled entirely under reduced-motion"
+    ],
+    "rules": [
+      { "name": "The Amber Reservation Rule", "body": "Amber marks human and purpose content only: availability, hiring, the career-transition passage. Every data point, metric, and technical claim wears institutional blue or ink. This rule is binding, it predates the redesign, and getting it backwards was a live review finding — an amber number is a bug.", "section": "colors" },
+      { "name": "The Two-Voice Rule", "body": "A surface has exactly two accents. If a new state needs a color, it takes one of the four verdict/status hues (pos, neg, live, building) — it does not invent a third accent.", "section": "colors" },
+      { "name": "The Re-Stepped Dark Rule", "body": "The dark theme is authored against #0e1216 with its own ink ramp and its own accent steps (blue lightens to #74b0e4, amber to #d9a05b). Never derive dark by inverting or filtering the light values; each step is chosen for contrast on its own ground.", "section": "colors" },
+      { "name": "The Band, Not the Box Rule", "body": "A region is set apart by a full-bleed tint (coldsoft, warmsoft, band) capped with a 1–2px rule. It is never set apart by a bordered, rounded, floating container.", "section": "colors" },
+      { "name": "The 14px Floor Rule", "body": "No prose is set below 14px. This answered a real accessibility complaint. The 12–12.5px step exists only for tracked-caps metadata labels — never for a sentence a reader has to read.", "section": "typography" },
+      { "name": "The Serif-Is-A-Figure Rule", "body": "Source Serif 4 appears only on numbers set large and on the single verdict line. A serif paragraph, a serif heading, or a serif button does not exist in this system.", "section": "typography" },
+      { "name": "The Tabular Everywhere Rule", "body": "font-variant-numeric: tabular-nums with \"tnum\" 1, \"cv05\" 1 is wired at the body. Numbers align in columns across the whole document by default; nothing opts out.", "section": "typography" },
+      { "name": "The Label-Is-A-Field Rule", "body": "Tracked caps label a field, a band, or the document itself (the classification line, which is native to the form). They do not sit above a headline as a decorative kicker.", "section": "typography" },
+      { "name": "The Flat Sheet Rule", "body": "No shadow, no glow, no gradient, no elevation of any kind. If a region needs to separate, it takes a rule or a band. A drop shadow anywhere in this system is a defect.", "section": "elevation" },
+      { "name": "The Rule-Weight Rule", "body": "1px rulesoft divides metadata; 1px rule divides content rows; 2px in ink, cold, or warm opens a major band and declares its voice.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do carry structure with hairline rules (1px rule/rulesoft) and full-bleed bands, and open a major band with a 2px rule in ink, cold, or warm.",
+      "Do reserve amber for human and purpose content — availability, hiring, the career-transition passage — and give every data point and technical claim to institutional blue or ink.",
+      "Do set every large figure in Source Serif 4, tabular, with its label and a note underneath.",
+      "Do keep prose at 14px or larger; use the 12–12.5px tracked-caps step only for metadata labels.",
+      "Do author the dark theme against its own ground (#0e1216) with re-chosen steps, and keep light as the default reading state.",
+      "Do link every figure to the artifact that proves it.",
+      "Do state a claim once, large, and let the band below verify it.",
+      "Do keep motion to the single .settle stagger on a document header and disable it fully under reduced-motion."
+    ],
+    "donts": [
+      "Don't add a shadow, glow, or gradient. The system is flat; a box-shadow here is a defect.",
+      "Don't wrap content in a card. Removing cards was a review decision on all three surfaces; use a top rule plus optional tint instead.",
+      "Don't put amber on a number, a metric, a stack tag, or any technical claim.",
+      "Don't introduce a third accent hue; extend with the existing verdict/status tokens.",
+      "Don't ship mono type, neon accents, terminal chrome, or a terminal-styled navigation bar — this world was chosen specifically against them.",
+      "Don't set a paragraph, heading, or button in the serif; the serif means \"this is a figure.\"",
+      "Don't derive the dark theme by inverting or filtering light values.",
+      "Don't hide a control behind a bare dim glyph where a short label would work — the language switch is labelled for exactly this reason.",
+      "Don't round a band, row, or block; radius belongs to controls (3px) and to the two elements whose meaning is round.",
+      "Don't use an icon font, emoji, or a third-party icon package; icons are inline SVG at a 1.3px stroke on a 16px box."
+    ]
+  }
+}

@@ -19,7 +19,7 @@ const labels: Record<Status, string> = {
 export default function StatusPill({ status, text }: { status: Status; text?: string }) {
   return (
     <span
-      className={`inline-block rounded-full border px-2.5 py-1 text-[11px] font-semibold tracking-[0.09em] whitespace-nowrap ${styles[status]}`}
+      className={`inline-block rounded-full border px-2.5 py-1 text-[12.5px] font-semibold tracking-[0.09em] whitespace-nowrap ${styles[status]}`}
     >
       {text ?? labels[status]}
     </span>

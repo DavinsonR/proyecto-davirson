@@ -39,7 +39,7 @@ export default function PipelineStamp({
   }, [lang]);
 
   return (
-    <span className="inline-flex items-center gap-2 text-[13px] text-muted">
+    <span className="inline-flex items-center gap-2 text-[14px] text-muted">
       <span className="relative flex h-2 w-2" aria-hidden="true">
         <span className="absolute inline-flex h-full w-full rounded-full bg-live opacity-60" />
         <span className="relative inline-flex h-2 w-2 rounded-full bg-live" />
