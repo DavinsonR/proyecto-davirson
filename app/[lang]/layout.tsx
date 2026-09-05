@@ -3,9 +3,8 @@ import { getDictionary, locales, type Locale } from "@/lib/dictionaries";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MotionRoot from "@/components/Motion";
+import { SITE } from "@/lib/site";
 import "../globals.css";
-
-const SITE = "https://proyecto-davirson-git.vercel.app";
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));

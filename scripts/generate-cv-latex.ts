@@ -9,7 +9,11 @@
 // ============================================================
 import fs from "node:fs";
 import path from "node:path";
-import { dictionaries, type Locale } from "../lib/dictionaries";
+import { dictionaries, type CvProject, type Locale } from "../lib/dictionaries";
+import { SITE } from "../lib/site";
+
+/** Un href relativo al idioma ("/projects/powerbi") se vuelve absoluto en el PDF. */
+const abs = (lang: Locale, href: string) => (href.startsWith("http") ? href : `${SITE}/${lang}${href}`);
 
 /** LaTeX se traga el texto plano; hay que devolverle sus escapes.
  *  El orden importa: la barra invertida se sustituye primero, si no
@@ -39,6 +43,7 @@ const strings = {
     crossover: "El rol cruzado",
     experience: "Experiencia",
     projects: "Proyectos en producción",
+    research: "Investigación",
     skills: "Habilidades",
     finance: "Dominio financiero",
     data: "Datos e ingeniería",
@@ -56,6 +61,7 @@ const strings = {
     crossover: "The crossover role",
     experience: "Experience",
     projects: "Production projects",
+    research: "Research",
     skills: "Skills",
     finance: "Finance domain",
     data: "Data & engineering",
@@ -172,16 +178,21 @@ function build(lang: Locale): string {
   }
   w("");
 
-  // ---------- proyectos ----------
-  w(`\\section*{${tex(t.projects)}}`);
-  w(`{\\small\\itshape ${tex(cv.projectsNote)}}\\par\\vspace{3pt}`);
-  for (const pr of cv.projects) {
+  // ---------- proyectos e investigación: el mismo bloque ----------
+  const projectBlock = (pr: CvProject) => {
     w(`\\headline{${tex(pr.name)}}{${tex(pr.period)}}`);
-    w(`\\subline{${tex(pr.role)}}{\\href{${pr.href}}{${tex(pr.hrefLabel)}}}`);
+    w(`\\subline{${tex(pr.role)}}{\\href{${abs(lang, pr.href)}}{${tex(pr.hrefLabel)}}}`);
     bullets(pr.bullets);
     w(`{\\small\\textbf{${tex(t.stack)}:} ${pr.stack.map(tex).join(" \\,\\textperiodcentered\\, ")}}\\par`);
     w("\\vspace{4pt}");
-  }
+  };
+  w(`\\section*{${tex(t.projects)}}`);
+  w(`{\\small\\itshape ${tex(cv.projectsNote)}}\\par\\vspace{3pt}`);
+  cv.projects.forEach(projectBlock);
+  w("");
+  w(`\\section*{${tex(t.research)}}`);
+  w(`{\\small\\itshape ${tex(cv.researchNote)}}\\par\\vspace{3pt}`);
+  cv.research.forEach(projectBlock);
   w("");
 
   // ---------- habilidades ----------
@@ -193,7 +204,9 @@ function build(lang: Locale): string {
   w("\\begin{multicols}{2}");
   w("\\begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=0pt, parsep=0pt]");
   for (const sk of cv.skillsTech) {
-    w(`  \\item \\textbf{\\color{ink}${tex(sk.name)}} --- ${tex(sk.proof)}`);
+    // la prueba que tiene página propia se lleva su enlace al PDF
+    const proof = sk.href ? `\\href{${abs(lang, sk.href)}}{${tex(sk.proof)}}` : tex(sk.proof);
+    w(`  \\item \\textbf{\\color{ink}${tex(sk.name)}} --- ${proof}`);
   }
   w("\\end{itemize}");
   w("\\end{multicols}");
@@ -204,8 +217,11 @@ function build(lang: Locale): string {
   // costaban media página en un documento que debe caber en dos.
   w(`\\section*{${tex(t.education)}}`);
   for (const e of cv.education) {
-    w(`\\headline{${tex(e.title)}}{${tex(e.period)}}`);
-    w(`{\\small ${tex(e.inst)} \\,\\textperiodcentered\\, ${tex(e.statusText.toLowerCase())}}\\par\\vspace{1pt}`);
+    const title = e.href ? `\\href{${abs(lang, e.href)}}{${tex(e.title)}}` : tex(e.title);
+    w(`\\headline{${title}}{${tex(e.period)}}`);
+    w(`{\\small ${tex(e.inst)} \\,\\textperiodcentered\\, ${tex(e.statusText.toLowerCase())}}\\par`);
+    if (e.note) w(`{\\small\\itshape ${tex(e.note)}}\\par`);
+    w("\\vspace{1pt}");
   }
   w("\\vspace{3pt}");
   w(`\\textbf{\\color{ink}${tex(t.certs)}:} ` +

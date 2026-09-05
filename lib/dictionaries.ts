@@ -6,10 +6,31 @@
 export const locales = ["es", "en"] as const;
 export type Locale = (typeof locales)[number];
 
+import type { PbiMeasureName, PbiPageId, PbiTableName } from "./powerbi-model";
+
 export type Status = "live" | "building" | "research" | "idea";
 
 // Un reconocimiento puede tener evidencia pública; la mayoría no la tiene.
 export type Award = { title: string; year: string; desc: string; href?: string; hrefLabel?: string };
+// Una cifra lleva su prueba: href relativo al idioma ("/cv#experiencia") o absoluto.
+export type Metric = { value: string; label: string; note: string; href: string };
+// Herramienta con su prueba; la prueba puede enlazar a la página que la muestra.
+export type ProofRow = { name: string; proof: string; href?: string };
+// Fila de "también en la mesa": sin href es un proyecto privado y lo dice en access.
+export type AlsoRow = {
+  name: string; kind: string; status: Status; statusText: string; note: string;
+  href?: string; access?: string;
+};
+export type Education = {
+  title: string; inst: string; period: string; status: Status; statusText: string;
+  note?: string; href?: string; hrefLabel?: string;
+};
+export type CvProject = {
+  name: string; role: string; period: string; href: string; hrefLabel: string;
+  stack: string[]; bullets: string[];
+};
+
+export const THESIS_REPO = "https://github.com/DavinsonR/Tesis_Fnancial_Inclusion_GDP_Growth_Colombia";
 
 const profile = {
   name: "Davirson Novoa Ramírez",
@@ -45,7 +66,7 @@ export const dictionaries = {
     },
     sheet: {
       classification: "Perfil · Finanzas y Datos",
-      asOf: "Corte a agosto 2026",
+      asOf: "Corte a septiembre 2026",
       name: "Davirson Novoa Ramírez",
       verdict: "Finance Data Analyst",
       thesis: "Leo un P&L y construyo el pipeline que lo alimenta.",
@@ -57,11 +78,11 @@ export const dictionaries = {
       pipelineStalled: "Pipeline detenido · datos hasta",
       pipelineLiveFallback: "Pipeline en vivo · se actualiza a diario",
       metrics: [
-        { value: "15+", label: "países en alcance", note: "en tres roles de finanzas" },
-        { value: "26", label: "meses de practicante a especialista", note: "SLB" },
-        { value: "48", label: "activos en producción", note: "pipeline diario" },
-        { value: "89", label: "pruebas de datos automáticas", note: "en cada corrida" },
-      ],
+        { value: "15+", label: "países en alcance", note: "en tres roles de finanzas", href: "/cv#experiencia" },
+        { value: "26", label: "meses de practicante a especialista", note: "SLB", href: "/cv#experiencia" },
+        { value: "48", label: "activos en producción", note: "pipeline diario", href: "/projects/trading-sim" },
+        { value: "89", label: "pruebas de datos automáticas", note: "en cada corrida", href: "/projects/trading-sim#calidad" },
+      ] as Metric[],
       ctaPrimary: "Descargar CV (PDF)",
       ctaSecondary: "Ver la evidencia",
       portraitPending: "DNR",
@@ -83,6 +104,36 @@ export const dictionaries = {
         stack: ["PostgreSQL", "dbt", "Python", "Power BI", "GitHub Actions", "Prefect"],
         repoCta: "Ver el código",
         liveCta: "Abrir el laboratorio",
+        pbiCta: "Ver el informe Power BI",
+      },
+      also: {
+        title: "También en la mesa",
+        rows: [
+          {
+            name: "Medallion Insights — informe Power BI",
+            kind: "Modelo semántico y reporte",
+            status: "live",
+            statusText: "EN EL REPO",
+            note: "Siete tablas en TMDL sobre el warehouse, 17 medidas DAX y cuatro páginas de informe, versionado como texto en el repositorio público. El catálogo completo, con cada expresión, está en su página.",
+            href: "/projects/powerbi",
+          },
+          {
+            name: "Fintech, inclusión financiera y crecimiento regional",
+            kind: "Trabajo de grado · Maestría en Economía",
+            status: "research",
+            statusText: "RADICADA",
+            note: "Índice compuesto por PCA y panel departamental 2017–2021. Con efectos fijos de entidad y tiempo el índice no predice el crecimiento; el resultado se publica igual.",
+            href: "/research/fintech-inclusion",
+          },
+          {
+            name: "Sistema de control personal",
+            kind: "Finanzas y salud · Next.js + Supabase",
+            status: "building",
+            statusText: "EN CONSTRUCCIÓN",
+            note: "Modelo de datos de finanzas personales (utilización de tarjetas, cuotas, calendario de pagos) y de salud sobre Postgres con RLS: 35 tablas y 22 vistas, unas 370 pruebas y un smoke test de RLS en CI. Cifras del repositorio privado, verificables en una demo.",
+            access: "Repositorio privado · demo en entrevista",
+          },
+        ] as AlsoRow[],
       },
       capabilitiesTitle: "Lo que esto demuestra",
       capabilities: [
@@ -232,6 +283,138 @@ export const dictionaries = {
       ],
       note: "Encima de estas corren 171 pruebas unitarias en Python sobre el motor de backtesting, las estrategias y el cliente de cada API.",
     },
+    powerbi: {
+      metaTitle: "Medallion Insights — informe Power BI sobre el warehouse",
+      metaDesc: "Modelo semántico de siete tablas en TMDL, 17 medidas DAX y cuatro páginas de informe, versionados como texto. Cada medida enlaza al archivo que la define.",
+      kicker: "Informe · Medallion Insights",
+      pill: "EN EL REPO",
+      title: "El informe Power BI, con cada medida a la vista",
+      intro: "El warehouse del pipeline alimenta un informe interactivo de Power BI, Medallion Insights. Está versionado como proyecto de Power BI (PBIP): el modelo semántico en TMDL, las páginas en PBIR, todo texto plano que se revisa en una pull request. Esta página es el catálogo de ese modelo, copiado de los archivos fuente, para que nadie tenga que creer en la palabra «Power BI» sin ver qué hay detrás.",
+      sourceLine: "Catálogo copiado del commit",
+      sourceTail: "· el modelo se carga contra el warehouse en Supabase desde Power BI Desktop",
+      facts: { tables: "tablas", relationships: "relaciones, todas a dim_assets.symbol", measures: "medidas DAX", visuals: "visuales en cuatro páginas" },
+      model: {
+        label: "Modelo semántico",
+        title: "Una dimensión, cuatro tablas de hechos y dos agregados",
+        desc: "Estrella clásica: dim_assets es la única dimensión y las cuatro tablas de hechos se relacionan con ella por symbol. Los dos agregados, overfitting_summary y leaderboard, se leen solos: llegan resumidos desde dbt para que el informe y el sitio no puedan discrepar.",
+        diagramTitle: "Diagrama del modelo semántico: dim_assets relacionada con cuatro tablas de hechos; dos agregados sin relación.",
+        legend: { dim: "dimensión", fact: "hechos", aggregate: "agregado" },
+        headers: { table: "Tabla", role: "Rol", source: "Fuente", grain: "Grano", columns: "columnas", measures: "medidas", relationships: "Relaciones" },
+        relationshipLine: "muchos a uno hacia dim_assets.symbol",
+        grain: {
+          dim_assets: "una fila por activo",
+          combination_analysis: "una fila por activo y variante de estrategia",
+          asset_summary: "una fila por activo",
+          fx_decomposition: "una fila por ADR y ventana",
+          equity_curves: "una fila por activo, estrategia y barra",
+          overfitting_summary: "una fila por número de señales combinadas, más un total",
+          leaderboard: "una fila por estrategia, clase y región, más totales",
+        } satisfies Record<PbiTableName, string>,
+      },
+      measures: {
+        label: "Medidas DAX",
+        title: "Diecisiete medidas, con su expresión",
+        desc: "Cada fila enlaza a la línea exacta del archivo TMDL que la define, fijada al commit del catálogo.",
+        headers: { measure: "Medida", dax: "Expresión", format: "Formato", meaning: "Qué responde" },
+        meaning: {
+          "Variants Evaluated": "Cuántas variantes de estrategia hay en el filtro actual.",
+          "Winners In-Sample": "Cuántas superaron a comprar y mantener en la ventana de entrenamiento.",
+          "Winners IS & OOS": "Cuántas de esas siguieron ganando en la ventana ciega.",
+          "OOS Survival Rate": "La cifra de honestidad: supervivientes sobre ganadoras dentro de muestra.",
+          "Beat B&H % (full)": "Proporción que supera a comprar y mantener en todo el periodo.",
+          "Beat B&H % (OOS)": "Proporción que lo supera fuera de muestra.",
+          "Avg Exposure": "Fracción del tiempo con posición abierta.",
+          "Avg Excess Return": "Retorno medio por encima de comprar y mantener.",
+          "Avg OOS Excess Return": "Lo mismo, solo en la ventana ciega.",
+          "Median Sharpe": "Sharpe mediano, que un valor extremo no arrastra.",
+          "Zero-Trade Variants": "Variantes que nunca operaron: no pueden contar como ganadoras.",
+          "USD Return": "Retorno del ADR para quien invierte en dólares.",
+          "Local Return": "Retorno de la empresa en su moneda.",
+          "FX Move": "Movimiento de la divisa en la ventana.",
+          "FX Drag (pp)": "Puntos porcentuales que la divisa quitó o sumó al inversor en dólares.",
+          "Strategy Equity": "Valor de la cartera de la estrategia en cada barra.",
+          "Buy & Hold Equity": "Valor de comprar y mantener en la misma barra.",
+        } satisfies Record<PbiMeasureName, string>,
+      },
+      pages: {
+        label: "Páginas del informe",
+        title: "Las páginas, visual por visual",
+        desc: "Lo que muestra cada página sale de los archivos PBIR. Las capturas se exportan desde Power BI Desktop y aparecen aquí cuando existen.",
+        summary: {
+          verdict: "El embudo de honestidad: variantes evaluadas, ganadoras dentro de muestra y supervivientes fuera de muestra, con la supervivencia y el tiempo en mercado por número de señales combinadas.",
+          explorer: "Filtros por región, clase de activo y tipo de estrategia sobre todas las variantes: dispersión de exposición contra exceso fuera de muestra, tabla de líderes y la tabla completa.",
+          fx: "Los ADR latinoamericanos partidos en empresa y divisa, con selector de ventana: 30, 90 o 365 días, o todo el periodo.",
+          curves: "Estrategia contra comprar y mantener a lo largo del tiempo, para el activo y la estrategia que se elijan.",
+        } satisfies Record<PbiPageId, string>,
+        visualsWord: "visuales",
+        shotCaption: "exportada desde Power BI Desktop",
+        shotAlt: "Captura de la página",
+        noShot: "Sin captura todavía: la lista de visuales sale del archivo PBIR de la página.",
+        types: { card: "tarjeta", slicer: "segmentador", tableEx: "tabla", clusteredColumnChart: "columnas", clusteredBarChart: "barras", scatterChart: "dispersión", lineChart: "líneas" },
+      },
+      licensing: {
+        label: "Licenciamiento",
+        title: "Por qué no hay un informe embebido",
+        body: "«Publicar en la web» exige una licencia Power BI Pro sobre un tenant de trabajo cuyo administrador permita el embebido público, y además hace público el propio conjunto de datos. Este proyecto corre con presupuesto cero, así que el informe se entrega como fuente: el proyecto PBIP se abre gratis en Power BI Desktop y se refresca contra el warehouse. Decirlo abiertamente también es evidencia: saber qué cuesta publicar un informe es parte del oficio.",
+        steps: [
+          "Instalar Power BI Desktop, gratis y sin cuenta para editar.",
+          "Abrir MedallionInsights.pbip desde la carpeta powerbi del repositorio.",
+          "Al refrescar, introducir la credencial de la base de datos una sola vez; queda en el almacén local de Desktop.",
+        ],
+        ctaPbip: "Abrir MedallionInsights.pbip",
+        ctaFolder: "Ver la carpeta powerbi",
+        ctaReadme: "Instrucciones y solución de problemas",
+      },
+      backCta: "Volver al inicio",
+    },
+    thesis: {
+      metaTitle: "Fintech, inclusión financiera y crecimiento regional en Colombia — trabajo de grado",
+      metaDesc: "Índice compuesto de inclusión financiera por PCA y panel departamental 2017–2021. Con efectos fijos de entidad y tiempo el índice no predice el crecimiento; el resultado se publica igual.",
+      kicker: "Investigación · trabajo de grado",
+      pill: "RADICADA",
+      title: "Desarrollo Fintech e inclusión financiera como predictores del crecimiento económico regional en Colombia",
+      subtitle: "Evidencia de panel departamental con índice compuesto multidimensional (2017–2021)",
+      degree: "Maestría en Economía · Pontificia Universidad Javeriana",
+      timeline: "Correcciones radicadas en agosto de 2026 · grado previsto en noviembre de 2026",
+      figures: [
+        { value: "84,4 %", label: "de la varianza en cuatro componentes", note: "índice compuesto por PCA", href: `${THESIS_REPO}#method` },
+        { value: "14", label: "periodos por departamento", note: "sesgo de Nickell cuantificado, ρ̂ = 0,43", href: `${THESIS_REPO}#diagnostics` },
+        { value: "0,984", label: "valor p del índice con efectos fijos de entidad y tiempo", note: "β = −0,15", href: `${THESIS_REPO}#main-result` },
+        { value: "2017–2021", label: "panel departamental", note: "con submuestra prepandemia", href: `${THESIS_REPO}#data` },
+      ] as Metric[],
+      abstract: {
+        label: "Resumen",
+        body: "¿El desarrollo fintech y la inclusión financiera predicen el crecimiento económico de los departamentos colombianos? El trabajo construye un índice compuesto multidimensional de inclusión financiera por análisis de componentes principales y lo lleva a un panel departamental para 2017–2021, con el crecimiento del PIB real per cápita como variable dependiente principal. La respuesta, bajo la especificación más exigente, es que no: con efectos fijos de entidad y tiempo el índice no es un predictor significativo. El documento cuantifica el sesgo de Nickell del panel dinámico, prueba la dependencia transversal y repite la estimación sin la pandemia. Un rezago del índice ordena la relación en el tiempo; no la identifica como causa.",
+      },
+      method: {
+        label: "Método",
+        title: "Un índice, un panel y las pruebas que lo tensan",
+        items: [
+          { title: "Índice compuesto por PCA", body: "Cuatro componentes que explican el 84,4 % de la varianza de las dimensiones de inclusión financiera. El índice validado es exactamente el índice utilizado; el basado solo en el primer componente queda como robustez." },
+          { title: "Efectos fijos de entidad y tiempo", body: "La especificación de referencia absorbe lo que cambia entre departamentos y lo que les pasa a todos a la vez, la pandemia incluida. Es la más exigente y por eso manda." },
+          { title: "Sesgo de Nickell, cuantificado", body: "Con T = 14 periodos por departamento y ρ̂ = 0,43, el sesgo del panel dinámico se calcula en vez de asumirse; se documenta por qué un GMM dinámico no es una alternativa superior con esta dimensión temporal." },
+          { title: "Pesaran y Driscoll-Kraay", body: "Prueba de dependencia transversal y errores estándar robustos a ella, para que un choque común no se disfrace de significancia." },
+          { title: "Submuestra prepandemia", body: "La estimación se repite sin el periodo de la pandemia. El rezago del índice ordena en el tiempo; no identifica una causa." },
+        ],
+      },
+      result: {
+        label: "Resultado principal",
+        headline: "Con efectos fijos de entidad y tiempo, el índice no es un predictor significativo del crecimiento.",
+        stat: "β = −0,15 · p = 0,984",
+        body: "En el modelo estático sin el rezago del crecimiento el coeficiente sí es significativo, con la mitad de la magnitud. Un resultado que no sobrevive la especificación exigente se publica igual: es el mismo criterio con el que el pipeline de mercado publicó que solo una de cada ocho estrategias ganadoras sobrevivió fuera de muestra.",
+      },
+      status: {
+        label: "Qué hay y qué llega",
+        title: "El repositorio se publica por etapas",
+        items: [
+          "Hoy: estructura, README bilingüe con resultado y diagnósticos, decisiones metodológicas de la versión corregida, licencia y cita.",
+          "Después: el notebook con el PCA y el panel, los datos con su fuente y licencia, y el código extraído del notebook.",
+          "El PDF del trabajo de grado, tras el depósito en el repositorio institucional de la Javeriana.",
+        ],
+      },
+      repoCta: "Ver el repositorio",
+      backCta: "Volver al inicio",
+    },
     track: {
       title: "Trayectoria",
       fullCv: "Ver CV completo",
@@ -261,14 +444,14 @@ export const dictionaries = {
       note: "Cada herramienta con el trabajo que la respalda. Todo lo que aparece aquí está corriendo hoy, no en un certificado.",
       rows: [
         { name: "Excel y modelado financiero", proof: "Cierre y forecast de SG&A para 12 países en Neoris EPAM" },
-        { name: "Power BI", proof: "Modelo semántico de 7 tablas en TMDL, cargado contra Supabase" },
+        { name: "Power BI", proof: "Modelo semántico de 7 tablas en TMDL, cargado contra Supabase", href: "/projects/powerbi" },
         { name: "Tableau", proof: "Dashboard ganador del BodyTech Trends Hackathon, público" },
         { name: "SQL · PostgreSQL", proof: "Warehouse medallion de tres capas, más de 58.000 velas en producción" },
         { name: "Python", proof: "Ingesta incremental, motor de backtesting, descomposición cambiaria" },
         { name: "dbt", proof: "89 pruebas de calidad que corren antes de publicar un dato" },
         { name: "Git · GitHub Actions", proof: "Cron diario en operación, con circuit breaker de rate limit" },
         { name: "Machine learning", proof: "Especialización de Stanford en Coursera, 2024" },
-      ],
+      ] as ProofRow[],
     },
     disclosures: {
       title: "Divulgaciones",
@@ -284,6 +467,10 @@ export const dictionaries = {
         {
           term: "Cifras verificables",
           text: "Cada número de esta página sale del pipeline o del repositorio público, y enlaza al artefacto que lo prueba.",
+        },
+        {
+          term: "Informe Power BI",
+          text: "El informe existe como proyecto PBIP en el repositorio público y se abre gratis en Power BI Desktop. No hay embebido público porque «Publicar en la web» exige una licencia Pro sobre un tenant de trabajo y hace público el conjunto de datos.",
         },
         {
           term: "Idiomas",
@@ -440,7 +627,24 @@ export const dictionaries = {
             "Orquestación diaria en GitHub Actions con circuit breaker de rate limit, sobre infraestructura de costo cero.",
           ],
         },
-              ],
+      ] as CvProject[],
+      researchLabel: "Investigación",
+      researchNote: "Trabajo de grado de la maestría. El resultado nulo se publica como cualquier otro.",
+      research: [
+        {
+          name: "Desarrollo Fintech e inclusión financiera como predictores del crecimiento económico regional en Colombia (2017–2021)",
+          role: "Trabajo de grado — Maestría en Economía, Javeriana",
+          period: "2026 — radicado",
+          href: THESIS_REPO,
+          hrefLabel: "repositorio en GitHub",
+          stack: ["Panel de datos", "Efectos fijos", "PCA", "Driscoll-Kraay", "Python"],
+          bullets: [
+            "Índice compuesto multidimensional de inclusión financiera por análisis de componentes principales: cuatro componentes, 84,4 % de la varianza.",
+            "Panel departamental 2017–2021 con efectos fijos de entidad y tiempo como especificación de referencia; sesgo de Nickell cuantificado (T = 14, rho = 0,43), prueba de Pesaran y errores de Driscoll-Kraay.",
+            "Resultado publicado sin maquillaje: con la especificación exigente el índice no es significativo (coeficiente -0,15, p = 0,984); significativo solo en el modelo estático, con la mitad de la magnitud.",
+          ],
+        },
+      ] as CvProject[],
       skillsLabel: "Habilidades",
       skillsFinTitle: "Dominio financiero",
       skillsFinDesc: "El contexto que los datos necesitan para significar algo.",
@@ -459,14 +663,14 @@ export const dictionaries = {
       skillsTechDesc: "Cada herramienta con el trabajo que la respalda.",
       skillsTech: [
         { name: "Excel y modelado financiero", proof: "Cierre y forecast de SG&A para 12 países en Neoris EPAM" },
-        { name: "Power BI", proof: "Modelo semántico de 7 tablas en TMDL, cargado contra Supabase" },
+        { name: "Power BI", proof: "Modelo semántico de 7 tablas en TMDL, cargado contra Supabase", href: "/projects/powerbi" },
         { name: "Tableau", proof: "Dashboard ganador del BodyTech Trends Hackathon, público" },
         { name: "SQL · PostgreSQL", proof: "Warehouse medallion de tres capas, más de 58.000 velas en producción" },
         { name: "Python", proof: "Ingesta incremental, motor de backtesting, descomposición cambiaria" },
         { name: "dbt", proof: "89 pruebas de calidad que corren antes de publicar un dato" },
         { name: "Git · GitHub Actions", proof: "Cron diario en operación, con circuit breaker de rate limit" },
         { name: "Machine learning", proof: "Especialización de Stanford en Coursera, 2024" },
-      ],
+      ] as ProofRow[],
       awardsLabel: "Reconocimientos",
       // Ojo: si el workbook se renombra en Tableau Public, la URL cambia y este
       // enlace hay que actualizarlo aquí (fuente única).
@@ -482,10 +686,15 @@ export const dictionaries = {
       ] as Award[]),
       eduLabel: "Educación y certificaciones",
       education: [
-        { title: "Maestría en Economía", inst: "Pontificia Universidad Javeriana", period: "2025 — 2026", status: "building" as Status, statusText: "EN CURSO" },
-        { title: "Pregrado en Economía", inst: "Pontificia Universidad Javeriana", period: "2020 — 2024", status: "live" as Status, statusText: "COMPLETADO" },
-        { title: "Técnico en Sistemas", inst: "SENA", period: "2018", status: "live" as Status, statusText: "COMPLETADO" },
-      ],
+        {
+          title: "Maestría en Economía", inst: "Pontificia Universidad Javeriana", period: "2025 — 2026",
+          status: "research", statusText: "TESIS RADICADA",
+          note: "Trabajo de grado radicado en agosto de 2026: índice compuesto de inclusión financiera y panel departamental. Grado previsto en noviembre de 2026.",
+          href: "/research/fintech-inclusion", hrefLabel: "ver la investigación",
+        },
+        { title: "Pregrado en Economía", inst: "Pontificia Universidad Javeriana", period: "2020 — 2024", status: "live", statusText: "COMPLETADO" },
+        { title: "Técnico en Sistemas", inst: "SENA", period: "2018", status: "live", statusText: "COMPLETADO" },
+      ] as Education[],
       certs: [
         { title: "Especialización en Machine Learning", inst: "Stanford · Coursera", year: "2024" },
         { title: "Certificado de Ciberseguridad", inst: "Google · Coursera", year: "2024" },
@@ -528,7 +737,7 @@ export const dictionaries = {
     },
     sheet: {
       classification: "Profile · Finance & Data",
-      asOf: "As of August 2026",
+      asOf: "As of September 2026",
       name: "Davirson Novoa Ramírez",
       verdict: "Finance Data Analyst",
       thesis: "I read a P&L, and I build the pipeline that feeds it.",
@@ -540,11 +749,11 @@ export const dictionaries = {
       pipelineStalled: "Pipeline stalled · data through",
       pipelineLiveFallback: "Live pipeline · refreshes daily",
       metrics: [
-        { value: "15+", label: "countries in scope", note: "across three finance roles" },
-        { value: "26", label: "months intern to specialist", note: "SLB" },
-        { value: "48", label: "assets in production", note: "daily pipeline" },
-        { value: "89", label: "automated data tests", note: "every run" },
-      ],
+        { value: "15+", label: "countries in scope", note: "across three finance roles", href: "/cv#experiencia" },
+        { value: "26", label: "months intern to specialist", note: "SLB", href: "/cv#experiencia" },
+        { value: "48", label: "assets in production", note: "daily pipeline", href: "/projects/trading-sim" },
+        { value: "89", label: "automated data tests", note: "every run", href: "/projects/trading-sim#calidad" },
+      ] as Metric[],
       ctaPrimary: "Download CV (PDF)",
       ctaSecondary: "See the evidence",
       portraitPending: "DNR",
@@ -566,6 +775,36 @@ export const dictionaries = {
         stack: ["PostgreSQL", "dbt", "Python", "Power BI", "GitHub Actions", "Prefect"],
         repoCta: "See the code",
         liveCta: "Open the lab",
+        pbiCta: "See the Power BI report",
+      },
+      also: {
+        title: "Also on the desk",
+        rows: [
+          {
+            name: "Medallion Insights — Power BI report",
+            kind: "Semantic model and report",
+            status: "live",
+            statusText: "IN THE REPO",
+            note: "Seven tables in TMDL over the warehouse, 17 DAX measures and four report pages, versioned as text in the public repository. The full catalogue, expression by expression, is on its page.",
+            href: "/projects/powerbi",
+          },
+          {
+            name: "Fintech, financial inclusion and regional growth",
+            kind: "Master's thesis · M.Sc. in Economics",
+            status: "research",
+            statusText: "FILED",
+            note: "A PCA composite index and a department-level panel for 2017–2021. Under two-way fixed effects the index does not predict growth; the result is published all the same.",
+            href: "/research/fintech-inclusion",
+          },
+          {
+            name: "Personal control system",
+            kind: "Finance and health · Next.js + Supabase",
+            status: "building",
+            statusText: "IN PROGRESS",
+            note: "A personal-finance data model (credit-card utilisation, instalments, payment calendar) plus health tracking on Postgres with RLS: 35 tables and 22 views, some 370 tests and an RLS smoke test in CI. Figures from the private repository, verifiable in a demo.",
+            access: "Private repository · demo on request",
+          },
+        ] as AlsoRow[],
       },
       capabilitiesTitle: "What this demonstrates",
       capabilities: [
@@ -715,6 +954,138 @@ export const dictionaries = {
       ],
       note: "On top of these, 171 Python unit tests cover the backtesting engine, the strategies and each API client.",
     },
+    powerbi: {
+      metaTitle: "Medallion Insights — the Power BI report over the warehouse",
+      metaDesc: "A seven-table semantic model in TMDL, 17 DAX measures and four report pages, versioned as text. Every measure links to the file that defines it.",
+      kicker: "Report · Medallion Insights",
+      pill: "IN THE REPO",
+      title: "The Power BI report, with every measure in view",
+      intro: "The pipeline's warehouse feeds an interactive Power BI report, Medallion Insights. It is versioned as a Power BI Project (PBIP): the semantic model in TMDL, the pages in PBIR, all plain text reviewed in a pull request. This page is the catalogue of that model, copied from the source files, so nobody has to take the words «Power BI» on trust without seeing what is behind them.",
+      sourceLine: "Catalogue copied from commit",
+      sourceTail: "· the model loads against the Supabase warehouse from Power BI Desktop",
+      facts: { tables: "tables", relationships: "relationships, all to dim_assets.symbol", measures: "DAX measures", visuals: "visuals across four pages" },
+      model: {
+        label: "Semantic model",
+        title: "One dimension, four fact tables and two aggregates",
+        desc: "A plain star: dim_assets is the only dimension and the four fact tables relate to it through symbol. The two aggregates, overfitting_summary and leaderboard, stand alone: they arrive pre-summarised from dbt so the report and the site can never disagree.",
+        diagramTitle: "Semantic model diagram: dim_assets related to four fact tables; two aggregates with no relationship.",
+        legend: { dim: "dimension", fact: "fact", aggregate: "aggregate" },
+        headers: { table: "Table", role: "Role", source: "Source", grain: "Grain", columns: "columns", measures: "measures", relationships: "Relationships" },
+        relationshipLine: "many to one into dim_assets.symbol",
+        grain: {
+          dim_assets: "one row per asset",
+          combination_analysis: "one row per asset and strategy variant",
+          asset_summary: "one row per asset",
+          fx_decomposition: "one row per ADR and window",
+          equity_curves: "one row per asset, strategy and bar",
+          overfitting_summary: "one row per number of combined signals, plus a total",
+          leaderboard: "one row per strategy, class and region, plus totals",
+        } satisfies Record<PbiTableName, string>,
+      },
+      measures: {
+        label: "DAX measures",
+        title: "Seventeen measures, expression included",
+        desc: "Each row links to the exact line of the TMDL file that defines it, pinned to the catalogue's commit.",
+        headers: { measure: "Measure", dax: "Expression", format: "Format", meaning: "What it answers" },
+        meaning: {
+          "Variants Evaluated": "How many strategy variants sit in the current filter.",
+          "Winners In-Sample": "How many beat buy and hold in the training window.",
+          "Winners IS & OOS": "How many of those kept winning in the blind window.",
+          "OOS Survival Rate": "The honesty figure: survivors over in-sample winners.",
+          "Beat B&H % (full)": "Share that beats buy and hold over the whole period.",
+          "Beat B&H % (OOS)": "Share that beats it out of sample.",
+          "Avg Exposure": "Fraction of the time with a position open.",
+          "Avg Excess Return": "Mean return above buy and hold.",
+          "Avg OOS Excess Return": "The same, in the blind window only.",
+          "Median Sharpe": "Median Sharpe, which one extreme value cannot drag.",
+          "Zero-Trade Variants": "Variants that never traded: they cannot count as winners.",
+          "USD Return": "The ADR's return for a dollar investor.",
+          "Local Return": "The company's return in its own currency.",
+          "FX Move": "The currency's move over the window.",
+          "FX Drag (pp)": "Percentage points the currency took from, or added to, the dollar investor.",
+          "Strategy Equity": "The strategy's portfolio value at each bar.",
+          "Buy & Hold Equity": "Buy and hold's value at the same bar.",
+        } satisfies Record<PbiMeasureName, string>,
+      },
+      pages: {
+        label: "Report pages",
+        title: "The pages, visual by visual",
+        desc: "What each page shows comes from the PBIR files. Screenshots are exported from Power BI Desktop and appear here once they exist.",
+        summary: {
+          verdict: "The honesty funnel: variants evaluated, in-sample winners and out-of-sample survivors, with survival and time in market by number of combined signals.",
+          explorer: "Region, asset-class and strategy-kind slicers over every variant: exposure against out-of-sample excess, the leaderboard and the full table.",
+          fx: "The Latin American ADRs split into company and currency, with a window selector: 30, 90 or 365 days, or the full period.",
+          curves: "Strategy against buy and hold over time, for whichever asset and strategy you pick.",
+        } satisfies Record<PbiPageId, string>,
+        visualsWord: "visuals",
+        shotCaption: "exported from Power BI Desktop",
+        shotAlt: "Screenshot of the page",
+        noShot: "No screenshot yet: the list of visuals comes from the page's PBIR file.",
+        types: { card: "card", slicer: "slicer", tableEx: "table", clusteredColumnChart: "columns", clusteredBarChart: "bars", scatterChart: "scatter", lineChart: "lines" },
+      },
+      licensing: {
+        label: "Licensing",
+        title: "Why there is no embedded report",
+        body: "«Publish to web» needs a Power BI Pro licence on a work tenant whose administrator allows public embedding, and it makes the dataset itself public. This project runs on a zero budget, so the report ships as source: the PBIP project opens for free in Power BI Desktop and refreshes against the warehouse. Saying so openly is evidence too: knowing what it costs to publish a report is part of the job.",
+        steps: [
+          "Install Power BI Desktop, free and with no account needed to author.",
+          "Open MedallionInsights.pbip from the repository's powerbi folder.",
+          "On refresh, enter the database credential once; it stays in Desktop's local credential store.",
+        ],
+        ctaPbip: "Open MedallionInsights.pbip",
+        ctaFolder: "See the powerbi folder",
+        ctaReadme: "Instructions and troubleshooting",
+      },
+      backCta: "Back to home",
+    },
+    thesis: {
+      metaTitle: "Fintech, financial inclusion and regional growth in Colombia — master's thesis",
+      metaDesc: "A PCA composite index of financial inclusion and a department-level panel for 2017–2021. Under two-way fixed effects the index does not predict growth; the result is published all the same.",
+      kicker: "Research · master's thesis",
+      pill: "FILED",
+      title: "Fintech development and financial inclusion as predictors of regional economic growth in Colombia",
+      subtitle: "Department-level panel evidence with a multidimensional composite index (2017–2021). Written in Spanish: «Desarrollo Fintech e inclusión financiera como predictores del crecimiento económico regional en Colombia».",
+      degree: "M.Sc. in Economics · Pontificia Universidad Javeriana",
+      timeline: "Corrections filed in August 2026 · graduation expected in November 2026",
+      figures: [
+        { value: "84.4%", label: "of the variance in four components", note: "PCA composite index", href: `${THESIS_REPO}#method` },
+        { value: "14", label: "periods per department", note: "Nickell bias quantified, ρ̂ = 0.43", href: `${THESIS_REPO}#diagnostics` },
+        { value: "0.984", label: "p-value of the index under two-way fixed effects", note: "β = −0.15", href: `${THESIS_REPO}#main-result` },
+        { value: "2017–2021", label: "department-level panel", note: "with a pre-pandemic subsample", href: `${THESIS_REPO}#data` },
+      ] as Metric[],
+      abstract: {
+        label: "Abstract",
+        body: "Do fintech development and financial inclusion predict the economic growth of Colombia's departments? The thesis builds a multidimensional composite index of financial inclusion through principal component analysis and takes it to a department-level panel for 2017–2021, with the growth of real GDP per capita as the main dependent variable. Under the most demanding specification the answer is no: with entity and time fixed effects the index is not a significant predictor. The document quantifies the Nickell bias of the dynamic panel, tests for cross-sectional dependence and re-estimates without the pandemic. A lag of the index orders the relationship in time; it does not identify it as a cause.",
+      },
+      method: {
+        label: "Method",
+        title: "One index, one panel and the tests that strain it",
+        items: [
+          { title: "PCA composite index", body: "Four components explaining 84.4% of the variance across the financial-inclusion dimensions. The validated index is exactly the index used; the one built on the first component alone stays as a robustness check." },
+          { title: "Entity and time fixed effects", body: "The reference specification absorbs what differs across departments and what happens to all of them at once, the pandemic included. It is the most demanding, which is why it rules." },
+          { title: "Nickell bias, quantified", body: "With T = 14 periods per department and ρ̂ = 0.43, the dynamic panel's bias is computed rather than assumed; the document shows why a dynamic GMM is not a superior alternative at this time dimension." },
+          { title: "Pesaran and Driscoll-Kraay", body: "A cross-sectional dependence test and standard errors robust to it, so a common shock cannot dress up as significance." },
+          { title: "Pre-pandemic subsample", body: "The estimation is repeated without the pandemic period. The index's lag orders the relationship in time; it does not identify a cause." },
+        ],
+      },
+      result: {
+        label: "Main result",
+        headline: "Under entity and time fixed effects, the index is not a significant predictor of growth.",
+        stat: "β = −0.15 · p = 0.984",
+        body: "In the static model without the lagged growth term the coefficient is significant, at half the magnitude. A result that does not survive the demanding specification is published all the same: it is the criterion the market pipeline applied when it reported that only one in eight winning strategies survived out of sample.",
+      },
+      status: {
+        label: "What is there and what is coming",
+        title: "The repository is published in stages",
+        items: [
+          "Now: structure, a bilingual README with the result and diagnostics, the methodological decisions of the corrected version, licence and citation.",
+          "Next: the notebook with the PCA and the panel, the data with source and licence, and the code extracted from the notebook.",
+          "The thesis PDF, after deposit in the Javeriana's institutional repository.",
+        ],
+      },
+      repoCta: "See the repository",
+      backCta: "Back to home",
+    },
     track: {
       title: "Track record",
       fullCv: "See full CV",
@@ -744,14 +1115,14 @@ export const dictionaries = {
       note: "Each tool with the work that backs it. Everything here is running today, not sitting on a certificate.",
       rows: [
         { name: "Excel and financial modelling", proof: "SG&A close and forecast across 12 countries at Neoris EPAM" },
-        { name: "Power BI", proof: "Seven-table semantic model in TMDL, loaded against Supabase" },
+        { name: "Power BI", proof: "Seven-table semantic model in TMDL, loaded against Supabase", href: "/projects/powerbi" },
         { name: "Tableau", proof: "Dashboard that won the BodyTech Trends Hackathon, public" },
         { name: "SQL · PostgreSQL", proof: "Three-layer medallion warehouse, more than 58,000 candles in production" },
         { name: "Python", proof: "Incremental ingestion, backtesting engine, FX decomposition" },
         { name: "dbt", proof: "89 quality tests that run before a single figure is published" },
         { name: "Git · GitHub Actions", proof: "Daily cron in operation, with a rate-limit circuit breaker" },
         { name: "Machine learning", proof: "Stanford Specialization on Coursera, 2024" },
-      ],
+      ] as ProofRow[],
     },
     disclosures: {
       title: "Disclosures",
@@ -767,6 +1138,10 @@ export const dictionaries = {
         {
           term: "Verifiable figures",
           text: "Every number on this page comes from the pipeline or the public repository, and links to the artifact that proves it.",
+        },
+        {
+          term: "Power BI report",
+          text: "The report exists as a PBIP project in the public repository and opens for free in Power BI Desktop. There is no public embed because «Publish to web» needs a Pro licence on a work tenant and makes the dataset public.",
         },
         {
           term: "Languages",
@@ -923,7 +1298,24 @@ export const dictionaries = {
             "Daily orchestration on GitHub Actions with a rate-limit circuit breaker, running on zero-cost infrastructure.",
           ],
         },
-              ],
+      ] as CvProject[],
+      researchLabel: "Research",
+      researchNote: "The master's thesis. A null result is published like any other.",
+      research: [
+        {
+          name: "Fintech development and financial inclusion as predictors of regional economic growth in Colombia (2017–2021)",
+          role: "Master's thesis — M.Sc. in Economics, Javeriana",
+          period: "2026 — filed",
+          href: THESIS_REPO,
+          hrefLabel: "repository on GitHub",
+          stack: ["Panel data", "Fixed effects", "PCA", "Driscoll-Kraay", "Python"],
+          bullets: [
+            "Multidimensional composite index of financial inclusion by principal component analysis: four components, 84.4% of the variance.",
+            "Department-level panel for 2017-2021 with entity and time fixed effects as the reference specification; Nickell bias quantified (T = 14, rho = 0.43), Pesaran test and Driscoll-Kraay standard errors.",
+            "Result published as it is: under the demanding specification the index is not significant (coefficient -0.15, p = 0.984); significant only in the static model, at half the magnitude.",
+          ],
+        },
+      ] as CvProject[],
       skillsLabel: "Skills",
       skillsFinTitle: "Finance domain",
       skillsFinDesc: "The context data needs in order to mean something.",
@@ -936,20 +1328,20 @@ export const dictionaries = {
       skillsData: [
         "Analytical SQL", "PostgreSQL", "dbt", "Medallion architecture", "Python (pandas)",
         "Incremental ETL", "Prefect", "GitHub Actions", "Supabase", "Power BI · DAX",
-        "Power Query", "Git", "Next.js · Vercel",
+        "Power Query", "Tableau", "Git", "Next.js · Vercel",
       ],
       skillsTechTitle: "Technical stack",
       skillsTechDesc: "Each tool with the work that backs it.",
       skillsTech: [
         { name: "Excel and financial modelling", proof: "SG&A close and forecast across 12 countries at Neoris EPAM" },
-        { name: "Power BI", proof: "Seven-table semantic model in TMDL, loaded against Supabase" },
+        { name: "Power BI", proof: "Seven-table semantic model in TMDL, loaded against Supabase", href: "/projects/powerbi" },
         { name: "Tableau", proof: "Dashboard that won the BodyTech Trends Hackathon, public" },
         { name: "SQL · PostgreSQL", proof: "Three-layer medallion warehouse, more than 58,000 candles in production" },
         { name: "Python", proof: "Incremental ingestion, backtesting engine, FX decomposition" },
         { name: "dbt", proof: "89 quality tests that run before a single figure is published" },
         { name: "Git · GitHub Actions", proof: "Daily cron in operation, with a rate-limit circuit breaker" },
         { name: "Machine learning", proof: "Stanford Specialization on Coursera, 2024" },
-      ],
+      ] as ProofRow[],
       awardsLabel: "Recognition",
       awards: ([
         {
@@ -963,10 +1355,15 @@ export const dictionaries = {
       ] as Award[]),
       eduLabel: "Education & certifications",
       education: [
-        { title: "M.Sc. in Economics", inst: "Pontificia Universidad Javeriana", period: "2025 — 2026", status: "building" as Status, statusText: "IN PROGRESS" },
-        { title: "B.Sc. in Economics", inst: "Pontificia Universidad Javeriana", period: "2020 — 2024", status: "live" as Status, statusText: "COMPLETED" },
-        { title: "Systems Technician", inst: "SENA", period: "2018", status: "live" as Status, statusText: "COMPLETED" },
-      ],
+        {
+          title: "M.Sc. in Economics", inst: "Pontificia Universidad Javeriana", period: "2025 — 2026",
+          status: "research", statusText: "THESIS FILED",
+          note: "Thesis filed in August 2026: a composite index of financial inclusion and a department-level panel. Graduation expected in November 2026.",
+          href: "/research/fintech-inclusion", hrefLabel: "see the research",
+        },
+        { title: "B.Sc. in Economics", inst: "Pontificia Universidad Javeriana", period: "2020 — 2024", status: "live", statusText: "COMPLETED" },
+        { title: "Systems Technician", inst: "SENA", period: "2018", status: "live", statusText: "COMPLETED" },
+      ] as Education[],
       certs: [
         { title: "Machine Learning Specialization", inst: "Stanford · Coursera", year: "2024" },
         { title: "Cybersecurity Certificate", inst: "Google · Coursera", year: "2024" },

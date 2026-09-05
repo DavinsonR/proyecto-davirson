@@ -9,22 +9,26 @@ npm run dev      # http://localhost:3000 → redirige a /es
 ```
 
 ## Rutas
-- `/es` · `/en` — Home (hero, sistema, proyecto, historia, CV 30s, contacto)
-- `/es/cv` · `/en/cv` — CV interactivo completo
+- `/es` · `/en` — Home (tear sheet: cifras, proyecto destacado, también en la mesa, trayectoria, divulgaciones, contacto). `/` redirige a `/en`.
+- `/es/cv` · `/en/cv` — CV completo (PDF y fuente LaTeX descargables)
+- `/[lang]/projects/trading-sim` — laboratorio con los datos del pipeline
+- `/[lang]/projects/powerbi` — catálogo del informe Power BI (modelo, medidas, páginas, licenciamiento)
+- `/[lang]/research/fintech-inclusion` — trabajo de grado de la maestría
 
 ## Dónde editar
 - **Todo el texto (ES/EN):** `lib/dictionaries.ts` — fuente única de verdad.
 - **Colores/fuentes:** `app/globals.css` (bloques `@theme`).
 - **Estados/progreso de módulos:** `lib/dictionaries.ts` → `sistema.modules`.
-- **Regenerar PDFs tras editar el CV:** `npm run pdf` (requiere reinstalar tsx+pdfkit: `npm i -D tsx pdfkit @types/pdfkit`).
+- **Regenerar el CV tras editar el diccionario:** `npm run latex` escribe `public/*.tex`; `npm run cv` además compila a PDF si hay tectonic/latexmk/xelatex/pdflatex, y si no, se compila en Overleaf.
+- **Catálogo Power BI:** `lib/powerbi-model.ts`, copiado a mano de `market-data-medallion/powerbi/` (el commit va en la cabecera). Capturas opcionales en `public/powerbi/{verdict,explorer,fx,curves}.png`.
 
 ## Deploy recomendado (repo → Vercel)
 1. `git init && git add . && git commit -m "MVP"` → crear repo en GitHub → push.
 2. vercel.com → Add New Project → importar repo → Deploy.
 3. Deploy automático en cada push.
 
-## ⚠️ Nota sobre el deploy actual
-El sitio ya está desplegado pero con "Vercel Authentication" activada (403 público). Para hacerlo público: Vercel → proyecto → Settings → Deployment Protection → desactivar Vercel Authentication. Ver BITACORA_MAESTRA.md §7 (FALLO-05).
+## Deploy
+Público en https://proyecto-davirson-git.vercel.app (la protección de Vercel se desactivó en la sesión 2; ver BITACORA_MAESTRA.md, FALLO-05).
 
 ## Documentación
 - `BITACORA_MAESTRA.md` — hoja de ruta, arquitectura, historial de fallos y decisiones. **Léela primero.**

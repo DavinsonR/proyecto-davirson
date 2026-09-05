@@ -262,4 +262,30 @@ a {
   /* the plotted line is drawn by the Web Animations API in Charts.tsx,
      because a path's length is only known at run time */
   svg path { stroke-dashoffset: 0 !important; }
+  /* Paper is white whatever the screen theme was. Without this a reader who
+     prints from dark mode gets pale ink and a pale model diagram on white:
+     the tokens below re-declare the light steps at the same specificity as
+     both dark blocks, later in the sheet, so they win on paper. */
+  :root:not([data-theme="light"]),
+  :root[data-theme="dark"] {
+    --color-paper: #ffffff;
+    --color-band: #f4f6f8;
+    --color-band2: #e9edf1;
+    --color-rule: #d8dde3;
+    --color-rulesoft: #e8ecf0;
+    --color-ink: #14181d;
+    --color-body: #454e57;
+    --color-muted: #626c76;
+    --color-cold: #0f4c81;
+    --color-coldsoft: #e6eef7;
+    --color-coldline: #b9cfe4;
+    --color-warm: #96551a;
+    --color-warmsoft: #f7efe5;
+    --color-pos: #1a6b48;
+    --color-neg: #9c2b2b;
+    --color-live: #1a6b48;
+    --color-building: #8a6a10;
+    --color-research: #0f4c81;
+    --color-idea: #626c76;
+  }
 }
