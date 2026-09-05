@@ -3,6 +3,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import { TRADING_SIM_REPO } from "@/lib/trading-sim";
 import PipelineStamp from "@/components/PipelineStamp";
 import CountUp from "@/components/CountUp";
+import StatusPill from "@/components/StatusPill";
 
 const WRAP = "mx-auto max-w-[1080px] px-6";
 
@@ -134,12 +135,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               {sheet.metrics.map((m, i) => {
                 // Each figure lands where its evidence actually is. The first reviewer to
                 // click one found the CV's masthead and no sign of what he had clicked.
-                const proof = [
-                  `/${lang}/cv#experiencia`,
-                  `/${lang}/cv#experiencia`,
-                  `/${lang}/projects/trading-sim`,
-                  `/${lang}/projects/trading-sim#calidad`,
-                ][i];
+                // The target travels with the figure (dictionary), not with its position.
+                const proof = m.href.startsWith("http") ? m.href : `/${lang}${m.href}`;
                 const external = proof.startsWith("http");
                 return (
                   <div
@@ -247,6 +244,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               >
                 {work.project.repoCta}
               </a>
+              <Link
+                href={`/${lang}/projects/powerbi`}
+                className="inline-flex items-center px-1 py-2.5 text-[14px] font-semibold text-cold hover:underline"
+              >
+                {work.project.pbiCta} →
+              </Link>
             </div>
 
             {/* the honest finding wears the amber: it is a judgment claim, not a spec */}
@@ -259,6 +262,45 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </p>
             </div>
           </article>
+
+          {/* the rest of the desk: one ruled row each, a status pill, and a link only
+              where there is something public to open. A private row says so. */}
+          <div className="mt-12">
+            <h3 className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
+              {work.also.title}
+            </h3>
+            <ol className="mt-4">
+              {work.also.rows.map((r, i) => (
+                <li
+                  key={r.name}
+                  data-reveal
+                  className="reveal grid gap-x-8 gap-y-2 border-t border-rule py-4 first:border-t-2 first:border-ink sm:grid-cols-[minmax(0,1fr)_auto]"
+                  style={{ "--d": `${i * 80}ms` } as React.CSSProperties}
+                >
+                  <div>
+                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                      {r.href ? (
+                        <Link
+                          href={r.href.startsWith("http") ? r.href : `/${lang}${r.href}`}
+                          className="text-[15.5px] font-semibold text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 hover:text-cold"
+                        >
+                          {r.name}
+                        </Link>
+                      ) : (
+                        <span className="text-[15.5px] font-semibold text-ink">{r.name}</span>
+                      )}
+                      <span className="text-[12.5px] tracking-[0.07em] text-muted uppercase">{r.kind}</span>
+                    </div>
+                    <p className="mt-1 max-w-[68ch] text-[14.5px] leading-[1.65] text-body">{r.note}</p>
+                    {r.access && <p className="mt-1 text-[14px] text-muted">{r.access}</p>}
+                  </div>
+                  <div className="sm:pt-0.5">
+                    <StatusPill status={r.status} text={r.statusText} />
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
 
           <div className="mt-12">
             <h3 className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
@@ -334,7 +376,18 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                   style={{ "--d": `${ri * 60}ms` } as React.CSSProperties}
                 >
                   <dt className="text-[14.5px] font-semibold text-ink">{r.name}</dt>
-                  <dd className="mt-1 text-[14px] leading-[1.55] text-body">{r.proof}</dd>
+                  <dd className="mt-1 text-[14px] leading-[1.55] text-body">
+                    {r.href ? (
+                      <Link
+                        href={r.href.startsWith("http") ? r.href : `/${lang}${r.href}`}
+                        className="underline decoration-cold decoration-[1.5px] underline-offset-4 hover:text-cold"
+                      >
+                        {r.proof}
+                      </Link>
+                    ) : (
+                      r.proof
+                    )}
+                  </dd>
                 </div>
               ))}
             </dl>

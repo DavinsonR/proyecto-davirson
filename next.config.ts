@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
       { source: "/", destination: "/en", permanent: false },
       { source: "/cv", destination: "/en/cv", permanent: false },
       { source: "/projects/trading-sim", destination: "/en/projects/trading-sim", permanent: false },
+      { source: "/projects/powerbi", destination: "/en/projects/powerbi", permanent: false },
+      { source: "/research/fintech-inclusion", destination: "/en/research/fintech-inclusion", permanent: false },
     ];
   },
   /** Cabeceras de seguridad. No hay CSP de scripts a propósito: el sitio usa
