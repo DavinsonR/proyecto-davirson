@@ -30,8 +30,8 @@ export type CvProject = {
   stack: string[]; bullets: string[];
 };
 
-export const THESIS_REPO = "https://github.com/DavinsonR/inclusion-financiera-colombia";
-export const THESIS_SITE = "https://inclusion-financiera-colombia.vercel.app";
+export const THESIS_REPO = "https://github.com/DavinsonR/financial-inclusion-colombia";
+export const THESIS_SITE = "https://financial-inclusion-colombia.vercel.app";
 
 const profile = {
   name: "Davirson Novoa Ramírez",
