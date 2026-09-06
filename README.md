@@ -13,7 +13,7 @@ npm run dev      # http://localhost:3000 → redirige a /es
 - `/es/cv` · `/en/cv` — CV completo (PDF y fuente LaTeX descargables)
 - `/[lang]/projects/trading-sim` — laboratorio con los datos del pipeline
 - `/[lang]/projects/powerbi` — catálogo del informe Power BI (modelo, medidas, páginas, licenciamiento)
-- `/[lang]/research/fintech-inclusion` — trabajo de grado de la maestría
+- `/[lang]/research/fintech-inclusion` — proyecto de inclusión financiera y crecimiento regional
 
 ## Dónde editar
 - **Todo el texto (ES/EN):** `lib/dictionaries.ts` — fuente única de verdad.

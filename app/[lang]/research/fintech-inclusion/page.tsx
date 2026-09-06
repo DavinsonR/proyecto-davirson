@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getDictionary, THESIS_REPO } from "@/lib/dictionaries";
+import { getDictionary, THESIS_REPO, THESIS_SITE } from "@/lib/dictionaries";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
 
@@ -19,7 +19,7 @@ const label = "text-[12.5px] font-semibold tracking-[0.09em] text-cold uppercase
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 
 /* Technical content end to end: the only accent on this page is the cold one.
-   Figures are set as written (no CountUp): "0,984" is a p-value, not a count. */
+   Figures are set as written (no CountUp): "2005–2026" is a range and "6,9 M" a magnitude, not counts. */
 export default async function ThesisPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   const dict = getDictionary(lang);
@@ -134,6 +134,9 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
           <div className="mt-8 flex flex-wrap gap-3.5">
             <a href={THESIS_REPO} {...ext} className="lift rounded-[3px] bg-cold px-5 py-3 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90">
               {t.repoCta}
+            </a>
+            <a href={THESIS_SITE} {...ext} className="lift rounded-[3px] border border-rule px-5 py-3 text-[14px] text-ink transition-colors hover:border-cold">
+              {t.siteCta}
             </a>
             <Link href={`/${lang}`} className="rounded-[3px] border border-rule px-5 py-3 text-[14px] text-ink transition-colors hover:border-cold">
               {t.backCta}
