@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 import { locales } from "@/lib/dictionaries";
 import { SITE } from "@/lib/site";
 
-const ROUTES = ["", "/cv", "/projects/trading-sim", "/projects/powerbi", "/research/fintech-inclusion"];
+const ROUTES = ["", "/cv", "/projects/trading-sim", "/projects/powerbi", "/projects/tracking", "/research/fintech-inclusion"];
 
-/** Un sitio de cinco rutas por idioma no necesita un sitemap para existir, pero
+/** Un sitio de seis rutas por idioma no necesita un sitemap para existir, pero
  *  sí para que el buscador sepa que /es y /en son la misma página en dos idiomas. */
 export default function sitemap(): MetadataRoute.Sitemap {
   return locales.flatMap((lang) =>
@@ -14,7 +14,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: route === "" ? 1 : 0.8,
       alternates: {
-        languages: Object.fromEntries(locales.map((l) => [l, `${SITE}/${l}${route}`])),
+        languages: {
+          ...Object.fromEntries(locales.map((l) => [l, `${SITE}/${l}${route}`])),
+          // Las páginas lo emiten; el sitemap no lo hacía, y decían cosas distintas.
+          "x-default": `${SITE}/en${route}`,
+        },
       },
     })),
   );
