@@ -5,6 +5,7 @@ import PipelineStamp from "@/components/PipelineStamp";
 import CountUp from "@/components/CountUp";
 import StatusPill from "@/components/StatusPill";
 import CopyEmail from "@/components/CopyEmail";
+import AtlasFigure from "@/components/AtlasFigure";
 import { mailtoHref } from "@/lib/contact";
 import { personGraph } from "@/lib/structured-data";
 import type { Locale } from "@/lib/dictionaries";
@@ -231,6 +232,16 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </div>
       </header>
+
+      {/* ===================== ATLAS FIGURE =====================
+          The second figure on the sheet, and the only picture on a site that
+          asserted visual work twenty times and shipped zero images. It earns the
+          position because it is an argument, not a decoration: two maps on one
+          scale showing every department rising off the 2018 baseline, which is
+          precisely why the coefficient dies once the year is taken out. The
+          interactive atlas it links to sat 2,820px into a page 7,489px long —
+          4,608 of 12,349 on a phone — behind two clicks. */}
+      <AtlasFigure copy={sheet.atlasFigure} lang={lang} />
 
       {/* ===================== WORK ===================== */}
       <section id="work" className="scroll-mt-16 border-b border-rule pt-16">

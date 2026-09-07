@@ -25,6 +25,16 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
   const [meta, setMeta] = useState<AtlasMeta | null>(null);
   const [bundles, setBundles] = useState<Partial<Record<Level, Bundle>>>({});
   const [failed, setFailed] = useState(false);
+  /* Los 258 KB del nivel departamental (92 comprimidos) se pedían en cuanto
+     hidrataba la página, bajara o no el lector hasta el mapa. El nivel municipal
+     sí estaba diferido; este no. La puerta se abre 600px antes de que el mapa
+     entre en pantalla, así que para quien scrollea ya está cargado, y para quien
+     nunca llega no se pide nunca. Sin IntersectionObserver se abre de inmediato:
+     un navegador viejo debe ver el mapa, no un hueco. */
+  // El estado nace abierto donde no hay observador: eso es derivable en el
+  // render y no hace falta un efecto que lo escriba después.
+  const [near, setNear] = useState(() => typeof IntersectionObserver === "undefined");
+  const shell = useRef<HTMLElement>(null);
 
   const [view, setView] = useState<View>("plano");
   const [indicatorId, setIndicatorId] = useState("iif_compuesto");
@@ -50,6 +60,24 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
   }, []);
 
   useEffect(() => {
+    if (near) return;
+    const el = shell.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setNear(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "600px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [near]);
+
+  useEffect(() => {
+    if (!near) return;
     let alive = true;
     (async () => {
       try {
@@ -64,10 +92,17 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
     return () => {
       alive = false;
     };
-  }, [ensure]);
+  }, [ensure, near]);
 
+  /* El segundo efecto también espera a la puerta. Sin esto pedía el nivel
+     departamental por su cuenta en el montaje —`bundles[level]` está vacío y
+     `failed` es falso—, así que la carga diferida del efecto de arriba no
+     evitaba nada: los 258 KB salían igual. Y como el primer efecto ya trae
+     `departamento`, este arranca duplicando esa misma pareja de ficheros hasta
+     que el estado llega; la condición de nivel lo corta. */
   useEffect(() => {
-    if (bundles[level] || failed) return;
+    if (!near || bundles[level] || failed) return;
+    if (level === "departamento" && !meta) return;
     let alive = true;
     (async () => {
       try {
@@ -80,7 +115,7 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
     return () => {
       alive = false;
     };
-  }, [level, bundles, ensure, failed]);
+  }, [level, bundles, ensure, failed, near, meta]);
 
   const departmentNames = useMemo(() => {
     const dep = bundles.departamento?.series;
@@ -142,7 +177,7 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
   }, [meta, bundle, indicator, activeYear, activeGroup, view, level, departmentNames, copy, locale, onDrillDown]);
 
   return (
-    <div className="atlas">
+    <section ref={shell} className="atlas">
       <div className="atlas-bar">
         <fieldset className="atlas-field">
           <legend>{copy.viewLabel}</legend>
@@ -237,6 +272,6 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
           </p>
         </footer>
       ) : null}
-    </div>
+    </section>
   );
 }
