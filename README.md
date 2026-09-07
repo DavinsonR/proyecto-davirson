@@ -45,6 +45,11 @@ npm run dev      # http://localhost:3000 → redirige a /es
 - **Estado y progreso de los módulos:** `lib/dictionaries.ts` → `sistema.modules`.
 - **Catálogo de Power BI:** `lib/powerbi-model.ts`, copiado de `market-data-medallion/powerbi/` con el commit de origen en la cabecera.
 
+## Licencias
+
+- **Datos del atlas** (`public/atlas/`): CC BY-SA 4.0, heredada de la Superintendencia Financiera. La cláusula ShareAlike obliga a publicar el derivado bajo la misma licencia. Ver `DATA-LICENSE.md`.
+- **Tipografías** (`public/fonts/`): Archivo y Source Serif 4, SIL OFL 1.1, autoalojadas. Ver `public/fonts/OFL.txt`.
+
 ## Documentación
 
 `BITACORA_MAESTRA.md` — hoja de ruta, arquitectura, decisiones y el historial de fallos con su causa raíz. Es el documento que hay que leer primero para trabajar sobre este repositorio.

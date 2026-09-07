@@ -400,7 +400,7 @@ El usuario (con consejo de un amigo data engineer, repo inspiración: github.com
 ## ANEXO — SESIÓN 5 (17 ago 2026): Fase 4a construida — pipeline medallion funcionando end-to-end
 
 ### Resultado
-**`market-data-medallion` existe y funciona con datos reales**, en local: 51 archivos, 4,363 líneas, commit inicial `b852398` en `/home/coderdav/personalprojects/market-data-medallion` (WSL). Pendiente solo el push (el usuario debe crear el repo vacío en GitHub — el PAT no tiene permiso de Administration para crearlo por API, verificado 403).
+**`market-data-medallion` existe y funciona con datos reales**, en local: 51 archivos, 4,363 líneas, commit inicial `b852398` en el checkout local (WSL). Pendiente solo el push (el usuario debe crear el repo vacío en GitHub — el PAT no tiene permiso de Administration para crearlo por API, verificado 403).
 
 - **Entorno sin sudo ni Docker:** Python 3.12 vía `uv` (el sistema tiene 3.8) + PostgreSQL 18 local vía conda en `:5433`. Docker Desktop no está habilitado en WSL.
 - **Datos reales:** 1,689 velas diarias por símbolo (BTC-USD, ETH-USD, 2022-01-01 → 2026-08-16) de Coinbase + 720 de Kraken para reconciliación. SPY/QQQ esperan la key de Tiingo.
@@ -485,7 +485,7 @@ Los ADRs latinos (EC, CIB, VALE, PBR, ITUB, ABEV, AMX, FMX, BAP, SQM) cotizan en
 
 ### Parte A — Fase 4b: el pipeline corre contra la nube
 - ✅ **Supabase operativo end-to-end**: 55.470 velas copiadas de local a la nube en 7 segundos con `scripts/sync_bronze_to_remote.py` (COPY en streaming, idempotente, sin gastar cuota de Tiingo); `dbt build` verde contra Supabase; 1.347 backtests y export generados desde la nube. BD en **133 MB de 500 MB**.
-- ⚠️ **FALLO-16 — La conexión directa de Supabase es IPv6-only.** `db.<ref>.supabase.co` no tiene registro A; los runners de GitHub Actions son IPv4 → desde el cron jamás conectaría. Fix: usar el **Session pooler** (`aws-0-ca-central-1.pooler.supabase.com:5432`, sí resuelve IPv4 y soporta prepared statements, que psycopg y dbt necesitan; el Transaction pooler del 6543 los rompería) + `sslmode=require`. `dbt_env()` ahora deriva el `sslmode` del `DATABASE_URL`.
+- ⚠️ **FALLO-16 — La conexión directa de Supabase es IPv6-only.** `db.<ref>.supabase.co` no tiene registro A; los runners de GitHub Actions son IPv4 → desde el cron jamás conectaría. Fix: usar el **Session pooler** (sí resuelve IPv4 y soporta prepared statements, que psycopg y dbt necesitan; el Transaction pooler del 6543 los rompería) + `sslmode=require`. `dbt_env()` ahora deriva el `sslmode` del `DATABASE_URL`.
 - ⚠️ **FALLO-17 — Sin retención, el free tier muere en menos de una semana.** Cada corrida reescribía ~212k puntos de curva. Fix: `pipeline/retention.py` conserva las 2 corridas más recientes por par (activo, estrategia). No se pierde nada: bronze nunca se purga y todo es reproducible desde ahí.
 - Añadidos: `uv.lock` (sin él `uv sync` falla en CI), migración `002_enable_rls.sql` en el repo (era reproducibilidad faltante), `dbt source freshness` cableado, pasos redundantes del `daily.yml` eliminados.
 - **Pendiente del usuario:** poner los 4 secrets en GitHub (le fueron entregados). El token no tiene permiso de *secrets*, así que no pueden crearse por API.
@@ -527,7 +527,7 @@ Dos conclusiones publicables: (1) **exigir las cinco señales en verde da cero o
 | Calidad | ✅ 161 tests pytest + 87 checks dbt, ruff limpio |
 | Revisión adversarial | ✅ 16 defectos hallados y corregidos (3 críticos) |
 | `BITACORA_TECNICA.md` §10 | ✅ documenta combinaciones, split y resultados |
-| Pendiente usuario | ⏳ 4 secrets en GitHub → cron diario activo. Rotar la contraseña de Supabase (pasó por el chat) |
+| Pendiente usuario | ⏳ 4 secrets en GitHub → cron diario activo. (Higiene de credenciales: gestionada fuera de este documento.) |
 | Fase 4c | ⏳ página del sitio + Power BI + **descomposición cambiaria** (añadir USDMXN/USDCLP/USDPEN) + TRADING_SIM → 45% |
 
 ---
@@ -553,7 +553,7 @@ Primera pieza visual del proyecto con datos reales: el sitio sigue 100% estátic
 | Página del laboratorio | ✅ en vivo en `/es/projects/trading-sim` y `/en/...` |
 | TRADING_SIM | ✅ 45% |
 | Falta de 4C | ⏳ informe Power BI (PBIP) — próxima sesión |
-| Pendiente usuario | ⏳ rotar contraseña de Supabase cuando quiera |
+| Pendiente usuario | ⏳ (higiene de credenciales: fuera de este documento) |
 
 ---
 
@@ -568,7 +568,7 @@ Primera pieza visual del proyecto con datos reales: el sitio sigue 100% estátic
 1. Los 31 JSON del reporte validados contra **los esquemas oficiales publicados por Microsoft** (resolución completa de $ref); el validador atrapó 1 error real antes de entregar.
 2. El modelo TMDL deserializado con **el parser del propio Microsoft** (`Tabular.TmdlSerializer`, AMO 19.x — el revisor adversarial instaló el SDK de .NET para correrlo): OK.
 3. Cada `sourceColumn`, query nativa y referencia de medida verificada contra el warehouse vivo (psql).
-4. Riesgo RLS cerrado empíricamente: las tablas gold en Supabase son propiedad de `postgres` (el mismo rol del login de Power BI → bypass de dueño), y la query nativa de curvas devuelve filas por el pooler.
+4. Riesgo RLS cerrado empíricamente: se verificó empíricamente el acceso de lectura de Power BI a las tablas gold por el pooler. (Nota de endurecimiento pendiente: el rol de conexión debe ser uno dedicado, sin propiedad sobre las tablas.)
 Hallazgos de la revisión: 0 altos, 0 medios, 1 cosmético (título del scatter, corregido).
 
 ### ✅ CIERRE CONFIRMADO DE FASE 4 (20 ago 2026)
@@ -585,7 +585,7 @@ El usuario cargó el informe Power BI completo contra Supabase — las 7 tablas,
 | Página del laboratorio en el sitio | ✅ en vivo, bilingüe |
 | Descomposición cambiaria | ✅ mart + página + Power BI |
 | Informe Power BI (PBIP) | ✅ en el repo, validado con parser oficial — el usuario lo abre en Desktop y refresca |
-| Pendiente usuario | ⏳ abrir el .pbip en Desktop (instrucciones en powerbi/README.md) · rotar contraseña de Supabase |
+| Pendiente usuario | ⏳ abrir el .pbip en Desktop (instrucciones en powerbi/README.md) |
 | Siguiente fase | Fase 5: /historia (redacción con lente de propósito) — o lo que el usuario decida |
 
 ---
@@ -641,7 +641,7 @@ La portada decía *100 pruebas de datos automáticas*, la metodología decía *8
 | Animaciones | ✅ 4 primitivas, seguras sin JS, en papel y con reduced-motion |
 | Cifras del pipeline | ✅ 89 tests / 59.800 velas / 4 fuentes, verificadas contra el warehouse |
 | ⚠️ Pendiente de vigilar | El cron llevaba sin publicar desde el **17 ago** (FALLO-23); el fix `3489025` está pusheado pero aún no había corrido al cierre. La página muestra "última actualización 17 ago" hasta que corra. |
-| Pendiente usuario | ⏳ rotar contraseña de Supabase · foto profesional para la portada |
+| Pendiente usuario | ⏳ foto profesional para la portada |
 
 ---
 
@@ -657,7 +657,7 @@ HTTPError: 403 Client Error: Forbidden for url:
 https://api.tiingo.com/tiingo/daily/DIA/prices?...&token=TIINGO_API_KEY
 ```
 
-El `token=` no llevaba la llave: llevaba **la cadena `TIINGO_API_KEY`**. En Settings → Secrets se pegó el *nombre* en la casilla del *valor*. El YAML del workflow siempre estuvo bien (`${{ secrets.TIINGO_API_KEY }}`). La misma llave probada localmente responde HTTP 200 sin problema, incluidos los tres pares FX que nunca habían entrado.
+El `token=` no llevaba la llave: llevaba **el nombre del secreto**. En Settings → Secrets se pegó el *nombre* en la casilla del *valor*. El YAML del workflow siempre estuvo bien (`${{ secrets.TIINGO_API_KEY }}`). La misma llave probada localmente responde HTTP 200 sin problema, incluidos los tres pares FX que nunca habían entrado.
 
 Histórico en `meta.ingest_runs`, que no deja lugar a interpretación:
 
@@ -804,7 +804,7 @@ El sitio llevaba desde el 21 de agosto sin cambios mientras la búsqueda de empl
 
 - **D-28 · Power BI sin embed y con página propia.** `/[lang]/projects/powerbi`: catálogo copiado a mano de los TMDL/PBIR (`lib/powerbi-model.ts`, con el SHA en la cabecera), diagrama del modelo en SVG con tokens, las 17 medidas con su expresión enlazando a la línea exacta fijada al commit, las 4 páginas con sus visuales, y la divulgación de licenciamiento que D-15 pedía. Las cifras de la banda salen de `.length`, nunca tecleadas (los comentarios del TMDL traen 1.347 y 45 activos, ya viejos). Las capturas son **slots**: `lib/powerbi-shots.ts` mira en build si existe `public/powerbi/<página>.png` y lee el ancho y alto del IHDR; si no existe, la página se ve terminada igual, como el hero sin foto. El usuario las exporta desde Desktop.
 - **D-29 · Tesis pública por etapas, PDF diferido.** Repo con README bilingüe (anclas estables que enlaza el sitio), decisiones metodológicas de la versión corregida, carpetas con README, MIT para el código y derechos reservados sobre el texto hasta el depósito institucional. Página `/[lang]/research/fintech-inclusion` con el nulo en la banda fría. Ni las fuentes de datos ni la frecuencia del panel se afirman hasta que el autor suba los datos (T = 14 en 2017–2021 implica frecuencia intra-anual; se publica T y ρ̂ tal como los reporta el autor, no la frecuencia).
-- **D-30 · El tracking app se queda privado.** El usuario lo ve como posible producto a mediano plazo; el modelo de datos y las reglas de diseño son su diferencial y no se publican. Auditoría previa: un 30 % del repo lleva datos personales reales (finanzas, salud, email, UUID, bancos, ingreso neto) y el historial de 78 commits no es publicable en ninguna forma. En el sitio va una fila en "También en la mesa" sin enlace, con tres cifras y la frase "cifras del repositorio privado, verificables en una demo". **No entra en el CV**: la sección promete código abierto y verificable.
+- **D-30 · El tracking app se queda privado.** El usuario lo ve como posible producto a mediano plazo; el modelo de datos y las reglas de diseño son su diferencial y no se publican. Auditoría previa: una parte sustancial del repo lleva datos personales reales y su historial no es publicable en ninguna forma. En el sitio va una fila en "También en la mesa" sin enlace, con tres cifras y la frase "cifras del repositorio privado, verificables en una demo". **No entra en el CV**: la sección promete código abierto y verificable.
 
 ### Contenido
 
@@ -822,7 +822,7 @@ El sitio llevaba desde el 21 de agosto sin cambios mientras la búsqueda de empl
 - Exportar las cuatro páginas del informe desde Power BI Desktop como `verdict.png`, `explorer.png`, `fx.png`, `curves.png` en `public/powerbi/` (y en `docs/powerbi/` del pipeline). Al existir, la página las muestra sola.
 - Subir al repo de tesis el notebook `PCA_GMM_Fintech_Tesis_v2.ipynb`, los datos con su fuente y frecuencia, y el PDF tras el depósito.
 - Confirmar cuál URL de LinkedIn está viva: el sitio publica `/in/davirson-novoa-ramirez-2721641b5`; Notion registra `/in/davirson-novoa`.
-- En `Tracking-control-app`, aunque siga privado: sacar la URL y la anon key de Supabase de `ci.yml` a secrets, y decidir si `.env` sigue versionado.
+- Pendiente de higiene de credenciales en el otro proyecto privado (se gestiona fuera de este documento).
 
 ---
 

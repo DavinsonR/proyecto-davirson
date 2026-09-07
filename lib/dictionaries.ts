@@ -535,6 +535,11 @@ export const dictionaries = {
         dimensions: { compuesto: "Compuesto", acceso: "Acceso", uso: "Uso", profundidad: "Profundidad" },
         loading: "Cargando el mapa y sus series…",
         failed: "No se pudieron cargar los datos del atlas.",
+        // La atribución existía en atlas_meta.json pero no se renderizaba: la
+        // CC BY-SA 4.0 la exige en el medio donde se publica, no en el fichero.
+        sourceLabel: "Fuente",
+        licenceLabel: "Series derivadas publicadas bajo",
+        licenceName: "CC BY-SA 4.0",
       },
     },
     tracking: {
@@ -1473,6 +1478,9 @@ export const dictionaries = {
         dimensions: { compuesto: "Composite", acceso: "Access", uso: "Use", profundidad: "Depth" },
         loading: "Loading the map and its series…",
         failed: "The atlas data could not be loaded.",
+        sourceLabel: "Source",
+        licenceLabel: "Derived series published under",
+        licenceName: "CC BY-SA 4.0",
       },
     },
     tracking: {
@@ -1928,6 +1936,14 @@ export const dictionaries = {
 
 export type Dictionary = (typeof dictionaries)["es"];
 
+export function isLocale(value: string): value is Locale {
+  return (locales as readonly string[]).includes(value);
+}
+
+/** El acceso por corchetes sobre el objeto literal alcanzaba la cadena de
+ *  prototipos: `dictionaries["__proto__"]` devuelve `Object.prototype`, que es
+ *  truthy, así que el `??` no saltaba y la página reventaba con un 500 en vez
+ *  de degradar. La lista blanca es la única lectura correcta de un locale. */
 export function getDictionary(locale: string): Dictionary {
-  return (dictionaries as Record<string, Dictionary>)[locale] ?? dictionaries.es;
+  return isLocale(locale) ? dictionaries[locale] : dictionaries.es;
 }

@@ -70,19 +70,15 @@ export default async function RootLayout({
       <head>
         {/* Antes de los <link>: un script clásico en línea no se ejecuta mientras
             una hoja de estilo bloquea scripts, así que el tema pre-pintado
-            quedaba detrás de una petición a fonts.googleapis.com — y detrás de
-            su tiempo de espera cuando un proxy corporativo la bloquea. */}
+            quedaba detrás de una petición de red. Ya no hay ninguna en la
+            cabecera, pero el orden sigue siendo el correcto. */}
         <script dangerouslySetInnerHTML={{ __html: BOOT }} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Deliberado: next/font/google descarga en el build y ese build ha corrido
-            sin red (FALLO-01). Un <link> degrada a la fuente del sistema; un build
-            roto no degrada a nada. */}
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
-          rel="stylesheet"
-        />
+        {/* Autoalojadas en public/fonts, con @font-face en globals.css. El <link>
+            a Google entregaba la IP de cada visitante a un tercero en cada carga y
+            metía una hoja mutable —sin SRI posible— en la ruta crítica. Versionadas
+            en el repo, el build tampoco necesita red: FALLO-01 resuelto, no esquivado. */}
+        <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/source-serif-4-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
       <body className="font-sans antialiased">
         {/* El primer tabulador de un lector de teclado caía en el conmutador de

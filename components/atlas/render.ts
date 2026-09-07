@@ -552,7 +552,7 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
   let raised: string | null = null;
   const stop = focus.listen(({ id, pinned }) => {
     if (raised !== null && raised !== id) {
-      const g = frame.querySelector(`g.unit[data-id="${raised}"]`);
+      const g = frame.querySelector(`g.unit[data-id="${CSS.escape(raised)}"]`);
       if (g) {
         g.removeAttribute("transform");
         const face = g.querySelector(".face");
@@ -567,7 +567,7 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
     if (pinned) tip.style.opacity = "0";
     if (id === null) return;
 
-    const g = frame.querySelector(`g.unit[data-id="${id}"]`) as SVGGElement | null;
+    const g = frame.querySelector(`g.unit[data-id="${CSS.escape(id)}"]`) as SVGGElement | null;
     if (!g) return;
     g.parentNode?.appendChild(g);
     const flat = !g.querySelector("use.face") && !LAYERS ? true : g.querySelector("rect.face") !== null;
@@ -944,7 +944,10 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
     }
     tr.setAttribute("data-id", r.id);
     tr.setAttribute("tabindex", "0");
-    tr.setAttribute("role", "button");
+    /* Sin role="button": una fila que se anuncia como botón deja de anunciarse
+       como fila, y las celdas pierden su encabezado (WCAG 1.3.1). Sigue siendo
+       operable con Enter y Espacio, que es lo que de verdad importaba. */
+    tr.setAttribute("aria-label", r.name);
     tr.addEventListener("pointerenter", () => focus.hover(r.id));
     tr.addEventListener("pointerleave", () => focus.hover(null));
     tr.addEventListener("click", () => focus.togglePin(r.id));

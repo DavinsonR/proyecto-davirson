@@ -137,7 +137,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
         <p className="text-[14px] text-body">{dict.error}</p>
         <button
           onClick={retryIndex}
-          className="mt-4 rounded-[3px] border border-rule px-4 py-2 text-[14px] transition-colors hover:border-cold hover:text-cold"
+          className="mt-4 rounded-[3px] border border-control px-4 py-2 text-[14px] transition-colors hover:border-cold hover:text-cold"
         >
           {dict.retry}
         </button>
@@ -238,7 +238,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
               id="ts-asset"
               value={symbol}
               onChange={(e) => setSymbol(e.target.value)}
-              className="rounded-[3px] border border-rule bg-paper px-3 py-2 text-[14px] text-ink focus:border-cold"
+              className="rounded-[3px] border border-control bg-paper px-3 py-2 text-[14px] text-ink focus:border-cold"
             >
               {assetGroups.map((g) => (
                 <optgroup key={g.region} label={dict.regions[g.region as keyof Dict["regions"]] ?? g.region}>
@@ -252,16 +252,21 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
             </select>
           </div>
 
+          {/* Esto era role="tablist" + role="tab" sin aria-controls, sin tabpanel,
+              sin roving tabindex y sin flechas: el lector anunciaba "pestaña 1 de N",
+              el usuario pulsaba las flechas y no pasaba nada. Son botones que
+              alternan un estado, y aria-pressed es exactamente eso. */}
           <div className="mb-6 flex flex-wrap gap-2" role="group" aria-label={dict.explorer.strategyLabel}>
             {(symbolData?.backtests ?? []).map((b) => (
               <button
                 key={b.strategy}
+                type="button"
                 aria-pressed={b.strategy === (currentBacktest?.strategy ?? "")}
                 onClick={() => setStrategy(b.strategy)}
                 className={`text-[14px] px-3.5 py-1.5 rounded-[3px] border transition-colors ${
                   b.strategy === (currentBacktest?.strategy ?? "")
                     ? "border-cold text-paper bg-cold font-semibold"
-                    : "border-rule text-body hover:border-cold hover:text-ink"
+                    : "border-control text-body hover:border-cold hover:text-ink"
                 }`}
               >
                 {b.strategy}
