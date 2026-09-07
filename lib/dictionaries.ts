@@ -108,6 +108,19 @@ export const dictionaries = {
       ] as Metric[],
       ctaPrimary: "Descargar CV (PDF)",
       ctaSecondary: "Ver la evidencia",
+      // La figura del atlas. No es adorno: el par de mapas ES el argumento del
+      // resultado nulo de la tesis, y era lo único visual del sitio que vivía
+      // cinco pantallas dentro de una ruta a dos clics.
+      atlasFigure: {
+        label: "Figura · Índice de inclusión financiera por departamento",
+        title: "En 2018, diecisiete departamentos estaban bajo la línea base. En 2025 queda uno.",
+        body: "Los dos mapas comparten escala, y el índice está estandarizado contra 2018. Todo el país subió a la vez — y esa subida común es justo la razón de que el efecto se desvanezca: con solo efectos de entidad, la inclusión financiera predice el crecimiento (+0,0242, p < 0,001); al descontar el año, el coeficiente es cero.",
+        legendLow: "Bajo la base de 2018",
+        legendMid: "Base 2018",
+        legendHigh: "Sobre la base",
+        cta: "Abrir el atlas de los 1.123 municipios",
+        alt: "Dos mapas de Colombia por departamento con el índice compuesto de inclusión financiera, en la misma escala divergente: en 2018 el país aparece en tonos neutros con la periferia en rojo, y en 2025 casi todo el territorio está en azul.",
+      },
       portraitPending: "DNR",
     },
     work: {
@@ -397,9 +410,9 @@ export const dictionaries = {
       timeline: "Warehouse, índice, atlas y estimaciones publicados · siguen el anexo de desagregación temporal y el manuscrito",
       nav: [
         { id: "resumen", label: "Resumen" },
+        { id: "atlas", label: "Atlas" },
         { id: "datos", label: "Datos" },
         { id: "metodo", label: "Índice" },
-        { id: "atlas", label: "Atlas" },
         { id: "resultados", label: "Resultados" },
         { id: "decisiones", label: "Decisiones" },
         { id: "reproducir", label: "Reproducir" },
@@ -715,7 +728,7 @@ export const dictionaries = {
       items: [
         {
           term: "Construido en público",
-          text: "Este sitio y los proyectos detrás se documentan mientras se hacen, incluidos los errores. La bitácora de ingeniería registra 29 fallos encontrados y corregidos, numerados uno a uno.",
+          text: "Este sitio y los proyectos detrás se documentan mientras se hacen, incluidos los errores. La bitácora de ingeniería registra 30 fallos encontrados y corregidos, numerados uno a uno.",
         },
         {
           term: "Rendimientos pasados",
@@ -1051,6 +1064,19 @@ export const dictionaries = {
       ] as Metric[],
       ctaPrimary: "Download CV (PDF)",
       ctaSecondary: "See the evidence",
+      // The atlas figure. Not ornament: the pair of maps IS the argument for the
+      // thesis's null result, and it was the only visual on the site — five
+      // screens inside a route two clicks away.
+      atlasFigure: {
+        label: "Figure · Financial-inclusion index by department",
+        title: "In 2018, seventeen departments sat below the baseline. In 2025, one does.",
+        body: "Both maps share one scale, and the index is standardised against 2018. The whole country moved up at once — and that common rise is exactly why the effect vanishes: with entity effects alone, financial inclusion predicts growth (+0.0242, p < 0.001); take the year out and the coefficient is zero.",
+        legendLow: "Below the 2018 baseline",
+        legendMid: "2018 baseline",
+        legendHigh: "Above the baseline",
+        cta: "Open the atlas of all 1,123 municipalities",
+        alt: "Two maps of Colombia by department showing the composite financial-inclusion index on one diverging scale: in 2018 the country reads in neutral tones with a red periphery, and by 2025 almost the whole territory is blue.",
+      },
       portraitPending: "DNR",
     },
     work: {
@@ -1340,9 +1366,9 @@ export const dictionaries = {
       timeline: "Warehouse, index, atlas and estimates published · the temporal-disaggregation annex and the manuscript follow",
       nav: [
         { id: "resumen", label: "Abstract" },
+        { id: "atlas", label: "Atlas" },
         { id: "datos", label: "Data" },
         { id: "metodo", label: "Index" },
-        { id: "atlas", label: "Atlas" },
         { id: "resultados", label: "Results" },
         { id: "decisiones", label: "Decisions" },
         { id: "reproducir", label: "Reproduce" },
@@ -1656,7 +1682,7 @@ export const dictionaries = {
       items: [
         {
           term: "Built in public",
-          text: "This site and the projects behind it are documented as they are made, failures included. The engineering log records 29 defects found and fixed, numbered one by one.",
+          text: "This site and the projects behind it are documented as they are made, failures included. The engineering log records 30 defects found and fixed, numbered one by one.",
         },
         {
           term: "Past results",

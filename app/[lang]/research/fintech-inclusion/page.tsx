@@ -102,6 +102,35 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
         </div>
       </section>
 
+      {/* El atlas sube por delante de datos, índice y econometría. Arrancaba a
+          2.820px de una página de 7.489 en escritorio y a 4.608 de 12.349 en el
+          teléfono —cinco pantallas y media— cuando es la razón de estar en esta
+          página: quien llega aquí desde la figura de la portada viene a ver el
+          mapa, no a leer la construcción del índice antes de llegar a él. La
+          navegación de sección se reordena con él. */}
+      {/* ================= ATLAS — the map is the figure this page is built around ====== */}
+      <section id="atlas" className={section}>
+        <div className={wrap}>
+          <p data-reveal className={`reveal ${label}`}>{t.atlas.label}</p>
+          <h2 data-reveal className={`reveal ${heading}`} style={delay(1)}>{t.atlas.title}</h2>
+          <p data-reveal className={`reveal mt-4 ${prose} text-[15px] leading-[1.75] text-body`} style={delay(2)}>
+            {t.atlas.body}
+          </p>
+
+          <div className="mt-9">
+            <Atlas copy={t.atlasCopy} locale={lang === "en" ? "en-US" : "es-CO"} />
+          </div>
+
+          <ul className="mt-9 grid grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-2">
+            {t.atlas.notes.map((n, i) => (
+              <li key={i} className="border-t border-rulesoft pt-4 text-[14px] leading-[1.65] text-body">
+                {n}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* ================= DATA ================= */}
       <section id="datos" className={section}>
         <div className={wrap}>
@@ -131,29 +160,6 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ================= ATLAS — the map is the figure this page is built around ====== */}
-      <section id="atlas" className={section}>
-        <div className={wrap}>
-          <p data-reveal className={`reveal ${label}`}>{t.atlas.label}</p>
-          <h2 data-reveal className={`reveal ${heading}`} style={delay(1)}>{t.atlas.title}</h2>
-          <p data-reveal className={`reveal mt-4 ${prose} text-[15px] leading-[1.75] text-body`} style={delay(2)}>
-            {t.atlas.body}
-          </p>
-
-          <div className="mt-9">
-            <Atlas copy={t.atlasCopy} locale={lang === "en" ? "en-US" : "es-CO"} />
-          </div>
-
-          <ul className="mt-9 grid grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-2">
-            {t.atlas.notes.map((n, i) => (
-              <li key={i} className="border-t border-rulesoft pt-4 text-[14px] leading-[1.65] text-body">
-                {n}
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 

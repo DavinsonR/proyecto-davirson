@@ -292,6 +292,13 @@ A 2px green dot (two stacked round spans, the lower at 60% opacity) followed by 
 ### Skill Scale
 **Removed from this document.** It specified ten 6px segments filled to a declared level; no such component ever shipped, `ProofRow` has no `level` field, and `bar-in` appears only in the charts. A spec for a component that is not in the build is how the shadows, the cards and the 13px prose below went unnoticed for three sessions. What ships in its place is the toolkit list: a tool name over the artifact that backs it, linked where the artifact is public.
 
+### Atlas Figure
+The sheet's second figure and the only picture in the build. Two departmental choropleths — 2018 and 2025 — on **one shared scale**, opened by a 2px `cold` rule on the paper ground, with the argument set beside them and a 7-step legend beneath. It is not ornament: the index is standardised against 2018, so the pair shows every department rising off that baseline, which is exactly why the coefficient dies once time effects enter. Scaling each panel against itself would hide the finding, so the domain is pooled.
+
+It is **static SVG generated at build time** (`npm run atlas` → `lib/atlas-figure.ts`), not the interactive atlas: the live one costs 258 KB of JSON plus d3 and topojson. Fills are `var(--atlas-*)` — the same tokens the interactive map reads — so a static figure still follows the theme, still prints under the exact-colour rule, and cannot drift from the map it links to. The geometry is declared once in `<defs>` and each panel references it with `<use>`, because Next serialises the server tree twice; without that the figure cost 26.7 KB gzip instead of 14.1. Department outlines are stroked in `coldline`, never paper: the neutral ramp step and a light ground differ by about 1.05:1, and a mostly-neutral panel disappears without the line.
+
+**The band does not wear `coldsoft`.** The figures band directly above it already does, and two identical tints in sequence read as one 500px blue mass.
+
 ### Charts
 Line only, on paper ground: series in blue at 2px solid, benchmark in muted at 2px dashed (`5 6`), gridlines in `rule` at 1px. Series are distinguished by dash pattern and end-point label as well as hue, so the chart survives grayscale printing and color-vision deficiency. All chart text wears text tokens (`ink`, `body`, `muted`), never the series color.
 
