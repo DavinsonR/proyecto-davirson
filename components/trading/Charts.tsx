@@ -167,11 +167,16 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
         )}
       </svg>
 
-      {/* tooltip HTML */}
+      {/* tooltip HTML.
+          Llevaba `role="status"`: una región viva educada que se reescribía en
+          cada `pointermove` e inundaba la cola de anuncios de un lector de
+          pantalla, sin que ese lector pudiera activarla nunca (es
+          `pointer-events: none` y no tiene disparador de teclado). El
+          equivalente no visual real ya existe: la tabla de datos del `<details>`
+          de más abajo. */}
       {h && (
         <div
-          role="status"
-          className="pointer-events-none absolute top-2 z-10 rounded border border-ink bg-paper px-3 py-2 text-[14px] leading-relaxed"
+          className="pointer-events-none absolute top-2 z-10 border border-ink bg-paper px-3 py-2 text-[14px] leading-relaxed"
           style={{ left: `min(max(${hoverLeftPct}%, 8%), 72%)`, transform: "translateX(-50%)" }}
         >
           <p className="text-muted">{h[0]}</p>
@@ -241,7 +246,7 @@ export function HBars({ rows, max }: { rows: BarRow[]; max?: number }) {
             </div>
             <div className="h-[14px] rounded-[3px] bg-rule">
               <div
-                className="bar-in h-full rounded-r-[4px] rounded-l-[2px] transition-all duration-500"
+                className="bar-in h-full rounded-[1px] transition-all duration-500"
                 style={{ width: `${Math.max(w, r.value > 0 ? 1.5 : 0.4)}%`, background: CHART.series, opacity: r.value === 0 ? 0.25 : 1 }}
               />
             </div>
@@ -268,7 +273,7 @@ export function Funnel({ stages }: { stages: { label: string; value: number; dis
             </div>
             <div className="h-[22px] rounded-[3px] bg-rule">
               <div
-                className="bar-in h-full rounded-r-[4px] rounded-l-[2px] transition-all duration-700"
+                className="bar-in h-full rounded-[1px] transition-all duration-700"
                 style={{ width: `${w}%`, background: CHART.series, opacity: 1 - i * 0.18, "--d": `${i * 110 + 90}ms` } as React.CSSProperties}
               />
             </div>

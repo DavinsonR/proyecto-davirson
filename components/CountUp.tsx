@@ -64,9 +64,14 @@ export default function CountUp({
     };
   }, [value, lang]);
 
+  /* Durante 1.100 ms el nodo enseña un número que no es el de la página: quien
+     lo recorre con el cursor virtual a mitad de cuenta se lleva "847" donde
+     dice 1.347. El valor animado se oculta a la asistencia y el real viaja al
+     lado, siempre correcto y sin depender de que la cuenta haya terminado. */
   return (
     <span ref={ref} className={className}>
-      {shown}
+      <span aria-hidden="true">{shown}</span>
+      <span className="sr-only">{value}</span>
     </span>
   );
 }

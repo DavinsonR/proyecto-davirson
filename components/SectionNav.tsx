@@ -40,7 +40,7 @@ export default function SectionNav({ items, label }: { items: NavItem[]; label: 
               <a
                 href={`#${i.id}`}
                 aria-current={active === i.id ? "true" : undefined}
-                className={`block whitespace-nowrap border-b-2 px-3 py-2.5 text-[13.5px] transition-colors ${
+                className={`block whitespace-nowrap border-b-2 px-3 py-2.5 text-[14px] transition-colors ${
                   active === i.id
                     ? "border-cold font-semibold text-cold"
                     : "border-transparent text-body hover:border-rule hover:text-ink"

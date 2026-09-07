@@ -6,24 +6,40 @@ import type { Dictionary, Locale } from "@/lib/dictionaries";
 import ThemeToggle from "@/components/ThemeToggle";
 import { ReadingProgress } from "@/components/Motion";
 
-export default function Navbar({ dict, lang }: { dict: Dictionary; lang: Locale }) {
+/** Este componente es de cliente solo por `usePathname`, y recibía el diccionario
+ *  entero. Todo lo que cruza esa frontera se serializa dentro del HTML de cada
+ *  página: 45.117 bytes del idioma completo — el CV, la tesis, el laboratorio, el
+ *  catálogo de Power BI — para usar 508. La portada enviaba `profileText` y
+ *  `atlasCopy` a un lector que nunca los ve. Ahora entra solo lo que se pinta. */
+export default function Navbar({
+  nav,
+  mailHref,
+  lang,
+}: {
+  nav: Dictionary["nav"];
+  mailHref: string;
+  lang: Locale;
+}) {
   const pathname = usePathname();
   const otherLang = lang === "es" ? "en" : "es";
   const switchHref = pathname.replace(`/${lang}`, `/${otherLang}`) || `/${otherLang}`;
   const resolve = (href: string) => `/${lang}${href}`;
 
   return (
-    <nav className="no-print sticky top-0 z-50 border-b border-rule bg-paper/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-[1080px] items-center justify-between gap-4 px-6 py-3.5">
+    <nav
+      aria-label={nav.label}
+      className="no-print sticky top-0 z-50 border-b border-rule bg-paper/95 backdrop-blur-sm"
+    >
+      <div className="mx-auto flex max-w-[1080px] items-center justify-between gap-3 px-6 py-3.5">
         <Link
           href={`/${lang}`}
-          className="font-display text-[15px] font-semibold tracking-tight text-ink"
+          className="min-w-0 truncate font-display text-[15px] font-semibold tracking-tight text-ink"
         >
           Davirson Novoa
         </Link>
 
         <div className="hidden items-center gap-7 text-[14px] font-medium text-body md:flex">
-          {dict.nav.links.map((l) => (
+          {nav.links.map((l) => (
             <Link
               key={l.label}
               href={resolve(l.href)}
@@ -36,25 +52,33 @@ export default function Navbar({ dict, lang }: { dict: Dictionary; lang: Locale 
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           {/* Language is a labelled control, not a dim glyph: the previous build
-              hid it against the dark ground and reviewers never found it. */}
+              hid it against the dark ground and reviewers never found it.
+              El nombre accesible tiene que contener el texto visible (2.5.3), y
+              antes era solo "Read in English": quien maneja por voz decía
+              «pulsa EN» y no pasaba nada. */}
           <Link
             href={switchHref}
-            title={dict.nav.switchTitle}
-            aria-label={dict.nav.switchTitle}
+            title={nav.switchTitle}
+            aria-label={`${nav.switchLabel} — ${nav.switchTitle}`}
             className="lift inline-flex h-9 items-center rounded-[3px] border border-coldline bg-coldsoft px-3 font-display text-[14px] font-semibold tracking-[0.06em] text-cold transition-colors hover:border-cold"
           >
-            {dict.nav.switchLabel}
+            {nav.switchLabel}
           </Link>
 
-          <ThemeToggle labels={{ light: dict.nav.themeLight, dark: dict.nav.themeDark }} />
+          <ThemeToggle labels={{ light: nav.themeLight, dark: nav.themeDark }} />
 
+          {/* Estaba oculto por debajo de 640px. En el teléfono la barra quedaba
+              con el nombre, el idioma y el tema: el único control de conversión
+              del sitio desaparecía justo en el dispositivo donde el enlace llega
+              desde LinkedIn y donde escribir un correo cuesta dos toques. La
+              alternativa era bajar 7.200px hasta el cierre. */}
           <a
-            href={`mailto:${dict.profile.email}`}
-            className="lift hidden h-9 items-center rounded-[3px] bg-cold px-4 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90 sm:inline-flex"
+            href={mailHref}
+            className="lift inline-flex h-9 items-center rounded-[3px] bg-cold px-3 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90 sm:px-4"
           >
-            {dict.nav.contact}
+            {nav.contact}
           </a>
         </div>
       </div>
