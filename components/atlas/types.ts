@@ -1,0 +1,74 @@
+/* The contract the thesis repository exports with `uv run iif atlas`. The files land in
+   public/atlas/ and nothing here reshapes them: what the warehouse publishes is what the map reads. */
+
+export type Level = "departamento" | "municipio";
+export type View = "plano" | "relieve" | "municipios";
+
+export type Indicator = {
+  id: string;
+  etiqueta: string;
+  grupo: "indice" | "variable" | "contexto";
+  escala: "divergente" | "secuencial";
+  decimales: number;
+};
+
+export type AtlasMeta = {
+  version: number;
+  generado_en: string;
+  indicadores: Record<Level, Indicator[]>;
+  unidades: Record<string, number>;
+  islas_descartadas: Record<string, number>;
+  fuente: string;
+  nota: string;
+  nota_geometria: string;
+};
+
+export type Series = {
+  nivel: Level;
+  ids: string[];
+  anios: number[];
+  nombres: string[];
+  /* One matrix per indicator: years by units. A null is a unit nobody reported, never a zero. */
+  series: Record<string, (number | null)[][]>;
+  region?: string[];
+  dpto_ccdgo?: (string | null)[];
+  mpio_tipo?: (string | null)[];
+  es_capital?: boolean[];
+};
+
+/* TopoJSON as topojson-client wants it; the geometry keeps only the DIVIPOLA key. */
+export type Topology = {
+  type: "Topology";
+  objects: Record<string, unknown>;
+  arcs: unknown[];
+  transform?: unknown;
+};
+
+export type AtlasCopy = {
+  viewLabel: string;
+  views: { plano: string; relieve: string; municipios: string };
+  indicatorLabel: string;
+  groups: { indice: string; variable: string; contexto: string };
+  yearLabel: string;
+  regionLabel: string;
+  departmentLabel: string;
+  all: string;
+  medianLabel: string;
+  /* Templates, not functions: the dictionary is a plain content file and has to stay one.
+     {n} {total} {ind} {y} {name} are filled in at draw time. */
+  medianFoot: string;
+  evolutionLabel: string;
+  dimensionsLabel: string;
+  byRegionLabel: string;
+  byDepartmentLabel: string;
+  rankingLabel: string;
+  rankingHead: { rank: string; unit: string; value: string };
+  moreUnits: string;
+  noData: string;
+  noDataYear: string;
+  drillDown: string;
+  offScale: string;
+  dimensions: { compuesto: string; acceso: string; uso: string; profundidad: string };
+  loading: string;
+  failed: string;
+};

@@ -41,6 +41,27 @@
   --color-research: #0f4c81;
   --color-idea: #626c76;
 
+
+  /* --- atlas: the map's own ramps, stepped from the two technical hues already
+  on the sheet. Diverging is neg against cold with a neutral middle, because
+  the index is a standardised score with a real zero; sequential is one hue,
+  because a count per 10,000 inhabitants has no centre. The two diverging arms
+  mirror each other in lightness, so a step left and a step right read as the
+  same distance. Amber never appears here: it belongs to human content. --- */
+  --atlas-neg-3: #93262c;
+  --atlas-neg-2: #c1655f;
+  --atlas-neg-1: #e5b0aa;
+  --atlas-mid:   #edf0f3;
+  --atlas-pos-1: #a6c5e2;
+  --atlas-pos-2: #4a86bd;
+  --atlas-pos-3: #0f4c81;
+  --atlas-seq-0: #dbe8f4;
+  --atlas-seq-1: #b0cee8;
+  --atlas-seq-2: #7aabd6;
+  --atlas-seq-3: #3f7db0;
+  --atlas-seq-4: #0f4c81;
+  --atlas-void:  #e4e8ec;
+
   /* --- type: two faces, committed. Archivo is the grotesque of
      American financial print; Source Serif 4 carries the figures
      that a printed sheet sets large. --- */
@@ -75,7 +96,24 @@
     --color-live: #4bbd8a;
     --color-building: #d9b45b;
     --color-research: #74b0e4;
+
     --color-idea: #8b959f;
+
+    /* --- atlas in dark: both ends brighten and the middle retreats toward the
+       ground. Re-stepped, never the light ramp inverted. --- */
+    --atlas-neg-3: #e8807f;
+    --atlas-neg-2: #c25f5e;
+    --atlas-neg-1: #8f4544;
+    --atlas-mid:   #2a333c;
+    --atlas-pos-1: #34597e;
+    --atlas-pos-2: #4d8cc4;
+    --atlas-pos-3: #7fb9ea;
+    --atlas-seq-0: #16283a;
+    --atlas-seq-1: #1f4c74;
+    --atlas-seq-2: #2e77b0;
+    --atlas-seq-3: #5aa0dd;
+    --atlas-seq-4: #a9d0f2;
+    --atlas-void:  #1c2329;
   }
 }
 
@@ -104,6 +142,22 @@
   --color-building: #d9b45b;
   --color-research: #74b0e4;
   --color-idea: #8b959f;
+
+  /* --- atlas in dark: both ends brighten and the middle retreats toward the
+     ground. Re-stepped, never the light ramp inverted. --- */
+  --atlas-neg-3: #e8807f;
+  --atlas-neg-2: #c25f5e;
+  --atlas-neg-1: #8f4544;
+  --atlas-mid:   #2a333c;
+  --atlas-pos-1: #34597e;
+  --atlas-pos-2: #4d8cc4;
+  --atlas-pos-3: #7fb9ea;
+  --atlas-seq-0: #16283a;
+  --atlas-seq-1: #1f4c74;
+  --atlas-seq-2: #2e77b0;
+  --atlas-seq-3: #5aa0dd;
+  --atlas-seq-4: #a9d0f2;
+  --atlas-void:  #1c2329;
 }
 
 html {
@@ -287,5 +341,214 @@ a {
     --color-building: #8a6a10;
     --color-research: #0f4c81;
     --color-idea: #626c76;
+
+    /* --- atlas: the paper ramps again, for the reader who forces light --- */
+    --atlas-neg-3: #93262c;
+    --atlas-neg-2: #c1655f;
+    --atlas-neg-1: #e5b0aa;
+    --atlas-mid:   #edf0f3;
+    --atlas-pos-1: #a6c5e2;
+    --atlas-pos-2: #4a86bd;
+    --atlas-pos-3: #0f4c81;
+    --atlas-seq-0: #dbe8f4;
+    --atlas-seq-1: #b0cee8;
+    --atlas-seq-2: #7aabd6;
+    --atlas-seq-3: #3f7db0;
+    --atlas-seq-4: #0f4c81;
+    --atlas-void:  #e4e8ec;
   }
+}
+
+/* ============================================================
+   ATLAS
+   The map is a figure on this sheet, so it wears the sheet's rules: hairlines,
+   tabular figures, one accent. Three lanes — metrics, map, context — that stack
+   on a narrow screen with the map first, because the map is the reason to be here.
+   ============================================================ */
+
+.atlas {
+  border-top: 2px solid var(--color-cold);
+  background: var(--color-paper);
+}
+
+.atlas-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  align-items: flex-end;
+  padding: 14px 0 16px;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.atlas-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.atlas-field > legend,
+.atlas-field > span {
+  padding: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.atlas-field select {
+  font: inherit;
+  font-size: 14px;
+  padding: 6px 8px;
+  min-width: 190px;
+  max-width: 250px;
+  border: 1px solid var(--color-rule);
+  border-radius: 3px;
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+.atlas-field select:hover { border-color: var(--color-cold); }
+
+.atlas-views {
+  display: flex;
+  border: 1px solid var(--color-rule);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.atlas-views button {
+  font: inherit;
+  font-size: 14px;
+  padding: 6px 14px;
+  border: 0;
+  border-right: 1px solid var(--color-rule);
+  background: var(--color-paper);
+  color: var(--color-body);
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+.atlas-views button:last-child { border-right: 0; }
+.atlas-views button:hover { color: var(--color-cold); }
+.atlas-views button[aria-pressed="true"] {
+  background: var(--color-cold);
+  color: var(--color-paper);
+  font-weight: 600;
+}
+
+.atlas-range { display: flex; align-items: center; gap: 10px; }
+.atlas-range input[type="range"] { width: 170px; accent-color: var(--color-cold); }
+.atlas-range output {
+  font-family: var(--font-figure);
+  font-size: 17px;
+  color: var(--color-ink);
+  min-width: 42px;
+}
+
+.atlas-state {
+  padding: 28px 0;
+  font-size: 14.5px;
+  color: var(--color-muted);
+}
+
+.atlas-canvas {
+  display: grid;
+  gap: 22px;
+  padding-top: 18px;
+  grid-template-columns: minmax(210px, 0.8fr) minmax(0, 2.1fr) minmax(265px, 1fr);
+}
+.atlas-canvas[data-hidden="yes"] { display: none; }
+@media (max-width: 1080px) {
+  .atlas-canvas { grid-template-columns: minmax(0, 1fr) minmax(255px, 0.75fr); }
+  .atlas-canvas > .atlas-map { grid-row: 1; grid-column: 1 / -1; }
+}
+@media (max-width: 720px) {
+  .atlas-canvas { grid-template-columns: 1fr; }
+}
+
+.atlas-block { border-top: 1px solid var(--color-rule); padding-top: 8px; margin-bottom: 20px; }
+.atlas-block h3 {
+  margin: 0 0 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.atlas-figure {
+  font-family: var(--font-figure);
+  font-size: clamp(30px, 3.6vw, 40px);
+  line-height: 1.02;
+  color: var(--color-ink);
+}
+.atlas-unit { margin-top: 3px; min-height: 20px; font-size: 14.5px; color: var(--color-ink); }
+.atlas-foot { margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: var(--color-muted); }
+
+.atlas-map { position: relative; }
+
+.atlas-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 13px; }
+.atlas-table th {
+  padding: 0 5px 6px;
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  border-bottom: 1px solid var(--color-rule);
+}
+.atlas-table td {
+  padding: 4px 5px;
+  border-bottom: 1px solid var(--color-rulesoft);
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+}
+/* four-digit ranks must not break across two lines: only the name may wrap */
+.atlas-table td.num { text-align: right; white-space: nowrap; overflow-wrap: normal; }
+.atlas-table td.muted { color: var(--color-muted); }
+.atlas-table td.atlas-gap { text-align: center; color: var(--color-muted); padding: 6px 5px; }
+.atlas-table tr[data-id] { cursor: pointer; }
+.atlas-table tr[data-id]:hover td { background: var(--color-band); }
+.atlas-table tr[data-active="yes"] td { background: var(--color-coldsoft); font-weight: 600; }
+.atlas-pill { display: block; height: 8px; border-radius: 0 2px 2px 0; }
+
+.atlas-tip,
+.atlas-card {
+  position: absolute;
+  z-index: 6;
+  pointer-events: none;
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: 3px;
+  padding: 7px 10px;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 0.14);
+  max-width: 250px;
+}
+.atlas-tip { opacity: 0; transition: opacity 90ms ease; font-size: 13px; color: var(--color-body); }
+.atlas-tip strong, .atlas-card strong { display: block; font-size: 14px; color: var(--color-ink); }
+.atlas-tip span, .atlas-card span { display: block; margin-top: 2px; font-size: 12.5px; color: var(--color-muted); }
+.atlas-tip b { display: block; margin-top: 2px; font-family: var(--font-figure); font-size: 16px; color: var(--color-ink); }
+.atlas-card { border-left: 3px solid var(--color-cold); }
+
+.atlas-drill {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 13px;
+  border: 0;
+  border-radius: 3px;
+  background: var(--color-cold);
+  color: var(--color-paper);
+  cursor: pointer;
+  box-shadow: 0 1px 8px rgb(0 0 0 / 0.16);
+}
+.atlas-drill:hover { opacity: 0.9; }
+
+/* on paper the map prints flat: no hover surfaces, no floating cards */
+@media print {
+  .atlas-tip, .atlas-card, .atlas-drill { display: none !important; }
+  .atlas-canvas { grid-template-columns: 1fr 1fr; }
 }
