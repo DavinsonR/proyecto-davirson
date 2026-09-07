@@ -68,7 +68,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
   const chip = "rounded-[3px] border border-rule bg-band px-2.5 py-1 text-[14px] text-body";
 
   return (
-    <main>
+    <main id="contenido" tabIndex={-1}>
       {/* ===== HEADER — the title mapping is the headline, not a subtitle ===== */}
       <header className="border-b border-rule">
         <div className={wrap}>

@@ -16,7 +16,7 @@ Their job: decide in under a minute whether this person fits an open role, and a
 
 ## Product Purpose
 
-A personal site that converts a scan into an interview for **Finance Data Analyst** roles — positions at the intersection of financial analysis and data engineering — without the salary cut that a "career changer" framing invites.
+A personal site that converts a scan into an interview for **Finance Data Analyst** roles — positions at the intersection of financial analysis and data engineering — read as a specialist in that crossover rather than as someone starting over in a new field.
 
 Success is not traffic. Success is: the visitor understands the crossover in seconds, believes it (the work is verifiable), downloads the CV or writes.
 
@@ -24,7 +24,7 @@ Success is not traffic. Success is: the visitor understands the crossover in sec
 
 **The crossover already exists and is demonstrable.** Davirson is an economist and FP&A consultant (Neoris/EPAM, operations across 15+ countries) who built and operates a production data platform on his own: daily ingestion of 48 assets, a PostgreSQL medallion warehouse with dbt, automated data-quality tests, CI/CD, and a Power BI semantic model.
 
-A neighboring candidate cannot truthfully copy this claim: finance people rarely ship pipelines, and data engineers rarely read a P&L. The site's job is to make that pairing legible and priced accordingly — a scarce specialist, not a beginner in a new field.
+A neighboring candidate cannot truthfully copy this claim: finance people rarely ship pipelines, and data engineers rarely read a P&L. The site's job is to make that pairing legible and credible — a scarce specialist, not a beginner in a new field.
 
 ## Operating Context
 

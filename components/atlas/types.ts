@@ -71,4 +71,7 @@ export type AtlasCopy = {
   dimensions: { compuesto: string; acceso: string; uso: string; profundidad: string };
   loading: string;
   failed: string;
+  sourceLabel: string;
+  licenceLabel: string;
+  licenceName: string;
 };

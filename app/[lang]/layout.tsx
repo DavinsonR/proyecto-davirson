@@ -6,6 +6,12 @@ import MotionRoot from "@/components/Motion";
 import { SITE } from "@/lib/site";
 import "../globals.css";
 
+/** Sin esto, `generateStaticParams` no cierra la ruta: el valor por defecto de
+ *  App Router es `true` y cualquier segmento se renderiza bajo demanda. `/admin`,
+ *  `/.env` y `/Verificacion-De-Pago-Requerida` devolvían 200 con la home entera,
+ *  cacheados un año, y cada segmento inventado acuñaba cinco páginas nuevas. */
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
 }
@@ -56,19 +62,22 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Deliberado: next/font/google descarga en el build y ese build ha corrido
-            sin red (FALLO-01). Un <link> degrada a la fuente del sistema; un build
-            roto no degrada a nada. */}
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
-          rel="stylesheet"
-        />
+        {/* Las fuentes se sirven desde el propio origen (public/fonts, @font-face
+            en globals.css). El <link> a Google entregaba la IP del visitante a un
+            tercero en cada carga y metía una hoja mutable en la ruta crítica.
+            Versionadas en el repo, el build tampoco necesita red: FALLO-01 queda
+            resuelto, no esquivado. */}
+        <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/source-serif-4-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <script dangerouslySetInnerHTML={{ __html: BOOT }} />
       </head>
       <body className="font-sans antialiased">
+        {/* Debe ser el primer elemento enfocable del documento: la navegación es
+            fija y /research añade una segunda barra, así que sin esto el usuario
+            de teclado las recorre enteras en cada página. */}
+        <a href="#contenido" className="skip-link">
+          {dict.nav.skip}
+        </a>
         <MotionRoot />
         <Navbar dict={dict} lang={lang as Locale} />
         {children}

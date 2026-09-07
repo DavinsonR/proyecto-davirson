@@ -12,11 +12,26 @@ const nextConfig: NextConfig = {
       { source: "/research/fintech-inclusion", destination: "/en/research/fintech-inclusion", permanent: false },
     ];
   },
-  /** Cabeceras de seguridad. No hay CSP de scripts a propósito: el sitio usa
-   *  scripts en línea (tema antes del primer pintado, hidratación de Next) y una
-   *  CSP con nonce obligaría a renderizar en servidor, que es justo lo que este
-   *  sitio no hace. Lo que sí se cierra: enmarcado, sniffing de tipo, fuga de
-   *  referer y permisos de dispositivo que esta página no usa. */
+  /** Cabeceras de seguridad.
+   *
+   *  Sobre `script-src 'unsafe-inline'`: es deliberado y es el único camino aquí.
+   *  El HTML construido lleva tres scripts en línea — el del tema, el arranque de
+   *  `__next_f` y el payload RSC de hidratación. El tercero es distinto en cada
+   *  página (90–133 KB) y cambia con cada edición de `lib/dictionaries.ts`, así
+   *  que una CSP por hash exigiría once hashes regenerados en cada commit, y
+   *  `headers()` se evalúa antes de renderizar las páginas: no puede conocerlos.
+   *  Un nonce obligaría a renderizar en servidor, que es justo lo que este sitio
+   *  no hace. Y ojo: en cuanto se declara un hash, el navegador ignora
+   *  `'unsafe-inline'` (CSP3) y la hidratación muere. No se pueden mezclar.
+   *
+   *  Lo que esta CSP sí compra —y era lo que faltaba— es `default-src 'none'` y
+   *  `connect-src`: una dependencia comprometida (d3 corre en el navegador del
+   *  visitante) no puede cargar un script de otro origen ni exfiltrar a un host
+   *  arbitrario. Ese es el escenario realista en un sitio sin sesión ni datos;
+   *  el XSS no lo es, porque aquí no hay nada que robar.
+   *
+   *  `style-src-attr` va aparte para que la hoja de estilo quede estricta: los
+   *  43 atributos `style=` del HTML no obligan a abrir `style-src` entero. */
   async headers() {
     return [
       {
@@ -29,7 +44,22 @@ const nextConfig: NextConfig = {
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
           {
             key: "Content-Security-Policy",
-            value: "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'",
+            value: [
+              "default-src 'none'",
+              "script-src 'self' 'unsafe-inline'",
+              "style-src 'self'",
+              "style-src-attr 'unsafe-inline'",
+              "font-src 'self'",
+              "img-src 'self' data:",
+              // El laboratorio de trading lee los JSON del pipeline en cliente.
+              "connect-src 'self' https://raw.githubusercontent.com",
+              "manifest-src 'self'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "object-src 'none'",
+              "upgrade-insecure-requests",
+            ].join("; "),
           },
         ],
       },

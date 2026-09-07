@@ -27,7 +27,7 @@ export default async function TradingSimPage({
   const wrap = "max-w-[980px] mx-auto px-6";
 
   return (
-    <main>
+    <main id="contenido" tabIndex={-1}>
       {/* ================= HERO ================= */}
       <header className="pt-20 pb-14">
         <div className={wrap}>

@@ -35,6 +35,23 @@ function tex(input: string): string {
     .replace(/"([^"]*)"/g, "``$1''");
 }
 
+/** `tex()` escapa las etiquetas, pero el argumento URL de \href{} nunca pasaba
+ *  por ningún filtro. Una `}` en cualquier href cierra el argumento y el resto
+ *  se ejecuta como LaTeX (`\input{...}` funcionaría; `\write18` no, está
+ *  desactivado por defecto). No es explotable —los valores salen de
+ *  `lib/dictionaries.ts`, un fichero propio, y quien pueda editarlo ya ejecuta
+ *  código porque `npm run latex` lo importa— pero una URL legítima con `}` o `%`
+ *  rompe el CV en silencio. Mejor que reviente aquí, con el href a la vista. */
+function url(u: string): string {
+  // `hyperref` sí digiere `#` y `%` en el argumento de \href (las anclas del CV
+  // dependen de ello). Lo que rompe de verdad es `}`, que cierra el argumento y
+  // deja que el resto se lea como LaTeX, más `{` y la barra invertida.
+  if (!/^(https?:\/\/|mailto:)[^\s{}\\]+$/.test(u)) {
+    throw new Error(`href no apto para LaTeX: ${u}`);
+  }
+  return u;
+}
+
 const strings = {
   es: {
     file: "Davirson_Novoa_CV_ES.tex",
@@ -138,9 +155,9 @@ function build(lang: Locale): string {
   w(`  {\\small ${tex(cv.subtitle)}}\\\\[3pt]`);
   w(`  {\\small ${tex(cv.metaLine)}}\\\\[2pt]`);
   w(
-    `  {\\small \\href{mailto:${dict.profile.email}}{${tex(dict.profile.email)}} \\,\\textperiodcentered\\, ` +
-      `\\href{${dict.profile.linkedin}}{${tex(dict.profile.linkedin.replace("https://", ""))}} \\,\\textperiodcentered\\, ` +
-      `\\href{${dict.profile.github}}{${tex(dict.profile.github.replace("https://", ""))}}}`
+    `  {\\small \\href{${url(`mailto:${dict.profile.email}`)}}{${tex(dict.profile.email)}} \\,\\textperiodcentered\\, ` +
+      `\\href{${url(dict.profile.linkedin)}}{${tex(dict.profile.linkedin.replace("https://", ""))}} \\,\\textperiodcentered\\, ` +
+      `\\href{${url(dict.profile.github)}}{${tex(dict.profile.github.replace("https://", ""))}}}`
   );
   w("\\end{center}");
   w("\\vspace{2pt}");
@@ -181,7 +198,7 @@ function build(lang: Locale): string {
   // ---------- proyectos e investigación: el mismo bloque ----------
   const projectBlock = (pr: CvProject) => {
     w(`\\headline{${tex(pr.name)}}{${tex(pr.period)}}`);
-    w(`\\subline{${tex(pr.role)}}{\\href{${abs(lang, pr.href)}}{${tex(pr.hrefLabel)}}}`);
+    w(`\\subline{${tex(pr.role)}}{\\href{${url(abs(lang, pr.href))}}{${tex(pr.hrefLabel)}}}`);
     bullets(pr.bullets);
     w(`{\\small\\textbf{${tex(t.stack)}:} ${pr.stack.map(tex).join(" \\,\\textperiodcentered\\, ")}}\\par`);
     w("\\vspace{4pt}");
@@ -205,7 +222,7 @@ function build(lang: Locale): string {
   w("\\begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=0pt, parsep=0pt]");
   for (const sk of cv.skillsTech) {
     // la prueba que tiene página propia se lleva su enlace al PDF
-    const proof = sk.href ? `\\href{${abs(lang, sk.href)}}{${tex(sk.proof)}}` : tex(sk.proof);
+    const proof = sk.href ? `\\href{${url(abs(lang, sk.href))}}{${tex(sk.proof)}}` : tex(sk.proof);
     w(`  \\item \\textbf{\\color{ink}${tex(sk.name)}} --- ${proof}`);
   }
   w("\\end{itemize}");
@@ -217,7 +234,7 @@ function build(lang: Locale): string {
   // costaban media página en un documento que debe caber en dos.
   w(`\\section*{${tex(t.education)}}`);
   for (const e of cv.education) {
-    const title = e.href ? `\\href{${abs(lang, e.href)}}{${tex(e.title)}}` : tex(e.title);
+    const title = e.href ? `\\href{${url(abs(lang, e.href))}}{${tex(e.title)}}` : tex(e.title);
     w(`\\headline{${title}}{${tex(e.period)}}`);
     w(`{\\small ${tex(e.inst)} \\,\\textperiodcentered\\, ${tex(e.statusText.toLowerCase())}}\\par`);
     if (e.note) w(`{\\small\\itshape ${tex(e.note)}}\\par`);
@@ -231,7 +248,7 @@ function build(lang: Locale): string {
       .map((a) => {
         const label = `${tex(a.title)} (${tex(a.year)})`;
         // el premio con evidencia pública se lleva su enlace al PDF
-        return a.href ? `\\href{${a.href}}{${label}}` : label;
+        return a.href ? `\\href{${url(a.href)}}{${label}}` : label;
       })
       .join(" \\,\\textperiodcentered\\, ") + "\\par");
   w("");

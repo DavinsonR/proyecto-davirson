@@ -39,7 +39,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
   ];
 
   return (
-    <main>
+    <main id="contenido" tabIndex={-1}>
       {/* ================= HERO ================= */}
       <header className="border-b border-rule">
         <div className={wrap}>

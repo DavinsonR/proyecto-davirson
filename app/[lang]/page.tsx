@@ -14,7 +14,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const cvHref = lang === "es" ? "/Davirson_Novoa_CV_ES.pdf" : "/Davirson_Novoa_Resume_EN.pdf";
 
   return (
-    <main>
+    <main id="contenido" tabIndex={-1}>
       {/* ===================== DOCUMENT HEADER ===================== */}
       <header className="border-b border-rule">
         <div className={WRAP}>

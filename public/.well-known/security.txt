@@ -1,0 +1,24 @@
+# Sitio personal estatico. Sin backend, sin base de datos, sin autenticacion,
+# sin cookies y sin datos de usuario. El alcance es la integridad del contenido
+# publicado.
+
+Contact: mailto:davinsonnovoaramirez@gmail.com
+Expires: 2027-09-01T00:00:00.000Z
+Preferred-Languages: es, en
+Canonical: https://proyecto-davirson-git.vercel.app/.well-known/security.txt
+
+# Politica de divulgacion
+# Divulgacion coordinada. Escribe antes de publicar; respondo en 7 dias
+# naturales y pido 90 dias antes de la divulgacion publica.
+#
+# En alcance:
+#   proyecto-davirson-git.vercel.app
+#   github.com/DavinsonR/proyecto-davirson
+#
+# Fuera de alcance:
+#   Infraestructura de Vercel y de GitHub (reportala a su propio programa).
+#   Ausencia de cabeceras sin impacto demostrable.
+#   Salida de escaneres automatizados sin una ruta de explotacion.
+#   Ingenieria social y denegacion de servicio por volumen.
+#
+# No hay recompensa economica. Se ofrece credito publico a quien lo desee.

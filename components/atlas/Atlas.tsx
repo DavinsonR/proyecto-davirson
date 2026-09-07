@@ -213,6 +213,30 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
         <div ref={map} className="atlas-map" />
         <div ref={right} className="atlas-rail" />
       </div>
+
+      {/* La CC BY-SA 4.0 exige la atribución en el medio donde se publica el
+          material adaptado (§3.a.1) y que el derivado lleve la misma licencia
+          (§3.b). `meta.fuente` llevaba la atribución escrita desde el principio
+          y se quedaba en el JSON: el mapa se publicaba sin ella. */}
+      {meta ? (
+        <footer className="atlas-credit">
+          <p>
+            <strong>{copy.sourceLabel}:</strong> {meta.fuente}
+          </p>
+          <p>
+            {copy.licenceLabel}{" "}
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener noreferrer">
+              {copy.licenceName}
+            </a>
+            .{" "}
+            {/* Las notas vienen del export del pipeline y solo existen en español.
+                Sin `lang`, un lector de pantalla las pronuncia como inglés en /en. */}
+            <span lang="es">
+              {meta.nota} {meta.nota_geometria}
+            </span>
+          </p>
+        </footer>
+      ) : null}
     </div>
   );
 }

@@ -244,17 +244,24 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
             </select>
           </div>
 
-          <div className="flex flex-wrap gap-2 mb-6" role="tablist" aria-label={dict.explorer.strategyLabel}>
+          {/* Esto era role="tablist" + role="tab" sin aria-controls, sin tabpanel,
+              sin roving tabindex y sin flechas. El lector de pantalla anunciaba
+              "pestaña 1 de N", el usuario pulsaba las flechas y no pasaba nada:
+              peor que no poner ARIA, porque promete un contrato de teclado que el
+              código no cumple. Son botones que alternan un estado, y aria-pressed
+              es exactamente eso — el mismo patrón que ya usa el selector de vistas
+              del atlas. */}
+          <div className="flex flex-wrap gap-2 mb-6" role="group" aria-label={dict.explorer.strategyLabel}>
             {(symbolData?.backtests ?? []).map((b) => (
               <button
                 key={b.strategy}
-                role="tab"
-                aria-selected={b.strategy === (currentBacktest?.strategy ?? "")}
+                type="button"
+                aria-pressed={b.strategy === (currentBacktest?.strategy ?? "")}
                 onClick={() => setStrategy(b.strategy)}
                 className={`text-[14px] px-3.5 py-1.5 rounded-[3px] border transition-colors ${
                   b.strategy === (currentBacktest?.strategy ?? "")
                     ? "border-cold text-paper bg-cold font-semibold"
-                    : "border-rule text-body hover:border-cold hover:text-ink"
+                    : "border-control text-body hover:border-cold hover:text-ink"
                 }`}
               >
                 {b.strategy}

@@ -28,7 +28,12 @@ npm run dev      # http://localhost:3000 → redirige a /es
 3. Deploy automático en cada push.
 
 ## Deploy
-Público en https://proyecto-davirson-git.vercel.app (la protección de Vercel se desactivó en la sesión 2; ver BITACORA_MAESTRA.md, FALLO-05).
+Público en https://proyecto-davirson-git.vercel.app
+
+## Licencias
+- **Código:** de este repositorio.
+- **Datos del atlas** (`public/atlas/`): CC BY-SA 4.0 heredada de la fuente. Ver `DATA-LICENSE.md`.
+- **Fuentes tipográficas** (`public/fonts/`): SIL OFL 1.1. Ver `public/fonts/OFL.txt`.
 
 ## Documentación
 - `BITACORA_MAESTRA.md` — hoja de ruta, arquitectura, historial de fallos y decisiones. **Léela primero.**

@@ -35,7 +35,7 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
   const t = dict.thesis;
 
   return (
-    <main>
+    <main id="contenido" tabIndex={-1}>
       {/* ================= HERO ================= */}
       <header className="border-b border-rule">
         <div className={wrap}>
