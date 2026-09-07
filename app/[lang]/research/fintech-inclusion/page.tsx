@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 /* The whole project lives on this page: there is no separate site to click through to.
    Technical content end to end, so the only accent here is the cold one — amber stays
    reserved for human content. Figures are set as written (no CountUp): "2018–2025" is a
-   range, not a count. */
+   range, not a count, and a p-value is a reading, not a score. */
 const wrap = "mx-auto max-w-[1180px] px-6";
 const prose = "max-w-[74ch]";
 const label = "text-[12.5px] font-semibold tracking-[0.09em] text-cold uppercase";
@@ -148,45 +148,89 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
         </div>
       </section>
 
-      {/* ================= DIAGNOSTICS — the honest part, in the cold band ============== */}
-      <section id="diagnosticos" className={section}>
+      {/* ================= RESULTS — the verdict, in the cold band, then the evidence ===== */}
+      <section id="resultados" className={section}>
         <div className={wrap}>
-          <p data-reveal className={`reveal ${label}`}>{t.diagnostics.label}</p>
-          <h2 data-reveal className={`reveal ${heading}`} style={delay(1)}>{t.diagnostics.title}</h2>
-          <p data-reveal className={`reveal mt-4 ${prose} text-[15px] leading-[1.75] text-body`} style={delay(2)}>
-            {t.diagnostics.intro}
-          </p>
-          <ol className="mt-8 max-w-[92ch]">
-            {t.diagnostics.rows.map((r, i) => (
+          <p data-reveal className={`reveal ${label}`}>{t.results.label}</p>
+          <h2 data-reveal className={`reveal ${heading}`} style={delay(1)}>{t.results.title}</h2>
+
+          <div data-reveal className="reveal mt-8 border-y border-cold bg-coldsoft px-6 py-7" style={delay(2)}>
+            <p className="max-w-[34ch] text-balance font-display text-[clamp(20px,2.6vw,27px)] leading-[1.25] font-bold tracking-[-0.015em] text-ink">
+              {t.results.headline}
+            </p>
+            <p className="mt-4 font-figure text-[clamp(22px,3vw,30px)] leading-none text-cold">{t.results.stat}</p>
+            <p className="mt-5 max-w-[74ch] text-[15px] leading-[1.7] text-ink">{t.results.body}</p>
+          </div>
+
+          {/* the table: the number the band only summarises */}
+          <div className="mt-8 overflow-x-auto">
+            <table className="w-full min-w-[640px] border-collapse text-[14px]">
+              <thead>
+                <tr className="border-b-2 border-ink text-left text-[11.5px] font-semibold tracking-[0.06em] text-muted uppercase">
+                  <th className="py-2 pr-4 font-semibold">{t.results.tableHead.spec}</th>
+                  <th className="py-2 pr-4 text-right font-semibold">{t.results.tableHead.coef}</th>
+                  <th className="py-2 pr-4 text-right font-semibold">{t.results.tableHead.se}</th>
+                  <th className="py-2 pr-4 text-right font-semibold">{t.results.tableHead.p}</th>
+                  <th className="py-2 text-right font-semibold">{t.results.tableHead.n}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {t.results.rows.map((r) => (
+                  <tr key={r.spec} className="border-b border-rulesoft">
+                    <td className="py-2.5 pr-4 text-ink">{r.spec}</td>
+                    <td className="py-2.5 pr-4 text-right font-figure text-[16px] text-ink">{r.coef}</td>
+                    <td className="py-2.5 pr-4 text-right text-body">{r.se}</td>
+                    <td className="py-2.5 pr-4 text-right text-body">{r.p}</td>
+                    <td className="py-2.5 text-right text-body">{r.n}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* three readings that carry the inference */}
+          <dl className="mt-8 grid grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-3">
+            {t.results.tiles.map((f, i) => (
+              <div key={f.label} data-reveal className="reveal border-t border-rule pt-4" style={delay(i)}>
+                <dd className="font-figure text-[clamp(26px,3.2vw,34px)] leading-none text-ink">{f.value}</dd>
+                <dt className="mt-2 text-[14px] leading-[1.4] font-medium text-ink">{f.label}</dt>
+                <p className="mt-1 text-[13.5px] leading-[1.55] text-body">{f.note}</p>
+              </div>
+            ))}
+          </dl>
+
+          <ul className="mt-9 max-w-[92ch]">
+            {t.results.reading.map((r, i) => (
               <li
-                key={r.finding}
+                key={i}
                 data-reveal
-                className="reveal grid grid-cols-1 gap-x-8 border-t border-rule py-5 md:grid-cols-[minmax(0,26ch)_1fr]"
+                className="reveal grid grid-cols-[28px_1fr] items-baseline gap-x-3 border-t border-rulesoft py-4 text-[14.5px] leading-[1.7] text-body first:border-t-2 first:border-ink"
                 style={delay(i)}
               >
-                <p className="text-[15px] font-semibold leading-[1.4] text-ink">{r.finding}</p>
-                <p className="mt-2 text-[14.5px] leading-[1.7] text-body md:mt-0">{r.detail}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ================= LOGBOOK ================= */}
-      <section id="bitacora" className={section}>
-        <div className={wrap}>
-          <p data-reveal className={`reveal ${label}`}>{t.log.label}</p>
-          <h2 data-reveal className={`reveal ${heading}`} style={delay(1)}>{t.log.title}</h2>
-          <p data-reveal className={`reveal mt-4 ${prose} text-[15px] leading-[1.75] text-body`} style={delay(2)}>
-            {t.log.body}
-          </p>
-          <ul className="mt-8 grid grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-3">
-            {t.log.examples.map((e, i) => (
-              <li key={i} data-reveal className="reveal border-t border-rule pt-5 text-[14.5px] leading-[1.7] text-body" style={delay(i)}>
-                {e}
+                <span className="font-figure text-[18px] leading-none text-cold">{i + 1}</span>
+                <span>{r}</span>
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* ================= DECISIONS ================= */}
+      <section id="decisiones" className={section}>
+        <div className={wrap}>
+          <p data-reveal className={`reveal ${label}`}>{t.decisions.label}</p>
+          <h2 data-reveal className={`reveal ${heading}`} style={delay(1)}>{t.decisions.title}</h2>
+          <p data-reveal className={`reveal mt-4 ${prose} text-[15px] leading-[1.75] text-body`} style={delay(2)}>
+            {t.decisions.body}
+          </p>
+          <div className="mt-8 grid grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-2 lg:grid-cols-3">
+            {t.decisions.items.map((d, i) => (
+              <div key={d.title} data-reveal className="reveal border-t border-rule pt-5" style={delay(i)}>
+                <p className="text-[14.5px] font-semibold text-ink">{d.title}</p>
+                <p className="mt-2 text-[14.5px] leading-[1.7] text-body">{d.body}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
