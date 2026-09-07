@@ -5,6 +5,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
 import SectionNav from "@/components/SectionNav";
+import { alternates, openGraph } from "@/lib/alternates";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -12,7 +13,14 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return {
     title: dict.tracking.metaTitle,
     description: dict.tracking.metaDesc,
-    alternates: { languages: { es: "/es/projects/tracking", en: "/en/projects/tracking" } },
+    alternates: alternates(lang, "/projects/tracking"),
+    // Sin esto la página hereda el `openGraph` del layout entero y su tarjeta en
+    // LinkedIn es la de la portada, enlazando a la portada.
+    openGraph: openGraph(lang, "/projects/tracking", {
+      title: dict.tracking.metaTitle,
+      description: dict.tracking.metaDesc,
+      siteName: dict.profile.name,
+    }),
   };
 }
 
@@ -35,7 +43,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
   const t = dict.tracking;
 
   return (
-    <main>
+    <main id="main" tabIndex={-1}>
       {/* ================= HERO ================= */}
       <header className="border-b border-rule">
         <div className={wrap}>
@@ -68,26 +76,28 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
         {/* figures band — each figure lands on the section that states it */}
         <div className="border-t-2 border-cold bg-coldsoft">
           <div className={wrap}>
-            <dl className="grid grid-cols-2 py-6 lg:grid-cols-4">
+            {/* Lista simple, no `<dl>`: el ancla envolvía `<dt>` y `<dd>` y no es
+                padre válido de ninguno de los dos. */}
+            <ul className="grid grid-cols-2 py-6 lg:grid-cols-4">
               {t.figures.map((f, i) => (
-                <div
+                <li
                   key={f.label}
                   data-reveal
                   className="reveal border-coldline py-2 lg:border-l lg:pl-5 lg:first:border-l-0 lg:first:pl-0"
                   style={delay(i + 1)}
                 >
                   <a href={f.href} className="lift group block">
-                    <dd className="font-figure text-[clamp(28px,3.8vw,40px)] leading-none text-ink group-hover:text-cold">
+                    <span className="block font-figure text-[clamp(28px,3.8vw,40px)] leading-none text-ink group-hover:text-cold">
                       {f.value}
-                    </dd>
-                    <dt className="mt-2 max-w-[26ch] text-[14px] leading-[1.4] font-medium text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 group-hover:decoration-[2.5px]">
+                    </span>
+                    <span className="block mt-2 max-w-[26ch] text-[14px] leading-[1.4] font-medium text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 group-hover:decoration-[2.5px]">
                       {f.label}
-                    </dt>
+                    </span>
                   </a>
                   <p className="mt-1 text-[14px] text-body">{f.note}</p>
-                </div>
+                </li>
               ))}
-            </dl>
+            </ul>
           </div>
         </div>
       </header>

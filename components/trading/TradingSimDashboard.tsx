@@ -122,14 +122,22 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
     );
   }, [symbolData]);
 
-  // ---- estados de carga ----
+  /* ---- estados de carga ----
+     El sistema quitó las tarjetas de las tres superficies durante la revisión y
+     llama defecto a un contenedor con borde, redondeado y flotando sobre un
+     fondo teñido. Estos dos eran justamente eso, y el de error es el que **se
+     ve** cuando `raw.githubusercontent.com` está bloqueado — la red de un banco
+     o una aseguradora, es decir, el lector de más valor de esta página. Pasan a
+     ser bloques abiertos: regla de 2px arriba, fondo de banda, esquinas rectas.
+     `animate-pulse` también sale: es un esqueleto de aplicación web y aquí el
+     registro es la imprenta — una hoja no palpita. */
   if (indexError)
     return (
-      <div className="border border-rule rounded bg-band p-8 text-center">
+      <div className="border-t-2 border-ink bg-band px-5 py-8 text-center">
         <p className="text-[14px] text-body">{dict.error}</p>
         <button
           onClick={retryIndex}
-          className="mt-4 text-[14px] px-4 py-2 border border-rule rounded hover:border-cold hover:text-cold transition-colors"
+          className="mt-4 rounded-[3px] border border-rule px-4 py-2 text-[14px] transition-colors hover:border-cold hover:text-cold"
         >
           {dict.retry}
         </button>
@@ -138,11 +146,11 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
 
   if (!index)
     return (
-      <div className="border border-rule rounded bg-band p-8">
-        <p className="text-[14px] text-muted animate-pulse">{dict.loading}</p>
+      <div className="border-t-2 border-ink bg-band px-5 py-8">
+        <p className="text-[14px] text-muted">{dict.loading}</p>
         <div className="mt-4 space-y-2.5">
           {[80, 60, 72].map((w, i) => (
-            <div key={i} className="h-[14px] rounded bg-rule animate-pulse" style={{ width: `${w}%` }} />
+            <div key={i} className="h-[14px] bg-rule" style={{ width: `${w}%` }} />
           ))}
         </div>
       </div>
@@ -214,7 +222,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
       </section>
 
       {/* ============ 3. EXPLORADOR — 45 activos, curvas reales ============ */}
-      <section className="border border-rule rounded-md bg-band overflow-hidden">
+      <section className="border-t-2 border-ink bg-band">
         <div className="flex items-center gap-2 border-b border-rule bg-band px-4 py-3">
           <span className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
             {dict.explorer.windowTitle} — {symbol}
@@ -230,7 +238,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
               id="ts-asset"
               value={symbol}
               onChange={(e) => setSymbol(e.target.value)}
-              className="text-[14px] bg-paper border border-rule rounded px-3 py-2 text-ink focus:border-cold outline-none"
+              className="rounded-[3px] border border-rule bg-paper px-3 py-2 text-[14px] text-ink focus:border-cold"
             >
               {assetGroups.map((g) => (
                 <optgroup key={g.region} label={dict.regions[g.region as keyof Dict["regions"]] ?? g.region}>
@@ -244,12 +252,11 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
             </select>
           </div>
 
-          <div className="flex flex-wrap gap-2 mb-6" role="tablist" aria-label={dict.explorer.strategyLabel}>
+          <div className="mb-6 flex flex-wrap gap-2" role="group" aria-label={dict.explorer.strategyLabel}>
             {(symbolData?.backtests ?? []).map((b) => (
               <button
                 key={b.strategy}
-                role="tab"
-                aria-selected={b.strategy === (currentBacktest?.strategy ?? "")}
+                aria-pressed={b.strategy === (currentBacktest?.strategy ?? "")}
                 onClick={() => setStrategy(b.strategy)}
                 className={`text-[14px] px-3.5 py-1.5 rounded-[3px] border transition-colors ${
                   b.strategy === (currentBacktest?.strategy ?? "")
@@ -262,7 +269,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
             ))}
           </div>
 
-          {symbolLoading && <p className="text-[14px] text-muted animate-pulse py-16 text-center">{dict.loading}</p>}
+          {symbolLoading && <p className="py-16 text-center text-[14px] text-muted">{dict.loading}</p>}
 
           {!symbolLoading && currentBacktest && (
             <>
@@ -300,7 +307,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
                   { label: dict.metrics.trades, v: num(lang, currentBacktest.metrics.n_trades, 0) },
                   { label: dict.metrics.win, v: pct(lang, currentBacktest.metrics.win_rate, 0) },
                 ].map((m) => (
-                  <div key={m.label} className="bg-paper border border-rulesoft rounded px-3 py-2.5">
+                  <div key={m.label} className="border-t border-rule pt-2">
                     <p className="text-[12.5px] uppercase tracking-[0.08em] text-muted">{m.label}</p>
                     <p className="text-[14px] text-ink mt-1">{m.v}</p>
                   </div>
@@ -314,7 +321,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
                     {dict.combos.title.replace("{n}", String(combos.length))}
                   </h4>
                   <p className="text-[14px] leading-[1.6] mb-4 max-w-[640px]">{dict.combos.desc}</p>
-                  <div className="max-h-[340px] overflow-y-auto rounded border border-rulesoft">
+                  <div className="max-h-[340px] overflow-y-auto border-t border-rule">
                     <table className="w-full text-[14px]">
                       <thead className="sticky top-0 bg-band2 text-muted text-left">
                         <tr>
@@ -427,7 +434,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
       )}
 
       {/* ============ 6. SALUD DEL PIPELINE ============ */}
-      <section className="border border-rule rounded-md bg-band overflow-hidden">
+      <section className="border-t-2 border-ink bg-band">
         <div className="flex items-center gap-2 border-b border-rule bg-band px-4 py-3">
           <span className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">{dict.health.windowTitle}</span>
         </div>

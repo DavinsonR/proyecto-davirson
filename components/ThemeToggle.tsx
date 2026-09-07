@@ -32,7 +32,10 @@ export default function ThemeToggle({ labels }: { labels: { light: string; dark:
   // el modo real solo se puede conocer después de montar. No hay versión de esto
   // derivable en el render: es estado del navegador, no del componente.
   useEffect(() => {
-    const stored = localStorage.getItem("theme");
+    // El script de arranque ya estampó `data-theme` antes del primer pintado
+    // cuando había preferencia guardada; se lee de ahí antes que de nada.
+    const stamped = document.documentElement.getAttribute("data-theme");
+    const stored = stamped === "light" || stamped === "dark" ? stamped : localStorage.getItem("theme");
     const resolved: Mode =
       stored === "light" || stored === "dark"
         ? stored
@@ -57,8 +60,11 @@ export default function ThemeToggle({ labels }: { labels: { light: string; dark:
     <button
       type="button"
       onClick={toggle}
-      aria-label={next === "dark" ? labels.dark : labels.light}
-      title={next === "dark" ? labels.dark : labels.light}
+      // Sin `mode` todavía no se sabe qué hace el botón: hasta que se sepa, el
+      // nombre no afirma una dirección que puede ser la contraria.
+      aria-label={mode ? (next === "dark" ? labels.dark : labels.light) : labels.dark}
+      aria-pressed={mode ? mode === "dark" : undefined}
+      title={mode ? (next === "dark" ? labels.dark : labels.light) : undefined}
       className="no-print inline-flex h-9 w-9 items-center justify-center rounded-[3px] border border-rule text-body transition-colors hover:border-cold hover:text-cold"
     >
       {mode ? <Glyph mode={next} /> : <span className="h-[15px] w-[15px]" />}

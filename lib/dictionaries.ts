@@ -34,6 +34,14 @@ export type CvProject = {
    portafolio. Lo unico externo es el repositorio, que es donde esta el codigo. */
 export const THESIS_REPO = "https://github.com/DavinsonR/financial-inclusion-colombia";
 
+/* El tablero del hackathon es el unico artefacto visual, publico y de dominio
+   financiero-adyacente que existe hoy: la fila de Tableau del toolkit lo
+   afirmaba sin enlazarlo mientras la URL viva ya estaba dos secciones mas abajo,
+   en reconocimientos. Ojo: si el workbook se renombra en Tableau Public la URL
+   cambia, y por eso vive en una sola constante. */
+export const TABLEAU_VIZ =
+  "https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrendsADataAnalysisProject/TrendsAnalysis";
+
 const profile = {
   name: "Davirson Novoa Ramírez",
   email: "davinsonnovoaramirez@gmail.com",
@@ -61,6 +69,8 @@ export const dictionaries = {
       ],
       contact: "Contacto",
       backHome: "Volver al inicio",
+      skip: "Saltar al contenido",
+      label: "Navegación principal",
       switchLabel: "EN",
       switchTitle: "Read in English",
       themeLight: "Modo claro",
@@ -74,6 +84,17 @@ export const dictionaries = {
       thesis: "Leo un P&L y construyo el pipeline que lo alimenta.",
       sub: "Economista y consultor FP&A para operaciones en más de 15 países. Opero una plataforma de datos en producción —ingesta diaria, pruebas de calidad automáticas y modelo en Power BI— que construí yo mismo.",
       availability: "Bogotá · GMT-5 · Traslape completo con horario de EE.UU. · Abierto a roles remotos",
+      // Las tres preguntas que un reclutador resuelve antes de abrir el CV, y que
+      // la página no respondía en ninguna parte: a qué nivel, desde cuándo y por
+      // qué vía. Sin la primera, el lector clasifica por defecto en el nivel más
+      // bajo compatible con "tres años". Ámbar es su jurisdicción: contratación
+      // y disponibilidad son contenido humano, no una cifra.
+      hireLabel: "Cómo contratarme",
+      hire: [
+        { term: "Nivel", detail: "Senior Analyst" },
+        { term: "Inicio", detail: "Preaviso de 15 días" },
+        { term: "Vía", detail: "Contrato directo (B2B) o mediante EOR. Sin patrocinio de visa." },
+      ],
       metricsLabel: "Cifras verificables",
       metricsNote: "Cada cifra enlaza a lo que la prueba.",
       pipelineLive: "Pipeline en vivo · datos hasta",
@@ -138,15 +159,10 @@ export const dictionaries = {
           },
         ] as AlsoRow[],
       },
-      capabilitiesTitle: "Lo que esto demuestra",
-      capabilities: [
-        { name: "Modelado de datos en SQL", detail: "warehouse en capas, dbt, pruebas de calidad" },
-        { name: "Python para datos", detail: "ETL, pandas, validación con pandera" },
-        { name: "Power BI y modelos semánticos", detail: "medidas DAX, modelo dimensional" },
-        { name: "Orquestación y CI/CD", detail: "cron diario, reintentos, auditoría de corridas" },
-        { name: "FP&A", detail: "cierre, forecast, variaciones de SG&A" },
-        { name: "Análisis cambiario", detail: "descomposición empresa vs moneda" },
-      ],
+      // "Lo que esto demuestra" salió de aquí y de la portada: sus seis entradas
+      // repetían una por una las ocho filas de `toolkit`, con la misma forma
+      // tipográfica y a 300 px de distancia, y ninguna llevaba prueba. La que
+      // sobrevive es la que nombra el artefacto y enlaza a él.
     },
     tradingSim: {
       metaTitle: "Trading Sim — más de 1.300 estrategias contra la realidad",
@@ -681,7 +697,7 @@ export const dictionaries = {
       rows: [
         { name: "Excel y modelado financiero", proof: "Cierre y forecast de SG&A para 12 países en Neoris EPAM" },
         { name: "Power BI", proof: "Modelo semántico de 7 tablas en TMDL, cargado contra Supabase", href: "/projects/powerbi" },
-        { name: "Tableau", proof: "Dashboard ganador del BodyTech Trends Hackathon, público" },
+        { name: "Tableau", proof: "Dashboard ganador del BodyTech Trends Hackathon, público", href: TABLEAU_VIZ },
         { name: "SQL · PostgreSQL", proof: "Warehouse medallion de tres capas, más de 58.000 velas en producción" },
         { name: "Python", proof: "Ingesta incremental, motor de backtesting, descomposición cambiaria" },
         { name: "dbt", proof: "89 pruebas de calidad que corren antes de publicar un dato" },
@@ -694,7 +710,7 @@ export const dictionaries = {
       items: [
         {
           term: "Construido en público",
-          text: "Este sitio y los proyectos detrás se documentan mientras se hacen, incluidos los errores. La bitácora de ingeniería registra 28 fallos encontrados y corregidos, numerados uno a uno.",
+          text: "Este sitio y los proyectos detrás se documentan mientras se hacen, incluidos los errores. La bitácora de ingeniería registra 29 fallos encontrados y corregidos, numerados uno a uno.",
         },
         {
           term: "Rendimientos pasados",
@@ -721,6 +737,15 @@ export const dictionaries = {
       linkedin: "LinkedIn",
       github: "GitHub",
       kaggle: "Kaggle",
+      // El correo va prellenado con los cuatro campos que hacen falta para
+      // responder algo útil. Un reclutador que escribe desde el móvil no
+      // redacta una vacante: rellena huecos.
+      mailSubject: "Vacante — Davirson Novoa",
+      mailBody:
+        "Hola Davirson:\n\nRol:\nEmpresa:\nModalidad y zona horaria:\nRango salarial:\n\n",
+      copy: "Copiar correo",
+      copied: "Correo copiado",
+      copyFail: "Selecciona y copia:",
     },
     footer: {
       left: "Davirson Novoa · construido en público",
@@ -916,7 +941,7 @@ export const dictionaries = {
       skillsTech: [
         { name: "Excel y modelado financiero", proof: "Cierre y forecast de SG&A para 12 países en Neoris EPAM" },
         { name: "Power BI", proof: "Modelo semántico de 7 tablas en TMDL, cargado contra Supabase", href: "/projects/powerbi" },
-        { name: "Tableau", proof: "Dashboard ganador del BodyTech Trends Hackathon, público" },
+        { name: "Tableau", proof: "Dashboard ganador del BodyTech Trends Hackathon, público", href: TABLEAU_VIZ },
         { name: "SQL · PostgreSQL", proof: "Warehouse medallion de tres capas, más de 58.000 velas en producción" },
         { name: "Python", proof: "Ingesta incremental, motor de backtesting, descomposición cambiaria" },
         { name: "dbt", proof: "89 pruebas de calidad que corren antes de publicar un dato" },
@@ -931,7 +956,7 @@ export const dictionaries = {
           title: "Ganador — BodyTech Trends Hackathon",
           year: "2024",
           desc: "Analítica de demanda de búsqueda para una cadena de gimnasios: 19.560 registros de keywords limpiados en Python y un tablero de tendencias por sede en Tableau. Sigue publicado y es consultable por cualquiera.",
-          href: "https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrendsADataAnalysisProject/TrendsAnalysis",
+          href: TABLEAU_VIZ,
           hrefLabel: "ver el tablero en Tableau Public",
         },
         { title: "Becario Ecopetrol — Programa Mario Galán Gómez", year: "2018", desc: "Beca por mérito académico y potencial de liderazgo." },
@@ -982,6 +1007,8 @@ export const dictionaries = {
       ],
       contact: "Contact",
       backHome: "Back to home",
+      skip: "Skip to content",
+      label: "Main navigation",
       switchLabel: "ES",
       switchTitle: "Leer en español",
       themeLight: "Light mode",
@@ -995,6 +1022,17 @@ export const dictionaries = {
       thesis: "I read a P&L, and I build the pipeline that feeds it.",
       sub: "Economist and FP&A consultant supporting operations across 15+ countries. I run a production data platform — daily ingestion, automated quality tests, a Power BI model — that I built and operate myself.",
       availability: "Bogotá · GMT-5 · Full overlap with US hours · Open to remote roles",
+      // The three questions a recruiter settles before opening the CV, and that
+      // the page answered nowhere: at what level, from when, and through what
+      // arrangement. Without the first, the reader defaults to the lowest level
+      // consistent with "three years". Amber is their jurisdiction: hiring and
+      // availability are human content, not a figure.
+      hireLabel: "How to hire me",
+      hire: [
+        { term: "Level", detail: "Senior Analyst" },
+        { term: "Start", detail: "15 days' notice" },
+        { term: "Route", detail: "Direct contract (B2B) or through an EOR. No visa sponsorship needed." },
+      ],
       metricsLabel: "Verifiable figures",
       metricsNote: "Every figure links to what proves it.",
       pipelineLive: "Live pipeline · data through",
@@ -1059,15 +1097,10 @@ export const dictionaries = {
           },
         ] as AlsoRow[],
       },
-      capabilitiesTitle: "What this demonstrates",
-      capabilities: [
-        { name: "SQL data modeling", detail: "layered warehouse, dbt, quality tests" },
-        { name: "Python for data", detail: "ETL, pandas, pandera validation" },
-        { name: "Power BI & semantic models", detail: "DAX measures, dimensional model" },
-        { name: "Orchestration & CI/CD", detail: "daily cron, retries, run auditing" },
-        { name: "FP&A", detail: "close, forecast, SG&A variance" },
-        { name: "FX analysis", detail: "company vs currency decomposition" },
-      ],
+      // "What this demonstrates" left this file and the home page: its six entries
+      // repeated the eight `toolkit` rows one for one, in the same typographic
+      // form and 300px apart, and none of them carried proof. The list that
+      // survives is the one that names the artifact and links to it.
     },
     tradingSim: {
       metaTitle: "Trading Sim — 1,300+ strategies vs. reality",
@@ -1602,7 +1635,7 @@ export const dictionaries = {
       rows: [
         { name: "Excel and financial modelling", proof: "SG&A close and forecast across 12 countries at Neoris EPAM" },
         { name: "Power BI", proof: "Seven-table semantic model in TMDL, loaded against Supabase", href: "/projects/powerbi" },
-        { name: "Tableau", proof: "Dashboard that won the BodyTech Trends Hackathon, public" },
+        { name: "Tableau", proof: "Dashboard that won the BodyTech Trends Hackathon, public", href: TABLEAU_VIZ },
         { name: "SQL · PostgreSQL", proof: "Three-layer medallion warehouse, more than 58,000 candles in production" },
         { name: "Python", proof: "Incremental ingestion, backtesting engine, FX decomposition" },
         { name: "dbt", proof: "89 quality tests that run before a single figure is published" },
@@ -1615,7 +1648,7 @@ export const dictionaries = {
       items: [
         {
           term: "Built in public",
-          text: "This site and the projects behind it are documented as they are made, failures included. The engineering log records 28 defects found and fixed, numbered one by one.",
+          text: "This site and the projects behind it are documented as they are made, failures included. The engineering log records 29 defects found and fixed, numbered one by one.",
         },
         {
           term: "Past results",
@@ -1642,6 +1675,15 @@ export const dictionaries = {
       linkedin: "LinkedIn",
       github: "GitHub",
       kaggle: "Kaggle",
+      // The email opens with the four fields it takes to reply with something
+      // useful. A recruiter writing from a phone does not draft a job spec:
+      // they fill blanks.
+      mailSubject: "Role — Davirson Novoa",
+      mailBody:
+        "Hi Davirson,\n\nRole:\nCompany:\nWork mode and time zone:\nRange:\n\n",
+      copy: "Copy email",
+      copied: "Email copied",
+      copyFail: "Select and copy:",
     },
     footer: {
       left: "Davirson Novoa · built in public",
@@ -1837,7 +1879,7 @@ export const dictionaries = {
       skillsTech: [
         { name: "Excel and financial modelling", proof: "SG&A close and forecast across 12 countries at Neoris EPAM" },
         { name: "Power BI", proof: "Seven-table semantic model in TMDL, loaded against Supabase", href: "/projects/powerbi" },
-        { name: "Tableau", proof: "Dashboard that won the BodyTech Trends Hackathon, public" },
+        { name: "Tableau", proof: "Dashboard that won the BodyTech Trends Hackathon, public", href: TABLEAU_VIZ },
         { name: "SQL · PostgreSQL", proof: "Three-layer medallion warehouse, more than 58,000 candles in production" },
         { name: "Python", proof: "Incremental ingestion, backtesting engine, FX decomposition" },
         { name: "dbt", proof: "89 quality tests that run before a single figure is published" },
@@ -1850,7 +1892,7 @@ export const dictionaries = {
           title: "Winner — BodyTech Trends Hackathon",
           year: "2024",
           desc: "Search-demand analytics for a gym chain: 19,560 keyword records cleaned in Python and a branch-by-branch trend dashboard in Tableau. Still published and open to anyone.",
-          href: "https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrendsADataAnalysisProject/TrendsAnalysis",
+          href: TABLEAU_VIZ,
           hrefLabel: "see the dashboard on Tableau Public",
         },
         { title: "Ecopetrol Scholar — Mario Galán Gómez Program", year: "2018", desc: "Scholarship for academic merit and leadership potential." },

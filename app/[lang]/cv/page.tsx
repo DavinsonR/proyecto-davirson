@@ -5,13 +5,20 @@ import StatusPill from "@/components/StatusPill";
 import Link from "next/link";
 import CountUp from "@/components/CountUp";
 import BackLink from "@/components/BackLink";
+import CopyEmail from "@/components/CopyEmail";
+import { mailtoHref } from "@/lib/contact";
+import { alternates, openGraph } from "@/lib/alternates";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   const dict = getDictionary(lang);
+  const title = `${dict.cv.title} — ${dict.cv.targets[0]}`;
+  const description = dict.cv.profileText.slice(0, 155);
   return {
-    title: `${dict.cv.title} — ${dict.cv.targets[0]}`,
-    description: dict.cv.profileText.slice(0, 155),
+    title,
+    description,
+    alternates: alternates(lang, "/cv"),
+    openGraph: openGraph(lang, "/cv", { title, description, siteName: dict.profile.name }),
   };
 }
 
@@ -65,10 +72,20 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
   const cv = dict.cv;
   const wrap = "mx-auto max-w-[980px] px-6";
   const label = "text-[12.5px] font-semibold tracking-[0.09em] uppercase text-muted";
+  /* Las seis secciones de este CV llevaban el mismo paso de 12,5px en versalitas
+     apagadas que un rótulo de campo, mientras sus propias filas iban a 17-19px en
+     negrita: el título de sección era más pequeño y con menos contraste que su
+     contenido. Por eso 6.000px de página se leen como una sola hoja gris sin nada
+     por donde navegar — que es lo que decía la reseña "el CV es muy largo". No se
+     apila una versalita encima: la regla del sistema dice que un rótulo etiqueta
+     un campo, no que decore un titular. */
+  const heading =
+    "font-display text-[clamp(21px,2.6vw,27px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink";
   const chip = "rounded-[3px] border border-rule bg-band px-2.5 py-1 text-[14px] text-body";
+  const mailHref = mailtoHref(dict);
 
   return (
-    <main>
+    <main id="main" tabIndex={-1}>
       {/* ===== HEADER — the title mapping is the headline, not a subtitle ===== */}
       <header className="border-b border-rule">
         <div className={wrap}>
@@ -125,7 +142,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
                 {cv.latex}
               </a>
               <a
-                href={`mailto:${dict.profile.email}`}
+                href={mailHref}
                 className="px-1 py-3 text-[14.5px] font-medium text-cold hover:underline"
               >
                 {cv.contactBtn}
@@ -140,23 +157,26 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
         {/* figures band — the same instrument as the front page */}
         <div className="border-t-2 border-cold bg-coldsoft">
           <div className={wrap}>
-            <dl className="grid grid-cols-2 py-6 lg:grid-cols-4">
+            {/* Lista simple, no `<dl>`: el ancla envolvía `<dt>` y `<dd>` y no es
+                padre válido de ninguno, así que el par término/definición no se
+                exponía. Misma banda, mismo objetivo de clic, marcado válido. */}
+            <ul className="grid grid-cols-2 py-6 lg:grid-cols-4">
               {cv.facts.map((f, i) => (
-                <div
+                <li
                   key={f.label}
                   data-reveal
                   className="reveal border-coldline py-2 lg:border-l lg:pl-5 lg:first:border-l-0 lg:first:pl-0"
                   style={d(i * 70)}
                 >
-                  <dd className="font-figure text-[clamp(28px,3.8vw,40px)] leading-none text-ink">
+                  <span className="block font-figure text-[clamp(28px,3.8vw,40px)] leading-none text-ink">
                     <CountUp value={f.value} lang={lang} />
-                  </dd>
-                  <dt className="mt-2 max-w-[26ch] text-[14px] leading-[1.4] font-medium text-ink">
+                  </span>
+                  <span className="block mt-2 max-w-[26ch] text-[14px] leading-[1.4] font-medium text-ink">
                     {f.label}
-                  </dt>
-                </div>
+                  </span>
+                </li>
               ))}
-            </dl>
+            </ul>
           </div>
         </div>
       </header>
@@ -164,7 +184,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
       {/* ===== PROFILE ===== */}
       <section className="border-b border-rule py-14">
         <div className={wrap}>
-          <h2 data-reveal className={`reveal ${label}`}>
+          <h2 data-reveal className={`reveal ${heading}`}>
             {cv.profileLabel}
           </h2>
           <p
@@ -193,7 +213,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
       {/* ===== EXPERIENCE ===== */}
       <section id="experiencia" className="scroll-mt-16 border-b border-rule py-14">
         <div className={wrap}>
-          <h2 data-reveal className={`reveal ${label}`}>
+          <h2 data-reveal className={`reveal ${heading}`}>
             {cv.expLabel}
           </h2>
           <div className="mt-6">
@@ -255,7 +275,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
       <section className="border-b border-rule py-14">
         <div className={wrap}>
           <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-            <h2 data-reveal className={`reveal ${label}`}>
+            <h2 data-reveal className={`reveal ${heading}`}>
               {cv.projectsLabel}
             </h2>
             <p data-reveal className="reveal text-[14px] text-muted" style={d(60)}>
@@ -272,7 +292,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
       <section className="border-b border-rule py-14">
         <div className={wrap}>
           <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-            <h2 data-reveal className={`reveal ${label}`}>
+            <h2 data-reveal className={`reveal ${heading}`}>
               {cv.researchLabel}
             </h2>
             <p data-reveal className="reveal text-[14px] text-muted" style={d(60)}>
@@ -288,7 +308,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
       {/* ===== SKILLS ===== */}
       <section className="border-b border-rule py-14">
         <div className={wrap}>
-          <h2 data-reveal className={`reveal ${label}`}>
+          <h2 data-reveal className={`reveal ${heading}`}>
             {cv.skillsLabel}
           </h2>
 
@@ -350,6 +370,9 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
                       {s.href ? (
                         <Link
                           href={s.href.startsWith("http") ? s.href : `/${lang}${s.href}`}
+                          {...(s.href.startsWith("http")
+                            ? { target: "_blank", rel: "noopener noreferrer" }
+                            : {})}
                           className="underline decoration-cold decoration-[1.5px] underline-offset-4 hover:text-cold"
                         >
                           {s.proof}
@@ -369,7 +392,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
       {/* ===== EDUCATION · CERTIFICATIONS · RECOGNITION — one compact band ===== */}
       <section className="border-b border-rule py-14">
         <div className={wrap}>
-          <h2 data-reveal className={`reveal ${label}`}>
+          <h2 data-reveal className={`reveal ${heading}`}>
             {cv.eduLabel}
           </h2>
           <div className="mt-6 grid gap-x-12 gap-y-8 lg:grid-cols-2">
@@ -457,11 +480,18 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
       </section>
 
       {/* ===== CLOSE ===== */}
+      {/* Una regla ámbar de 2px declara "aquí habla la voz humana" y abría una
+          región de 160px que solo contenía tres botones, con la mitad derecha
+          vacía. Ahora dice algo, y la dirección queda a la vista: el `mailto:`
+          no abre nada en un portátil corporativo con webmail. */}
       <section className="border-t-2 border-warm py-14">
         <div className={wrap}>
+          <p className="mb-6 max-w-[58ch] text-[15.5px] leading-[1.7] text-ink">
+            {dict.contact.body}
+          </p>
           <div className="flex flex-wrap items-center gap-3">
             <a
-              href={`mailto:${dict.profile.email}`}
+              href={mailHref}
               className="lift inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
             >
               {cv.contactBtn}
@@ -480,7 +510,21 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
             >
               {cv.latex}
             </a>
+            <CopyEmail
+              email={dict.profile.email}
+              labels={{
+                copy: dict.contact.copy,
+                copied: dict.contact.copied,
+                fail: dict.contact.copyFail,
+              }}
+              className="px-4 py-3 text-[14.5px]"
+            />
           </div>
+          <p className="mt-3 text-[14px] break-all text-body">
+            <a href={mailHref} className="text-ink underline decoration-cold decoration-[1.5px] underline-offset-4">
+              {dict.profile.email}
+            </a>
+          </p>
         </div>
       </section>
     </main>

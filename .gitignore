@@ -13,3 +13,6 @@ next-env.d.ts
 # Impeccable working files (local evidence and round state, not shipped)
 .impeccable/review/
 .impeccable/questions/
+
+# cache incremental de TypeScript: salida de build, versionada por descuido
+*.tsbuildinfo

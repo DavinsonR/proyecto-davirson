@@ -5,6 +5,7 @@ import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
 import SectionNav from "@/components/SectionNav";
 import Atlas from "@/components/atlas/Atlas";
+import { alternates, openGraph } from "@/lib/alternates";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -12,7 +13,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return {
     title: dict.thesis.metaTitle,
     description: dict.thesis.metaDesc,
-    alternates: { languages: { es: "/es/research/fintech-inclusion", en: "/en/research/fintech-inclusion" } },
+    alternates: alternates(lang, "/research/fintech-inclusion"),
+    openGraph: openGraph(lang, "/research/fintech-inclusion", {
+      title: dict.thesis.metaTitle,
+      description: dict.thesis.metaDesc,
+      siteName: dict.profile.name,
+    }),
   };
 }
 
@@ -35,7 +41,7 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
   const t = dict.thesis;
 
   return (
-    <main>
+    <main id="main" tabIndex={-1}>
       {/* ================= HERO ================= */}
       <header className="border-b border-rule">
         <div className={wrap}>
@@ -57,26 +63,29 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
         {/* figures band — each figure lands on the section that states it */}
         <div className="border-t-2 border-cold bg-coldsoft">
           <div className={wrap}>
-            <dl className="grid grid-cols-2 py-6 lg:grid-cols-4">
+            {/* Lista simple, no `<dl>`: el ancla envolvía `<dt>` y `<dd>` y no es
+                padre válido de ninguno, así que el par término/definición no se
+                exponía. Misma banda, mismo objetivo de clic, marcado válido. */}
+            <ul className="grid grid-cols-2 py-6 lg:grid-cols-4">
               {t.figures.map((f, i) => (
-                <div
+                <li
                   key={f.label}
                   data-reveal
                   className="reveal border-coldline py-2 lg:border-l lg:pl-5 lg:first:border-l-0 lg:first:pl-0"
                   style={delay(i + 1)}
                 >
                   <a href={f.href} className="lift group block">
-                    <dd className="font-figure text-[clamp(28px,3.8vw,40px)] leading-none text-ink group-hover:text-cold">
+                    <span className="block font-figure text-[clamp(28px,3.8vw,40px)] leading-none text-ink group-hover:text-cold">
                       {f.value}
-                    </dd>
-                    <dt className="mt-2 max-w-[26ch] text-[14px] leading-[1.4] font-medium text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 group-hover:decoration-[2.5px]">
+                    </span>
+                    <span className="block mt-2 max-w-[26ch] text-[14px] leading-[1.4] font-medium text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 group-hover:decoration-[2.5px]">
                       {f.label}
-                    </dt>
+                    </span>
                   </a>
                   <p className="mt-1 text-[14px] text-body">{f.note}</p>
-                </div>
+                </li>
               ))}
-            </dl>
+            </ul>
           </div>
         </div>
       </header>
@@ -194,7 +203,7 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
               <div key={f.label} data-reveal className="reveal border-t border-rule pt-4" style={delay(i)}>
                 <dd className="font-figure text-[clamp(26px,3.2vw,34px)] leading-none text-ink">{f.value}</dd>
                 <dt className="mt-2 text-[14px] leading-[1.4] font-medium text-ink">{f.label}</dt>
-                <p className="mt-1 text-[13.5px] leading-[1.55] text-body">{f.note}</p>
+                <p className="mt-1 text-[14px] leading-[1.55] text-body">{f.note}</p>
               </div>
             ))}
           </dl>

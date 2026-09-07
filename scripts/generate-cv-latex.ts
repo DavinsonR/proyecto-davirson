@@ -137,10 +137,14 @@ function build(lang: Locale): string {
   w(`  {\\large\\color{cold} ${cv.targets.map(tex).join(" \\,\\textperiodcentered\\, ")}}\\\\[4pt]`);
   w(`  {\\small ${tex(cv.subtitle)}}\\\\[3pt]`);
   w(`  {\\small ${tex(cv.metaLine)}}\\\\[2pt]`);
+  // El PDF es el artefacto que sobrevive a la visita: se reenvía dentro de la
+  // empresa sin el enlace que lo trajo. La cabecera llevaba correo, LinkedIn y
+  // GitHub, y ninguna forma de volver al sitio donde está la evidencia.
   w(
     `  {\\small \\href{mailto:${dict.profile.email}}{${tex(dict.profile.email)}} \\,\\textperiodcentered\\, ` +
       `\\href{${dict.profile.linkedin}}{${tex(dict.profile.linkedin.replace("https://", ""))}} \\,\\textperiodcentered\\, ` +
-      `\\href{${dict.profile.github}}{${tex(dict.profile.github.replace("https://", ""))}}}`
+      `\\href{${dict.profile.github}}{${tex(dict.profile.github.replace("https://", ""))}} \\,\\textperiodcentered\\, ` +
+      `\\href{${SITE}/${lang}}{${tex(SITE.replace("https://", ""))}}}`
   );
   w("\\end{center}");
   w("\\vspace{2pt}");

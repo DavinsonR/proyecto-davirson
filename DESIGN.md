@@ -17,7 +17,7 @@ colors:
   warmsoft: "#f7efe5"
   pos: "#1a6b48"
   neg: "#9c2b2b"
-  building: "#8a6a10"
+  building: "#805f0f"
 typography:
   display:
     fontFamily: "Archivo, ui-sans-serif, system-ui, sans-serif"
@@ -28,7 +28,7 @@ typography:
   verdict:
     fontFamily: "Source Serif 4, ui-serif, Georgia, serif"
     fontSize: "clamp(27px, 3.8vw, 38px)"
-    fontWeight: 400
+    fontWeight: 600
     lineHeight: 1.1
     letterSpacing: "normal"
   figure:
@@ -182,7 +182,7 @@ A paper-and-ink base with exactly two accent voices, each with a jurisdiction it
 ### Tertiary
 - **Verdict Green** (`pos`, also `live`): Positive standing — remote-mode tags, the live pipeline dot, the pipeline status pill.
 - **Verdict Red** (`neg`): Negative standing in figures. Present in the token set and reserved for it.
-- **Caution Ochre** (`building`): The one status that is neither settled nor technical — work in progress.
+- **Caution Ochre** (`building`, 5.9:1 on paper): The one status that is neither settled nor technical — work in progress. Its value is set by the *tinted* pill, not by the plain text: at the previous `#8a6a10` the 10%-ground pill measured 4.44:1 and failed AA in the only place the colour is ever used.
 
 ### Neutral
 - **Paper** (`paper`): The page ground, and the text color on filled buttons. In dark it is #0e1216, a cool near-black chosen against its own ramp.
@@ -212,7 +212,7 @@ A paper-and-ink base with exactly two accent voices, each with a jurisdiction it
 
 ### Hierarchy
 - **Display** (800, clamp 30–44px, 1.08, -0.03em): The name at the top of the sheet. Once per document.
-- **Verdict** (Source Serif 4, 400, clamp 27–38px, 1.1, blue): What this asset is, stated once, large, in the serif. The single most important line in the build.
+- **Verdict** (Source Serif 4, **600**, clamp 27–38px, 1.1, blue): What this asset is, stated once, large, in the serif. The single most important line in the build — and it is set at 600 because at 400 it carried 29% of the name's ink mass and lost the first fixation to an 800-weight grotesque. Under it, the two other names a posting gives the same role, at the Body Small step in `muted`.
 - **Figure** (Source Serif 4, 400, clamp 34–46px, 1.0, tabular): The four values in the figures band and any number set large. Ink at rest, blue on hover of its own proof link.
 - **Headline** (700, clamp 23–31px, 1.15, -0.02em): Section titles.
 - **Lede** (600, clamp 19–23px, 1.35, -0.015em, balanced): The thesis line under the name; one per surface.
@@ -281,7 +281,7 @@ Icons are inline SVG drawn at a single 1.3px stroke weight on a 16px box. No ico
 **There are no cards.** Cards were removed from all three surfaces during review. A grouping is expressed as: a top rule of the appropriate weight and color, optional tinted ground, and internal padding of `px-5 py-4`/`py-5`. The availability block and the "why it matters" callout are the canonical examples — both are open blocks, not enclosed boxes.
 
 ### Navigation
-Sticky hairline-capped bar on a 95% paper ground. Wordmark in Archivo 600 at 15px in ink; links at 14px 500 in body, hovering to blue; no underline, no active-state pill. The right cluster is three controls at 36px height: a **labelled** language switch (blue-on-blue-wash with a `coldline` border — labelled because a dim glyph in the previous build went unfound by reviewers), an outlined icon-only theme toggle, and a blue contact button that hides below `sm`. Mobile drops the center links entirely rather than collapsing them into a menu.
+Sticky hairline-capped bar on a 95% paper ground. Wordmark in Archivo 600 at 15px in ink; links at 14px 500 in body, hovering to blue; no underline, no active-state pill. The right cluster is three controls at 36px height: a **labelled** language switch (blue-on-blue-wash with a `coldline` border — labelled because a dim glyph in the previous build went unfound by reviewers), an outlined icon-only theme toggle, and a blue contact button **present at every width**. Mobile drops the center links entirely rather than collapsing them into a menu, but never the contact button: it is the site's only conversion control, and hiding it below `sm` removed it from the one device where the link arrives from LinkedIn. The wordmark truncates before the button is dropped.
 
 ### Figures Band
 The signature component. A full-bleed `coldsoft` region opened by a 2px blue rule, carrying a tracked-caps blue label, a live pipeline stamp on the same baseline, a note line, and a 2-up/4-up row of figures divided by `coldline` verticals. Each figure is a serif value over an ink label with a blue underline, and each is a link to its own proof; hovering moves the value to blue and thickens the underline. The band is where the reader verifies the verdict.
@@ -290,7 +290,7 @@ The signature component. A full-bleed `coldsoft` region opened by a 2px blue rul
 A 2px green dot (two stacked round spans, the lower at 60% opacity) followed by 13px muted text carrying the pipeline's own published timestamp. It falls back to static wording when the fetch fails and never to a fabricated date.
 
 ### Skill Scale
-Ten flat 6px segments at 3px gaps, filled in blue up to the level and `rule` beyond, under a right-aligned serif figure with a muted `/10`. It is a numbered indicator, not a decorative bar chart — the number leads, the segments confirm.
+**Removed from this document.** It specified ten 6px segments filled to a declared level; no such component ever shipped, `ProofRow` has no `level` field, and `bar-in` appears only in the charts. A spec for a component that is not in the build is how the shadows, the cards and the 13px prose below went unnoticed for three sessions. What ships in its place is the toolkit list: a tool name over the artifact that backs it, linked where the artifact is public.
 
 ### Charts
 Line only, on paper ground: series in blue at 2px solid, benchmark in muted at 2px dashed (`5 6`), gridlines in `rule` at 1px. Series are distinguished by dash pattern and end-point label as well as hue, so the chart survives grayscale printing and color-vision deficiency. All chart text wears text tokens (`ink`, `body`, `muted`), never the series color.
