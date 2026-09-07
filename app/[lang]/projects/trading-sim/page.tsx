@@ -5,6 +5,7 @@ import TradingSimDashboard from "@/components/trading/TradingSimDashboard";
 import { TRADING_SIM_REPO } from "@/lib/trading-sim";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
+import { alternates, openGraph } from "@/lib/alternates";
 
 export async function generateMetadata({
   params,
@@ -13,7 +14,16 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params;
   const dict = getDictionary(lang);
-  return { title: dict.tradingSim.metaTitle, description: dict.tradingSim.metaDesc };
+  return {
+    title: dict.tradingSim.metaTitle,
+    description: dict.tradingSim.metaDesc,
+    alternates: alternates(lang, "/projects/trading-sim"),
+    openGraph: openGraph(lang, "/projects/trading-sim", {
+      title: dict.tradingSim.metaTitle,
+      description: dict.tradingSim.metaDesc,
+      siteName: dict.profile.name,
+    }),
+  };
 }
 
 export default async function TradingSimPage({
@@ -27,7 +37,7 @@ export default async function TradingSimPage({
   const wrap = "max-w-[980px] mx-auto px-6";
 
   return (
-    <main id="contenido" tabIndex={-1}>
+    <main id="main" tabIndex={-1}>
       {/* ================= HERO ================= */}
       <header className="pt-20 pb-14">
         <div className={wrap}>
@@ -35,7 +45,10 @@ export default async function TradingSimPage({
             <BackLink href={`/${lang}`} label={dict.nav.backHome} />
             <StatusPill status="building" />
           </div>
-          <h1 className="font-display text-[clamp(30px,4.8vw,50px)] font-medium leading-[1.14] tracking-[-0.02em] text-ink max-w-[820px]">
+          {/* Iba a 50px con peso 500: más grande y más ligero que el nombre de la
+              persona en la portada (44px/800), y ninguno de los dos valores
+              existe en la escala del sistema. Paso Display. */}
+          <h1 className="max-w-[820px] font-display text-[clamp(30px,4.4vw,44px)] leading-[1.08] font-extrabold tracking-[-0.03em] text-ink">
             {t.title}
           </h1>
           <p className="mt-5 text-[15.5px] leading-[1.75] max-w-[680px]">{t.intro}</p>
@@ -44,8 +57,13 @@ export default async function TradingSimPage({
       </header>
 
       {/* ================= DASHBOARD ================= */}
-      <section className="pb-16">
+      {/* El panel inyecta sus `h3` al hidratar, entre el `h1` y el primer `h2`
+          de la página: el orden final era h1 → h3. La sección declara el suyo. */}
+      <section className="pb-16" aria-labelledby="ts-lab">
         <div className={wrap}>
+          <h2 id="ts-lab" className="sr-only">
+            {t.explorer.windowTitle}
+          </h2>
           <TradingSimDashboard dict={t} lang={lang} />
         </div>
       </section>
@@ -53,7 +71,7 @@ export default async function TradingSimPage({
       {/* ================= METODOLOGÍA ================= */}
       <section className="py-16 border-t border-rulesoft">
         <div className={wrap}>
-          <h2 className="font-display text-[24px] font-medium text-ink mb-2.5">{t.method.title}</h2>
+          <h2 className="font-display text-[clamp(23px,2.9vw,31px)] font-bold text-ink mb-2.5">{t.method.title}</h2>
           <p className="text-[14px] leading-[1.7] max-w-[620px] mb-8">{t.method.desc}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {t.method.items.map((m) => (

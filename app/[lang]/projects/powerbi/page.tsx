@@ -10,6 +10,7 @@ import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
 import ModelDiagram from "@/components/powerbi/ModelDiagram";
 import MeasureCatalogue from "@/components/powerbi/MeasureCatalogue";
+import { alternates, openGraph } from "@/lib/alternates";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -17,7 +18,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return {
     title: dict.powerbi.metaTitle,
     description: dict.powerbi.metaDesc,
-    alternates: { languages: { es: "/es/projects/powerbi", en: "/en/projects/powerbi" } },
+    alternates: alternates(lang, "/projects/powerbi"),
+    openGraph: openGraph(lang, "/projects/powerbi", {
+      title: dict.powerbi.metaTitle,
+      description: dict.powerbi.metaDesc,
+      siteName: dict.profile.name,
+    }),
   };
 }
 
@@ -39,7 +45,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
   ];
 
   return (
-    <main id="contenido" tabIndex={-1}>
+    <main id="main" tabIndex={-1}>
       {/* ================= HERO ================= */}
       <header className="border-b border-rule">
         <div className={wrap}>
@@ -66,25 +72,28 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
         {/* figures band — the same instrument as the front page, derived from the data file */}
         <div className="border-t-2 border-cold bg-coldsoft">
           <div className={wrap}>
-            <dl className="grid grid-cols-2 py-6 lg:grid-cols-4">
+            {/* Lista simple, no `<dl>`: el ancla envolvía `<dt>` y `<dd>` y no es
+                padre válido de ninguno, así que el par término/definición no se
+                exponía. Misma banda, mismo objetivo de clic, marcado válido. */}
+            <ul className="grid grid-cols-2 py-6 lg:grid-cols-4">
               {facts.map((f, i) => (
-                <div
+                <li
                   key={f.label}
                   data-reveal
                   className="reveal border-coldline py-2 lg:border-l lg:pl-5 lg:first:border-l-0 lg:first:pl-0"
                   style={{ "--d": `${i * 70}ms` } as React.CSSProperties}
                 >
                   <a href={f.href} {...ext} className="lift group block">
-                    <dd className="font-figure text-[clamp(28px,3.8vw,40px)] leading-none text-ink group-hover:text-cold">
+                    <span className="block font-figure text-[clamp(28px,3.8vw,40px)] leading-none text-ink group-hover:text-cold">
                       {f.value}
-                    </dd>
-                    <dt className="mt-2 max-w-[26ch] text-[14px] leading-[1.4] font-medium text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 group-hover:decoration-[2.5px]">
+                    </span>
+                    <span className="block mt-2 max-w-[26ch] text-[14px] leading-[1.4] font-medium text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 group-hover:decoration-[2.5px]">
                       {f.label}
-                    </dt>
+                    </span>
                   </a>
-                </div>
+                </li>
               ))}
-            </dl>
+            </ul>
           </div>
         </div>
       </header>
@@ -180,7 +189,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
                   <h3 className="font-display text-[19px] font-bold tracking-[-0.015em] text-ink">
                     <a href={pbiUrl.page(p.id)} {...ext} className="hover:text-cold">{p.displayName}</a>
                   </h3>
-                  <span className="text-[13px] tracking-[0.07em] text-muted uppercase">{p.visuals.length} {t.pages.visualsWord}</span>
+                  <span className="text-[12.5px] tracking-[0.07em] text-muted uppercase">{p.visuals.length} {t.pages.visualsWord}</span>
                 </div>
                 <p className="mt-2 max-w-[68ch] text-[15px] leading-[1.7]">{t.pages.summary[p.id]}</p>
 

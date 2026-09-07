@@ -4,6 +4,10 @@ import { TRADING_SIM_REPO } from "@/lib/trading-sim";
 import PipelineStamp from "@/components/PipelineStamp";
 import CountUp from "@/components/CountUp";
 import StatusPill from "@/components/StatusPill";
+import CopyEmail from "@/components/CopyEmail";
+import { mailtoHref } from "@/lib/contact";
+import { personGraph } from "@/lib/structured-data";
+import type { Locale } from "@/lib/dictionaries";
 
 const WRAP = "mx-auto max-w-[1080px] px-6";
 
@@ -12,9 +16,25 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const dict = getDictionary(lang);
   const { sheet, work, track, toolkit, disclosures, contact } = dict;
   const cvHref = lang === "es" ? "/Davirson_Novoa_CV_ES.pdf" : "/Davirson_Novoa_Resume_EN.pdf";
+  const mailHref = mailtoHref(dict);
+
+  /* El texto del enlace se saca de la propia URL. Estaba escrito a mano como
+     "davirson-novoa" mientras el perfil vive en "davirson-novoa-ramirez-2721641b5":
+     la etiqueta se pudría por su cuenta cada vez que cambiaba el destino, y
+     anunciaba un perfil que no existe. */
+  const handle = (url: string) => url.replace(/\/+$/, "").split("/").pop() ?? url;
+  const linkedinHandle = handle(dict.profile.linkedin);
+  const githubHandle = handle(dict.profile.github);
 
   return (
-    <main id="contenido" tabIndex={-1}>
+    <main id="main" tabIndex={-1}>
+      {/* Quien recibe el enlace en una aplicación teclea el nombre en Google
+          antes de abrirlo. Sin esto el buscador ve un documento; con esto ve a
+          una persona, sus dos grafías y sus perfiles reales. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personGraph(dict, lang as Locale)) }}
+      />
       {/* ===================== DOCUMENT HEADER ===================== */}
       <header className="border-b border-rule">
         <div className={WRAP}>
@@ -33,12 +53,26 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 {sheet.name}
               </h1>
 
-              {/* the verdict: what this asset is, stated once, large */}
+              {/* The verdict: what this asset is, stated once, large. It is declared
+                  the most important line in the build and it was carrying 29% of
+                  the name's ink mass — a 400-weight serif never outranks an
+                  800-weight grotesque at a comparable size. Source Serif 4 600 is
+                  already requested in the layout and was going unused. */}
               <p
-                className="settle mt-3 font-figure text-[clamp(27px,3.8vw,38px)] leading-[1.1] text-cold"
+                className="settle mt-3 font-figure text-[clamp(27px,3.8vw,38px)] leading-[1.1] font-semibold text-cold"
                 style={{ animationDelay: "120ms" }}
               >
                 {sheet.verdict}
+              </p>
+
+              {/* The same crossover role, under the two other names a posting gives
+                  it. A screener keyword-matches against a req headline; two of the
+                  three matches lived only on the CV, a page most never open. */}
+              <p
+                className="settle mt-2 text-[14px] leading-[1.5] text-muted"
+                style={{ animationDelay: "150ms" }}
+              >
+                {dict.cv.targetsLabel}: {dict.cv.targets.slice(1).join(" · ")}
               </p>
 
               <p
@@ -72,30 +106,50 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </div>
             </div>
 
-            {/* availability block — the facts a recruiter checks before anything else */}
+            {/* Availability and hiring: the facts a recruiter checks before anything
+                else, and the only block on the sheet allowed to wear amber
+                besides the closing band. It used to end 156px above the header
+                rule, leaving the top-right quarter of the first screen empty
+                while the three questions that decide a forward — level, start,
+                arrangement — were answered nowhere on the site. */}
             <aside
               className="settle self-start border-t-2 border-warm bg-warmsoft px-5 py-5"
               style={{ animationDelay: "260ms" }}
             >
               <p className="text-[14px] leading-[1.65] text-ink">{sheet.availability}</p>
-              <dl className="mt-4 space-y-2 border-t border-warm/30 pt-4 text-[14px]">
+
+              <dl className="mt-4 space-y-2.5 border-t border-warm pt-4 text-[14px]">
+                {sheet.hire.map((h) => (
+                  <div key={h.term}>
+                    <dt className="text-[12.5px] font-semibold tracking-[0.08em] text-warm uppercase">
+                      {h.term}
+                    </dt>
+                    <dd className="mt-0.5 leading-[1.5] text-ink">{h.detail}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <dl className="mt-4 space-y-2 border-t border-warm pt-4 text-[14px]">
                 <div>
                   <dt className="text-warm">Email</dt>
                   <dd className="mt-0.5 break-all">
-                    <a href={`mailto:${dict.profile.email}`} className="text-ink underline decoration-warm/50 underline-offset-2 hover:decoration-warm">
+                    <a href={mailHref} className="text-ink underline decoration-warm underline-offset-2">
                       {dict.profile.email}
                     </a>
                   </dd>
                 </div>
-                <div className="flex justify-between gap-4">
+                {/* Etiqueta arriba y valor debajo, igual que el correo: el slug real
+                    de LinkedIn tiene 32 caracteres y en una fila `justify-between`
+                    de 260px se partía a la derecha en dos trozos. */}
+                <div>
                   <dt className="text-warm">LinkedIn</dt>
-                  <dd>
+                  <dd className="mt-0.5 break-all">
                     <a
                       href={dict.profile.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-ink underline decoration-warm/50 underline-offset-2 hover:decoration-warm">
-                      davirson-novoa
+                      className="text-ink underline decoration-warm underline-offset-2">
+                      {linkedinHandle}
                     </a>
                   </dd>
                 </div>
@@ -106,12 +160,18 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                       href={dict.profile.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-ink underline decoration-warm/50 underline-offset-2 hover:decoration-warm">
-                      DavinsonR
+                      className="text-ink underline decoration-warm underline-offset-2">
+                      {githubHandle}
                     </a>
                   </dd>
                 </div>
               </dl>
+
+              <CopyEmail
+                email={dict.profile.email}
+                labels={{ copy: contact.copy, copied: contact.copied, fail: contact.copyFail }}
+                className="mt-4 bg-paper"
+              />
             </aside>
           </div>
         </div>
@@ -131,7 +191,14 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               />
             </div>
             <p className="mt-1 text-[14px] text-body">{sheet.metricsNote}</p>
-            <dl className="grid grid-cols-2 pt-3 pb-6 lg:grid-cols-4">
+            {/* Era un `<dl>` con el `<a>` envolviendo `<dt>` y `<dd>`, con el `<dd>`
+                antes que su `<dt>` y un `<p>` suelto dentro del envoltorio: un
+                ancla no es padre válido de ninguno de los dos, así que el
+                navegador no exponía el par término/definición y la lista de
+                definiciones no definía nada. Una lista simple dice lo mismo, es
+                válida, y deja que el ancla siga envolviendo cifra y etiqueta —
+                que es lo que hace de cada cifra un objetivo de clic. */}
+            <ul className="grid grid-cols-2 pt-3 pb-6 lg:grid-cols-4">
               {sheet.metrics.map((m, i) => {
                 // Each figure lands where its evidence actually is. The first reviewer to
                 // click one found the CV's masthead and no sign of what he had clicked.
@@ -139,7 +206,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 const proof = m.href.startsWith("http") ? m.href : `/${lang}${m.href}`;
                 const external = proof.startsWith("http");
                 return (
-                  <div
+                  <li
                     key={m.label}
                     className="settle border-coldline py-2 lg:border-l lg:pl-5 lg:first:border-l-0 lg:first:pl-0"
                     style={{ animationDelay: `${340 + i * 70}ms` }}
@@ -149,24 +216,24 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                       className="lift group block"
                     >
-                      <dd className="font-figure text-[clamp(34px,4.4vw,46px)] leading-none text-ink group-hover:text-cold">
+                      <span className="block font-figure text-[clamp(34px,4.4vw,46px)] leading-none text-ink group-hover:text-cold">
                         <CountUp value={m.value} lang={lang} />
-                      </dd>
-                      <dt className="mt-2 text-[14px] leading-[1.35] font-medium text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 group-hover:decoration-[2.5px]">
+                      </span>
+                      <span className="mt-2 block text-[14px] leading-[1.35] font-medium text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 group-hover:decoration-[2.5px]">
                         {m.label}
-                      </dt>
+                      </span>
                     </a>
                     <p className="mt-1 text-[14px] text-body">{m.note}</p>
-                  </div>
+                  </li>
                 );
               })}
-            </dl>
+            </ul>
           </div>
         </div>
       </header>
 
       {/* ===================== WORK ===================== */}
-      <section id="work" className="scroll-mt-16 border-b border-rule py-16">
+      <section id="work" className="scroll-mt-16 border-b border-rule pt-16">
         <div className={WRAP}>
           <h2
             data-reveal
@@ -229,7 +296,21 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               ))}
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-3">
+            {/* The strongest sentence on the page — a published negative result —
+                used to sit *below* three links that leave the page. A scanner who
+                took any of them never met it. It is a measurement, so it wears the
+                cold accent; the comment that used to sit here said amber, which
+                would have been a bug against the reservation rule. */}
+            <div className="mt-7 border-t border-rule pt-5">
+              <h4 className="text-[12.5px] font-semibold tracking-[0.09em] text-cold uppercase">
+                {work.project.findingLabel}
+              </h4>
+              <p className="mt-1.5 max-w-[70ch] text-[15px] leading-[1.7] text-ink">
+                {work.project.finding}
+              </p>
+            </div>
+
+            <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href={`/${lang}/projects/trading-sim`}
                 className="lift inline-flex items-center rounded-[3px] bg-ink px-4 py-2.5 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90"
@@ -252,21 +333,21 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </Link>
             </div>
 
-            {/* the honest finding wears the amber: it is a judgment claim, not a spec */}
-            <div className="mt-7 border-t border-rule pt-5">
-              <h4 className="text-[12.5px] font-semibold tracking-[0.09em] text-cold uppercase">
-                {work.project.findingLabel}
-              </h4>
-              <p className="mt-1.5 max-w-[70ch] text-[15px] leading-[1.7] text-ink">
-                {work.project.finding}
-              </p>
-            </div>
           </article>
 
-          {/* the rest of the desk: one ruled row each, a status pill, and a link only
-              where there is something public to open. A private row says so. */}
-          <div className="mt-12">
-            <h3 className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
+        </div>
+
+        {/* WORK ran 1,637px on desktop and 2,812px on a phone — three and a half
+            screens — as one unbroken white field with a single hairline in it.
+            The reader loses the thread here, which is what "you get lost" was.
+            A full-bleed neutral band opened by a 2px ink rule is the sheet's own
+            device for a change of region; it costs nothing and gives the scan a
+            place to land. */}
+        <div className="mt-14 border-t-2 border-ink bg-band py-12">
+          <div className={WRAP}>
+            {/* the rest of the desk: one ruled row each, a status pill, and a link only
+                where there is something public to open. A private row says so. */}
+            <h3 className="font-display text-[19px] font-bold tracking-[-0.015em] text-ink">
               {work.also.title}
             </h3>
             <ol className="mt-4">
@@ -301,33 +382,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               ))}
             </ol>
           </div>
-
-          <div className="mt-12">
-            <h3 className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
-              {work.capabilitiesTitle}
-            </h3>
-            <dl className="mt-4 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
-              {work.capabilities.map((c, i) => (
-                <div
-                  key={c.name}
-                  data-reveal
-                  className="reveal border-t border-rule py-3"
-                  style={{ "--d": `${i * 60}ms` } as React.CSSProperties}
-                >
-                  <dt className="text-[14.5px] font-semibold text-ink">{c.name}</dt>
-                  <dd className="mt-0.5 text-[14px] leading-[1.55] text-body">{c.detail}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
         </div>
       </section>
 
       {/* ===================== TRACK RECORD + PROFILE ===================== */}
       <section id="track" className="scroll-mt-16 border-b border-rule py-16">
-        <div
-          className={`${WRAP} grid gap-x-14 gap-y-12 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]`}
-        >
+        <div className={WRAP}>
           <div>
             <div className="flex flex-wrap items-baseline justify-between gap-4">
               <h2 className="font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink">
@@ -360,14 +420,19 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </ol>
           </div>
 
-          {/* honest skill scale — a fact sheet's numbered indicator, not a bar chart of vibes */}
-          <div>
+          {/* Three career rows against eight tool rows sat in a 1.35 : 1 split, so
+              the left column died 304px before the right one finished and the
+              bottom-left quarter of the section was blank paper. A split grid is
+              the wrong instrument for two lists whose lengths are unrelated: the
+              toolkit runs the full measure underneath, three across, and the row
+              form is unchanged. */}
+          <div className="mt-14 border-t-2 border-ink pt-8">
             <h2 className="font-display text-[clamp(20px,2.4vw,25px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink">
               {toolkit.title}
             </h2>
-            <p className="mt-2 max-w-[46ch] text-[14px] leading-[1.6] text-body">{toolkit.note}</p>
+            <p className="mt-2 max-w-[62ch] text-[14.5px] leading-[1.6] text-body">{toolkit.note}</p>
 
-            <dl className="mt-6">
+            <dl className="mt-6 grid gap-x-12 sm:grid-cols-2 lg:grid-cols-3">
               {toolkit.rows.map((r, ri) => (
                 <div
                   key={r.name}
@@ -380,6 +445,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                     {r.href ? (
                       <Link
                         href={r.href.startsWith("http") ? r.href : `/${lang}${r.href}`}
+                        {...(r.href.startsWith("http")
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
                         className="underline decoration-cold decoration-[1.5px] underline-offset-4 hover:text-cold"
                       >
                         {r.proof}
@@ -395,8 +463,81 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </div>
       </section>
 
+      {/* ===================== CONTACT ===================== */}
+      {/* The right half of this band used to be empty for its whole height: a
+          24ch headline wrapping to three lines in the left third and a row of
+          links underneath. The CTA cluster moves beside the headline, which is
+          what a band opened by a 2px rule is supposed to look like. */}
+      <section id="contact" className="scroll-mt-16 border-t-2 border-warm py-16">
+        <div className={`${WRAP} grid items-start gap-x-14 gap-y-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]`}>
+          <div>
+            <h2
+              data-reveal
+              className="reveal max-w-[24ch] text-balance font-display text-[clamp(24px,3.2vw,34px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink"
+            >
+              {contact.title}
+            </h2>
+            <p className="mt-3.5 max-w-[52ch] text-[15.5px] leading-[1.7]">{contact.body}</p>
+          </div>
+
+          <div className="lg:pt-2">
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href={mailHref}
+                className="lift inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
+              >
+                {contact.email}
+              </a>
+              <CopyEmail
+                email={dict.profile.email}
+                labels={{ copy: contact.copy, copied: contact.copied, fail: contact.copyFail }}
+                className="px-4 py-3 text-[14.5px]"
+              />
+            </div>
+
+            {/* The address in plain sight, once more at the foot: when the mail
+                client never opens, this is what the reader falls back to. */}
+            <p className="mt-3 text-[14px] break-all text-body">
+              <a href={mailHref} className="text-ink underline decoration-cold decoration-[1.5px] underline-offset-4">
+                {dict.profile.email}
+              </a>
+            </p>
+
+            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-rule pt-4">
+              <a
+                href={cvHref}
+                download
+                className="inline-flex items-center text-[14.5px] font-semibold text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 hover:text-cold"
+              >
+                {sheet.ctaPrimary}
+              </a>
+              {[
+                { href: dict.profile.linkedin, label: contact.linkedin },
+                { href: dict.profile.github, label: contact.github },
+                { href: dict.profile.kaggle, label: contact.kaggle },
+              ].map((l) => (
+                <a
+                  key={l.label}
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[14.5px] font-medium text-cold hover:underline"
+                >
+                  {l.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ===================== DISCLOSURES ===================== */}
-      <section className="border-b border-rule bg-band py-14">
+      {/* En un pliego las divulgaciones van al pie, no entre la evidencia y la
+          conversión: quien ya decidió escribir tenía 450px de salvedades por
+          delante del bloque de contacto. Bajan aquí, y pasan a `band2` para que
+          las dos bandas neutras del documento no se lean a la misma profundidad
+          (la lista de la mesa se quedó con `band`). */}
+      <section className="border-t border-rule bg-band2 py-14">
         <div className={WRAP}>
           <h2 className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
             {disclosures.title}
@@ -417,49 +558,6 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </div>
       </section>
 
-      {/* ===================== CONTACT ===================== */}
-      <section id="contact" className="scroll-mt-16 border-t-2 border-warm py-16">
-        <div className={WRAP}>
-          <h2
-            data-reveal
-            className="reveal max-w-[24ch] text-balance font-display text-[clamp(24px,3.2vw,34px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink"
-          >
-            {contact.title}
-          </h2>
-          <p className="mt-3.5 max-w-[62ch] text-[15.5px] leading-[1.7]">{contact.body}</p>
-
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <a
-              href={`mailto:${dict.profile.email}`}
-              className="lift inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
-            >
-              {contact.email}
-            </a>
-            <a
-              href={cvHref}
-              download
-              className="inline-flex items-center rounded-[3px] border border-rule px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
-            >
-              {sheet.ctaPrimary}
-            </a>
-            {[
-              { href: dict.profile.linkedin, label: contact.linkedin },
-              { href: dict.profile.github, label: contact.github },
-              { href: dict.profile.kaggle, label: contact.kaggle },
-            ].map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-1 py-3 text-[14.5px] font-medium text-cold hover:underline"
-              >
-                {l.label}
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

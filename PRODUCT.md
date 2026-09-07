@@ -39,6 +39,7 @@ A neighboring candidate cannot truthfully copy this claim: finance people rarely
 - Bilingual ES/EN through `/[lang]/` routes and `lib/dictionaries.ts` as the single source of truth for every string; the CV PDFs are generated from that same file.
 - A live project page (`/projects/trading-sim`) reads JSON published by the `market-data-medallion` repository, refreshed daily by a GitHub Actions cron. The site stays static.
 - Open decision: the CV PDF may be regenerated in LaTeX/Overleaf for a more conventional format (peer feedback), replacing the current script-generated version.
+- **The public hostname is `proyecto-davirson-git.vercel.app`.** Two costs beyond authority for a name query: `*.vercel.app` is categorised as personal hosting by some corporate web filters, so the page may not load at all for the reader it is written for; and the `-git` infix is Vercel's branch-alias shape, which reads as a preview deployment. The host is baked into every canonical, every hreflang, the sitemap, the OG cards and — since this round — the header of both CV PDFs.
 
 ## Brand Commitments
 
@@ -60,6 +61,7 @@ Real, verifiable — none of this may be fabricated or inflated:
 - Stanford Machine Learning Specialization (Coursera, 2024).
 - M.Sc. Economics in progress, Pontificia Universidad Javeriana (2025–2026); B.Sc. Economics (2020–2024).
 - Languages: native Spanish, English B2, Portuguese A2. GMT-5, full overlap with US hours.
+- **Hiring terms, confirmed by the candidate (Sept 2026) and now published in the hero**: level claimed is **Senior Analyst**; start is **15 days' notice** (currently employed); a US/CA company can engage him as a **direct contractor (B2B, own invoice) or through an EOR**, and **no visa sponsorship is required** — he works remotely from Colombia. These three answer the questions a recruiter settles before opening the CV, and the site answered none of them before.
 - **No photograph available yet** — the hero must work without one and accept one later without a redesign.
 - No testimonials, no client references, no employer logos cleared for use.
 

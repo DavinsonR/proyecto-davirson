@@ -43,7 +43,7 @@
   {\large\color{cold} Finance Data Analyst \,\textperiodcentered\, Financial BI Analyst \,\textperiodcentered\, Analytics Engineer}\\[4pt]
   {\small Economist and FP\&A consultant who builds the data infrastructure he works from.}\\[3pt]
   {\small Bogotá, Colombia \,\textperiodcentered\, GMT-5 \,\textperiodcentered\, Fully remote \,\textperiodcentered\, English B2 \,\textperiodcentered\, Portuguese A2}\\[2pt]
-  {\small \href{mailto:davinsonnovoaramirez@gmail.com}{davinsonnovoaramirez@gmail.com} \,\textperiodcentered\, \href{https://linkedin.com/in/davirson-novoa-ramirez-2721641b5}{linkedin.com/in/davirson-novoa-ramirez-2721641b5} \,\textperiodcentered\, \href{https://github.com/DavinsonR}{github.com/DavinsonR}}
+  {\small \href{mailto:davinsonnovoaramirez@gmail.com}{davinsonnovoaramirez@gmail.com} \,\textperiodcentered\, \href{https://linkedin.com/in/davirson-novoa-ramirez-2721641b5}{linkedin.com/in/davirson-novoa-ramirez-2721641b5} \,\textperiodcentered\, \href{https://github.com/DavinsonR}{github.com/DavinsonR} \,\textperiodcentered\, \href{https://proyecto-davirson-git.vercel.app/en}{proyecto-davirson-git.vercel.app}}
 \end{center}
 \vspace{2pt}
 
@@ -119,15 +119,16 @@ This is not a career change; it is pricing what I already do. In every finance r
 \vspace{4pt}
 
 \section*{Research}
-{\small\itshape The master's thesis. A null result is published like any other.}\par\vspace{3pt}
-\headline{Fintech development and financial inclusion as predictors of regional economic growth in Colombia (2017--2021)}{2026 --- filed}
-\subline{Master's thesis --- M.Sc. in Economics, Javeriana}{\href{https://github.com/DavinsonR/Tesis_Fnancial_Inclusion_GDP_Growth_Colombia}{repository on GitHub}}
+{\small\itshape My own research, built in public on open data.}\par\vspace{3pt}
+\headline{Financial inclusion and regional growth in Colombia}{2026 --- building}
+\subline{M.Sc. in Economics thesis, Javeriana --- reproducible research end to end}{\href{https://github.com/DavinsonR/financial-inclusion-colombia}{repository on GitHub}}
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
-  \item Multidimensional composite index of financial inclusion by principal component analysis: four components, 84.4\% of the variance.
-  \item Department-level panel for 2017-2021 with entity and time fixed effects as the reference specification; Nickell bias quantified (T = 14, rho = 0.43), Pesaran test and Driscoll-Kraay standard errors.
-  \item Result published as it is: under the demanding specification the index is not significant (coefficient -0.15, p = 0.984); significant only in the static model, at half the magnitude.
+  \item Purpose-built open-data downloader with a verifiable manifest: nineteen sources (financial supervisor, statistics office, ICT and education ministries, national map), row counts verified against the source, metadata-driven typing and a sha256 per file.
+  \item Dimensional warehouse in dbt on DuckDB: department, municipality and period dimensions, financial inclusion in long form by product block, and tests that reconcile each department total with the sum of its municipalities.
+  \item Geographic keys resolved to the municipal code with 100\% coverage across the 34 quarterly cuts, and the splice between the supervisor's two tables measured quarter by quarter.
+  \item A financial-inclusion index by dimension and annual panels at department and municipality level, with an explicit battery against spurious correlation. Public logbook of mistakes and wins.
 \end{itemize}
-{\small\textbf{Stack:} Panel data \,\textperiodcentered\, Fixed effects \,\textperiodcentered\, PCA \,\textperiodcentered\, Driscoll-Kraay \,\textperiodcentered\, Python}\par
+{\small\textbf{Stack:} dbt \,\textperiodcentered\, DuckDB \,\textperiodcentered\, Python \,\textperiodcentered\, Parquet \,\textperiodcentered\, Panel data \,\textperiodcentered\, Quarto}\par
 \vspace{4pt}
 
 \section*{Skills}
@@ -138,7 +139,7 @@ This is not a career change; it is pricing what I already do. In every finance r
 \begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=0pt, parsep=0pt]
   \item \textbf{\color{ink}Excel and financial modelling} --- SG\&A close and forecast across 12 countries at Neoris EPAM
   \item \textbf{\color{ink}Power BI} --- \href{https://proyecto-davirson-git.vercel.app/en/projects/powerbi}{Seven-table semantic model in TMDL, loaded against Supabase}
-  \item \textbf{\color{ink}Tableau} --- Dashboard that won the BodyTech Trends Hackathon, public
+  \item \textbf{\color{ink}Tableau} --- \href{https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrendsADataAnalysisProject/TrendsAnalysis}{Dashboard that won the BodyTech Trends Hackathon, public}
   \item \textbf{\color{ink}SQL \,\textperiodcentered\, PostgreSQL} --- Three-layer medallion warehouse, more than 58,000 candles in production
   \item \textbf{\color{ink}Python} --- Incremental ingestion, backtesting engine, FX decomposition
   \item \textbf{\color{ink}dbt} --- 89 quality tests that run before a single figure is published
@@ -150,7 +151,7 @@ This is not a career change; it is pricing what I already do. In every finance r
 \section*{Education}
 \headline{\href{https://proyecto-davirson-git.vercel.app/en/research/fintech-inclusion}{M.Sc. in Economics}}{2025 --- 2026}
 {\small Pontificia Universidad Javeriana \,\textperiodcentered\, thesis filed}\par
-{\small\itshape Thesis filed in August 2026: a composite index of financial inclusion and a department-level panel. Graduation expected in November 2026.}\par
+{\small\itshape Thesis filed in August 2026; graduation expected in November 2026. It is the origin of the financial-inclusion project I keep building in public.}\par
 \vspace{1pt}
 \headline{B.Sc. in Economics}{2020 --- 2024}
 {\small Pontificia Universidad Javeriana \,\textperiodcentered\, completed}\par

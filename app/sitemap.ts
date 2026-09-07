@@ -14,7 +14,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: route === "" ? 1 : 0.8,
       alternates: {
-        languages: Object.fromEntries(locales.map((l) => [l, `${SITE}/${l}${route}`])),
+        languages: {
+          ...Object.fromEntries(locales.map((l) => [l, `${SITE}/${l}${route}`])),
+          // Las páginas lo emiten; el sitemap no lo hacía, y decían cosas distintas.
+          "x-default": `${SITE}/en${route}`,
+        },
       },
     })),
   );

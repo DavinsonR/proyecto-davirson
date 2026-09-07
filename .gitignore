@@ -14,5 +14,5 @@ next-env.d.ts
 .impeccable/review/
 .impeccable/questions/
 
-# Cache incremental de TypeScript: artefacto de build, no fuente.
-tsconfig.tsbuildinfo
+# cache incremental de TypeScript: salida de build, versionada por descuido
+*.tsbuildinfo

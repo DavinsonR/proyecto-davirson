@@ -74,7 +74,7 @@
 
   /* --- status (module states, unchanged meanings) --- */
   --color-live: #1a6b48;
-  --color-building: #8a6a10;
+  --color-building: #805f0f;  /*  5.9:1 en plano · 5.1:1 dentro de su píldora al 10 % */
   --color-research: #0f4c81;
   --color-idea: #626c76;
 
@@ -224,25 +224,6 @@ body {
   border-radius: 2px;
 }
 
-/* Fuera de pantalla hasta que recibe el foco, nunca display:none — un enlace
-   oculto así no es enfocable y el atajo dejaría de existir. */
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  z-index: 100;
-  padding: 10px 16px;
-  background: var(--color-paper);
-  color: var(--color-ink);
-  border: 1px solid var(--color-control);
-  border-radius: 0 0 3px 0;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-}
-.skip-link:focus {
-  left: 0;
-}
 /* El destino recibe el foco por programa (tabIndex=-1) y no debe dibujar un
    anillo alrededor de la página entera. */
 main:focus {
@@ -369,13 +350,63 @@ a {
 @media print {
   body { background: #fff; color: #000; }
   .no-print { display: none !important; }
+  @page { margin: 14mm 12mm; }
+
   /* Paper has no scroll, so nothing ever intersects: without this the
      reveal states would print as blank space on a sheet PRODUCT says
-     gets printed. Ink first, motion second. */
-  .reveal, .rule-in, .bar-in {
+     gets printed. Ink first, motion second.
+     `.settle` faltaba en esta lista y su estado inicial es `opacity: 0` con
+     `blur(3px)` y `fill-mode: both`: imprimir dentro de los primeros 620 ms
+     sacaba la cabecera, el nombre y el veredicto borrosos y a medio tono. */
+  .settle, .reveal, .rule-in, .bar-in {
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
     animation: none !important;
+  }
+
+  /* El navegador omite todo `background-color` al imprimir salvo que se le
+     diga lo contrario. Este sistema no dibuja cajas: separa regiones con
+     bandas de color a sangre (`coldsoft`, `warmsoft`, `band`). Sin esta
+     línea, el pliego impreso perdía la banda de cifras, el bloque de
+     disponibilidad, las divulgaciones, las barras del laboratorio y los
+     tramos del atlas — es decir, toda su estructura. */
+  * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Un botón relleno imprime su texto (papel = blanco) y, si el driver ignora
+     lo anterior, omite su fondo: blanco sobre blanco, y el primero de la lista
+     es "Descargar CV". En papel un botón no se pulsa, así que sale contorneado
+     y se lee siempre. Se ata al elemento y no solo a la clase porque las reglas
+     de 2px del pliego también son `bg-ink` y esas sí deben quedar macizas. */
+  a.bg-cold, a.bg-ink, button.bg-cold, button.bg-ink {
+    background: transparent !important;
+    color: var(--color-ink) !important;
+    border: 1px solid var(--color-ink) !important;
+  }
+
+  /* Un contenedor con scroll imprime solo lo que cabe en su caja: la tabla de
+     datos de la curva salía con tres filas de treinta, y las combinaciones del
+     laboratorio con seis de las que hubiera. */
+  [class*="overflow-"] {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+
+  /* Nada se parte por la mitad entre dos hojas. */
+  article, li, tr, figure, .atlas-block, dl > div { break-inside: avoid; }
+  h1, h2, h3, h4 { break-after: avoid; }
+
+  /* La página promete que cada cifra enlaza a lo que la prueba. En papel el
+     enlace es texto plano y la promesa se cae, así que el destino se imprime.
+     Fuera del atlas, donde una tabla de mil filas con su URL al lado es ruido. */
+  main a[href^="http"]:not(.atlas a)::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: var(--color-muted);
+    word-break: break-all;
   }
   /* the plotted line is drawn by the Web Animations API in Charts.tsx,
      because a path's length is only known at run time */
@@ -389,21 +420,25 @@ a {
     --color-paper: #ffffff;
     --color-band: #f4f6f8;
     --color-band2: #e9edf1;
-    --color-rule: #d8dde3;
-    --color-rulesoft: #e8ecf0;
+    /* En pantalla estas dos son 1,37:1 y 1,19:1 sobre papel: correctas como
+       divisores tenues. En una láser a 600 dpi una línea de 1 px a ese tono se
+       tramaba hasta desaparecer, y toda la estructura de este pliego son
+       líneas. Se suben solo para el papel. */
+    --color-rule: #9aa3ad;
+    --color-rulesoft: #c3c9d0;
     --color-control: #7e8792;
     --color-ink: #14181d;
     --color-body: #454e57;
     --color-muted: #626c76;
     --color-cold: #0f4c81;
     --color-coldsoft: #e6eef7;
-    --color-coldline: #b9cfe4;
+    --color-coldline: #8fabc6;
     --color-warm: #96551a;
     --color-warmsoft: #f7efe5;
     --color-pos: #1a6b48;
     --color-neg: #9c2b2b;
     --color-live: #1a6b48;
-    --color-building: #8a6a10;
+    --color-building: #805f0f;
     --color-research: #0f4c81;
     --color-idea: #626c76;
 
@@ -480,8 +515,13 @@ a {
   display: flex;
   border: 1px solid var(--color-control);
   border-radius: 3px;
-  overflow: hidden;
 }
+/* `overflow: hidden` recortaba el anillo de foco (2px de outline a 2px de
+   offset) de los tres botones: quien navega con teclado veía medio indicador o
+   ninguno en el control principal del mapa. El redondeo pasa a los extremos. */
+.atlas-views button:first-child { border-radius: 2px 0 0 2px; }
+.atlas-views button:last-child { border-radius: 0 2px 2px 0; }
+.atlas-views button:focus-visible { outline-offset: -2px; }
 .atlas-views button {
   font: inherit;
   font-size: 14px;
@@ -559,15 +599,16 @@ a {
   color: var(--color-ink);
 }
 .atlas-unit { margin-top: 3px; min-height: 20px; font-size: 14.5px; color: var(--color-ink); }
-.atlas-foot { margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: var(--color-muted); }
+/* Suelo de 14px: esto son frases completas, no un rótulo de metadato. */
+.atlas-foot { margin: 4px 0 0; font-size: 14px; line-height: 1.5; color: var(--color-muted); }
 
 .atlas-map { position: relative; }
 
-.atlas-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 13px; }
+.atlas-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 14px; }
 .atlas-table th {
   padding: 0 5px 6px;
   text-align: left;
-  font-size: 11.5px;
+  font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -589,6 +630,13 @@ a {
 .atlas-table tr[data-active="yes"] td { background: var(--color-coldsoft); font-weight: 600; }
 .atlas-pill { display: block; height: 8px; border-radius: 0 2px 2px 0; }
 
+/* El sistema declara que no se envía ni una sombra y llama defecto a cualquiera:
+   aquí había dos, y son las únicas del build. El problema que resolvían es real
+   —un tooltip tiene que separarse del coropleto que hay debajo— pero el pliego
+   separa con peso de línea y opacidad de fondo, nunca con elevación: fondo
+   opaco, filete de 1px y una regla de 2px arriba, la misma gramática que abre
+   la banda de cifras. El radio también sale: 3px es de los controles, y un
+   tooltip es un bloque. */
 .atlas-tip,
 .atlas-card {
   position: absolute;
@@ -596,23 +644,23 @@ a {
   pointer-events: none;
   background: var(--color-paper);
   border: 1px solid var(--color-rule);
-  border-radius: 3px;
+  border-top: 2px solid var(--color-cold);
   padding: 7px 10px;
-  box-shadow: 0 2px 12px rgb(0 0 0 / 0.14);
   max-width: 250px;
 }
-.atlas-tip { opacity: 0; transition: opacity 90ms ease; font-size: 13px; color: var(--color-body); }
-.atlas-tip strong, .atlas-card strong { display: block; font-size: 14px; color: var(--color-ink); }
-.atlas-tip span, .atlas-card span { display: block; margin-top: 2px; font-size: 12.5px; color: var(--color-muted); }
+.atlas-tip { opacity: 0; transition: opacity 90ms ease; font-size: 14px; color: var(--color-body); }
+.atlas-tip strong, .atlas-card strong { display: block; font-size: 14.5px; color: var(--color-ink); }
+.atlas-tip span, .atlas-card span { display: block; margin-top: 2px; font-size: 14px; color: var(--color-muted); }
 .atlas-tip b { display: block; margin-top: 2px; font-family: var(--font-figure); font-size: 16px; color: var(--color-ink); }
-.atlas-card { border-left: 3px solid var(--color-cold); }
 
+/* Sí es un control, así que conserva sus 3px. Un rectángulo azul macizo sobre un
+   coropleto pálido ya se separa por tono; la sombra no hacía falta. */
 .atlas-drill {
   position: absolute;
   right: 8px;
   bottom: 8px;
   font: inherit;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   padding: 7px 13px;
   border: 0;
@@ -620,7 +668,6 @@ a {
   background: var(--color-cold);
   color: var(--color-paper);
   cursor: pointer;
-  box-shadow: 0 1px 8px rgb(0 0 0 / 0.16);
 }
 .atlas-drill:hover { opacity: 0.9; }
 
