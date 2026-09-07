@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 import { locales } from "@/lib/dictionaries";
 import { SITE } from "@/lib/site";
 
-const ROUTES = ["", "/cv", "/projects/trading-sim", "/projects/powerbi", "/research/fintech-inclusion"];
+const ROUTES = ["", "/cv", "/projects/trading-sim", "/projects/powerbi", "/projects/tracking", "/research/fintech-inclusion"];
 
-/** Un sitio de cinco rutas por idioma no necesita un sitemap para existir, pero
+/** Un sitio de seis rutas por idioma no necesita un sitemap para existir, pero
  *  sí para que el buscador sepa que /es y /en son la misma página en dos idiomas. */
 export default function sitemap(): MetadataRoute.Sitemap {
   return locales.flatMap((lang) =>
