@@ -1,55 +1,52 @@
 # Proyecto Davirson
 
-Sitio personal bilingüe (ES/EN) y punto de entrada a tres proyectos con código abierto y datos en vivo: una investigación econométrica, una plataforma de datos de mercado y una app de registro diario.
+*[Leer en español](README.es.md)*
+
+Bilingual personal site (EN/ES) and the entry point to three projects with open code and live data: econometric research, a market data platform and a daily tracking app.
 
 ### ▶ [proyecto-davirson-git.vercel.app](https://proyecto-davirson-git.vercel.app)
 
-No es un portafolio de capturas: cada página del sitio se alimenta del repositorio que la sostiene, y cada cifra que aparece se puede rastrear hasta el commit que la produjo.
+Not a portfolio of screenshots: every page on the site is fed by the repository behind it, and every figure it shows traces back to the commit that produced it.
 
-## Qué hay dentro
+## What is inside
 
-| Proyecto | En el sitio | Repositorio | Estado |
+| Project | On the site | Repository | Status |
 | --- | --- | --- | --- |
-| **Inclusión financiera y crecimiento regional** — warehouse de 19 fuentes públicas, índice por dimensiones, panel de efectos fijos y atlas de los 1.123 municipios | [`/es/research/fintech-inclusion`](https://proyecto-davirson-git.vercel.app/es/research/fintech-inclusion) | [financial-inclusion-colombia](https://github.com/DavinsonR/financial-inclusion-colombia) | Resultado principal publicado |
-| **Plataforma de datos de mercado** — APIs públicas → medallion en Postgres con dbt → backtester sin look-ahead → refresh diario automatizado | [`/es/projects/trading-sim`](https://proyecto-davirson-git.vercel.app/es/projects/trading-sim) | [market-data-medallion](https://github.com/DavinsonR/market-data-medallion) | 48 activos, refresh diario |
-| **Informe Power BI** — modelo, medidas y páginas del informe construido sobre la capa gold | [`/es/projects/powerbi`](https://proyecto-davirson-git.vercel.app/es/projects/powerbi) | catálogo en `lib/powerbi-model.ts` | Catálogo publicado |
-| **JARVIS** — registro diario de hábitos, cuerpo, sueño y gasto en menos de noventa segundos | — | privado; [demo público sin cuenta](https://jarvis-app-psi-sable.vercel.app/demo) | v1 en uso |
+| **Financial inclusion and regional growth** — a warehouse of 19 public sources, an index by dimension, a fixed-effects panel and an atlas of all 1,123 municipalities | [`/en/research/fintech-inclusion`](https://proyecto-davirson-git.vercel.app/en/research/fintech-inclusion) | [financial-inclusion-colombia](https://github.com/DavinsonR/financial-inclusion-colombia) | Main result published |
+| **Market data platform** — public APIs → a Postgres medallion warehouse with dbt → a backtester with no look-ahead → an automated daily refresh | [`/en/projects/trading-sim`](https://proyecto-davirson-git.vercel.app/en/projects/trading-sim) | [market-data-medallion](https://github.com/DavinsonR/market-data-medallion) | 48 assets, refreshed daily |
+| **Power BI report** — the model, measures and pages of the report built on the gold layer | [`/en/projects/powerbi`](https://proyecto-davirson-git.vercel.app/en/projects/powerbi) | catalogue in `lib/powerbi-model.ts` | Catalogue published |
+| **JARVIS** — habits, body, sleep and spending logged in under ninety seconds | — | private; [public demo, no account](https://jarvis-app-psi-sable.vercel.app/demo) | v1 in use |
 
-## El CV
+## The CV
 
-`/[lang]/cv` publica el CV completo en las dos lenguas. El texto vive una sola vez en `lib/dictionaries.ts`; de ahí salen la página, la fuente LaTeX y el PDF. Editar el diccionario y correr `npm run cv` regenera los tres: no hay una versión del CV que pueda quedarse atrás de otra.
+`/[lang]/cv` publishes the full CV in both languages. The text lives once, in `lib/dictionaries.ts`; the page, the LaTeX source and the PDF all come from there. Editing the dictionary and running `npm run cv` regenerates all three, so no version of the CV can fall behind another.
 
-## Cómo está hecho
+## How it is built
 
-Next.js 16 (App Router) · React · TypeScript · Tailwind v4 · Vercel. Todo estático: sin backend y sin base de datos. Los datos del laboratorio de mercado entran como JSON exportado por el pipeline, no por una consulta en tiempo de render. Costo de operación: $0.
+Next.js 16 (App Router) · React · TypeScript · Tailwind v4 · Vercel. Fully static: no backend and no database. The market lab's data arrives as JSON exported by the pipeline, not through a query at render time. Running cost: $0.
 
-## Desarrollo
+## Development
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000 → redirige a /es
+npm run dev      # http://localhost:3000 → redirects to /es
 ```
 
-| Comando | Qué hace |
+| Command | What it does |
 | --- | --- |
-| `npm run dev` | Servidor de desarrollo |
-| `npm run build` | Build de producción |
-| `npm run lint` | ESLint con la configuración de Next |
-| `npm run latex` | Regenera `public/*.tex` desde el diccionario |
-| `npm run cv` | Lo anterior y además compila a PDF si hay tectonic/latexmk/xelatex/pdflatex |
+| `npm run dev` | Development server |
+| `npm run build` | Production build |
+| `npm run lint` | ESLint with the Next configuration |
+| `npm run latex` | Regenerates `public/*.tex` from the dictionary |
+| `npm run cv` | The above, plus a PDF if tectonic/latexmk/xelatex/pdflatex is available |
 
-### Dónde editar
+### Where to edit
 
-- **Todo el texto (ES/EN):** `lib/dictionaries.ts` — fuente única de verdad.
-- **Colores y tipografías:** `app/globals.css`, bloques `@theme`.
-- **Estado y progreso de los módulos:** `lib/dictionaries.ts` → `sistema.modules`.
-- **Catálogo de Power BI:** `lib/powerbi-model.ts`, copiado de `market-data-medallion/powerbi/` con el commit de origen en la cabecera.
+- **All copy (ES/EN):** `lib/dictionaries.ts` — the single source of truth.
+- **Colours and typography:** `app/globals.css`, `@theme` blocks.
+- **Module status and progress:** `lib/dictionaries.ts` → `sistema.modules`.
+- **Power BI catalogue:** `lib/powerbi-model.ts`, copied from `market-data-medallion/powerbi/` with the source commit in the header.
 
-## Licencias
+## Documentation
 
-- **Datos del atlas** (`public/atlas/`): CC BY-SA 4.0, heredada de la Superintendencia Financiera. La cláusula ShareAlike obliga a publicar el derivado bajo la misma licencia. Ver `DATA-LICENSE.md`.
-- **Tipografías** (`public/fonts/`): Archivo y Source Serif 4, SIL OFL 1.1, autoalojadas. Ver `public/fonts/OFL.txt`.
-
-## Documentación
-
-`BITACORA_MAESTRA.md` — hoja de ruta, arquitectura, decisiones y el historial de fallos con su causa raíz. Es el documento que hay que leer primero para trabajar sobre este repositorio.
+`BITACORA_MAESTRA.md` — roadmap, architecture, decisions and the full log of failures with their root cause. It is written in Spanish and it is the document to read first before working on this repository.
