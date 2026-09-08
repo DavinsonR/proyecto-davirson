@@ -1,0 +1,82 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+Sitio personal bilingüe de Davirson Novoa: un CV interactivo y las páginas de sus proyectos.
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · estático puro en Vercel, sin backend ni base de datos.
+
+**Lee `BITACORA_MAESTRA.md` antes de empezar**: hoja de ruta, decisiones y el historial de fallos con su causa raíz. `DESIGN.md` y `PRODUCT.md` no son documentación descriptiva sino el contrato del sistema visual y del posicionamiento; varias de sus reglas son vinculantes y romperlas ya ha sido un hallazgo de revisión.
+
+## Comandos
+
+```bash
+npm run dev          # http://localhost:3000 → redirige a /en
+npm run build        # compilación de producción; prerenderiza las rutas de los dos idiomas
+npm run lint         # eslint (config de Next)
+npx tsc --noEmit     # comprobación de tipos: no hay script, hay que invocarlo así
+npm run latex        # regenera public/*.tex desde lib/dictionaries.ts
+npm run cv           # latex + compila el PDF si hay tectonic/latexmk/xelatex
+npm run atlas        # regenera lib/atlas-figure.ts desde public/atlas/*.json
+```
+
+**No hay framework de pruebas.** Verificar un cambio es: `npx tsc --noEmit`, `npm run lint` y `npm run build` en cero, y mirarlo en un navegador en tema claro y oscuro, en español y en inglés. Para lo visual conviene medir en vez de opinar: desborde horizontal a 320/393/768/1280 px, contraste, y cero errores de consola.
+
+## Arquitectura
+
+### Todo el texto vive en un solo archivo
+
+`lib/dictionaries.ts` es la fuente única de verdad de cada cadena del sitio, en `es` y `en`. No hay texto literal en los componentes.
+
+```ts
+export type Dictionary = (typeof dictionaries)["es"];
+```
+
+De ahí sale el invariante más importante del repositorio: **los objetos `es` y `en` deben tener exactamente la misma forma**. Añadir una clave a uno y no al otro no se nota hasta `tsc`, y ahí falla en el componente que la consume, no donde está el hueco. `npx tsc --noEmit` es la prueba de que la traducción está completa.
+
+Los PDF y las fuentes LaTeX del CV se generan de ese mismo archivo (`scripts/generate-cv-latex.ts`), así que tocar el bloque `cv` obliga a `npm run cv` para que el PDF descargable no contradiga la página.
+
+### Añadir una ruta toca cinco sitios
+
+Olvidar cualquiera deja un fallo silencioso, y varios ya ocurrieron:
+
+1. `app/[lang]/<ruta>/page.tsx` — la página.
+2. `lib/dictionaries.ts` — su bloque de contenido, **en los dos idiomas**.
+3. `generateMetadata` de esa página — `alternates(lang, "/ruta")` **y** `openGraph(lang, "/ruta", …)` de `lib/alternates.ts`. Next **reemplaza** el `openGraph`, no lo fusiona: una subpágina que no lo declara hereda el del layout y su tarjeta en LinkedIn enlaza a la portada.
+4. `app/sitemap.ts` — la constante `ROUTES`.
+5. `next.config.ts` — el redirect de la ruta sin idioma (`/x` → `/en/x`); sin él esa URL devuelve 404.
+
+Las páginas son componentes de servidor `async` que reciben `params: Promise<{ lang: string }>` y leen su contenido con `getDictionary(lang)`.
+
+### El revelado al desplazar, y por qué importa al verificar
+
+`components/Motion.tsx` monta un único `IntersectionObserver` de documento. Los elementos con `data-reveal` y la clase `.reveal` empiezan en `opacity: 0` y se revelan al entrar en pantalla; el escalonado va por la propiedad `--d`, que un componente de servidor puede fijar sin volverse cliente.
+
+Tres salvaguardas que no se pueden romper: el estado oculto vive dentro de `.js`, que fija el script de arranque de `app/[lang]/layout.tsx` antes del primer pintado; un temporizador de 3 s revela todo si el bundle nunca corre; y `@media print` fuerza todo visible.
+
+**Consecuencia al verificar**: una captura de página completa sale casi en blanco, porque nada llegó a intersectar. Hay que desplazar hasta abajo antes de capturar, y desactivar `scroll-behavior: smooth` si se toman capturas por sección.
+
+### La CSP no admite hashes
+
+`next.config.ts` declara `script-src 'unsafe-inline'` a propósito, y su comentario explica por qué: el payload RSC de hidratación es distinto en cada página y cambia con cada edición del diccionario, así que una CSP por hash exigiría regenerarlos en cada commit y `headers()` se evalúa antes de renderizar. **En cuanto se declara un hash, el navegador ignora `'unsafe-inline'` y la hidratación muere.** No se pueden mezclar. Lo que esa CSP sí compra es `default-src 'none'` y un `connect-src` acotado.
+
+### Sin backend, y tres contratos de datos externos
+
+- **Trading sim** (`lib/trading-sim.ts`): lee `exports/*.json` del repositorio público `market-data-medallion` desde `raw.githubusercontent.com`, en el navegador y con tiempo límite. Un fallo de red enseña el error y ofrece reintentar; nunca se queda en «cargando».
+- **Atlas** (`components/atlas/`, `public/atlas/*.json`): el contrato con el repositorio de la tesis (`financial-inclusion-colombia`) es su carpeta `atlas/data/`, copiada a `public/atlas/`. El SVG se dibuja fuera de React en `render.ts` porque la vista municipal son más de 5.000 nodos; React solo posee los controles. `lib/atlas-figure.ts` es **generado** por `npm run atlas` — no se edita a mano.
+- **Catálogo Power BI** (`lib/powerbi-model.ts`): copiado a mano de `market-data-medallion/powerbi/`, con el commit de origen en su cabecera; al actualizarlo, actualizar también ese commit.
+
+### Diseño: leer `DESIGN.md` antes de tocar estilos
+
+Los tokens viven en los bloques `@theme` de `app/globals.css`, con el tema oscuro re-escalonado contra su propio fondo. Las reglas que rompen el sistema si se ignoran:
+
+- **La reserva del ámbar.** El acento cálido es solo para contenido humano y de propósito (disponibilidad, contratación, el pasaje de transición). Toda cifra, métrica o afirmación técnica va en azul institucional o en tinta. Un número en ámbar es un defecto.
+- **Hoja plana.** Ni sombras, ni tarjetas, ni degradados. Una región se separa con una regla de 1–2 px y un fondo teñido a sangre, nunca con una caja redondeada flotante.
+- **El serif es una cifra.** Source Serif 4 solo en números grandes y en la línea de veredicto. Un párrafo, un título o un botón en serif no existen aquí.
+- **Suelo de 14 px** para toda prosa. El escalón de 12–12,5 px es solo para etiquetas de metadatos en versalitas.
+- **Dos voces.** Un color nuevo sale de los tokens de estado que ya existen (`pos`, `neg`, `live`, `building`); no se inventa un tercer acento.
+
+`components/StatusPill.tsx` acepta solo `live | building | research | idea`. `components/SectionNav.tsx` es la navegación pegajosa de las páginas largas y su resaltado asume `scroll-mt-[118px]` en las secciones.
+
+### Contenido: verificable o no se publica
+
+`PRODUCT.md` recoge la evidencia real disponible. Ninguna cifra publicada puede inventarse ni inflarse, los indicadores de estado tienen que reflejar la realidad incluido lo que no está terminado, y `lib/structured-data.ts` no puede afirmarle al buscador nada que el lector no pueda verificar en la propia página. Cuando una capacidad no está viva —una cuenta que todavía no se puede crear, un repositorio privado— la página lo dice en vez de ofrecer un enlace roto.
