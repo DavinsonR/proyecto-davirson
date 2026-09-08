@@ -32,6 +32,8 @@ export default function AtlasFigure({
   // idiomas, así que se inyecta aquí y no en el fichero generado.
   const svg = ATLAS_FIGURE.svg.replace("TITLE_SLOT", escapeXml(copy.alt));
 
+  const atlasHref = `/${lang}/research/fintech-inclusion#atlas`;
+
   return (
     <section aria-labelledby="atlas-figure" className="border-t-2 border-cold py-14">
       <div className="mx-auto max-w-[1080px] px-6">
@@ -41,12 +43,26 @@ export default function AtlasFigure({
 
         <div className="mt-6 grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
           <figure className="m-0">
-            <div
-              data-reveal
-              className="reveal"
-              // Contenido propio, generado en build desde los JSON del repo.
-              dangerouslySetInnerHTML={{ __html: svg }}
-            />
+            {/* El mapa lleva al mapa. Quien ve la figura y quiere el atlas hace
+                clic en lo que está mirando, no busca el botón; el botón se queda
+                porque en el teléfono no hay cursor que delate que esto se pulsa.
+                El nombre accesible del enlace es la misma frase del botón: sin
+                `aria-label` el lector de pantalla leería como nombre del enlace
+                el `<title>` del SVG, que es una descripción de tres líneas.
+                La leyenda queda fuera del enlace: describe la figura, no lleva
+                a ningún sitio. */}
+            <Link
+              href={atlasHref}
+              aria-label={copy.cta}
+              className="lift block cursor-pointer"
+            >
+              <div
+                data-reveal
+                className="reveal"
+                // Contenido propio, generado en build desde los JSON del repo.
+                dangerouslySetInnerHTML={{ __html: svg }}
+              />
+            </Link>
             <figcaption className="mt-4 border-t border-coldline pt-3 text-[14px] leading-[1.6] text-body">
               <Legend copy={copy} />
             </figcaption>
@@ -63,7 +79,7 @@ export default function AtlasFigure({
             <p className="mt-3.5 max-w-[46ch] text-[15px] leading-[1.7]">{copy.body}</p>
 
             <Link
-              href={`/${lang}/research/fintech-inclusion#atlas`}
+              href={atlasHref}
               className="lift mt-6 inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
             >
               {copy.cta} →
